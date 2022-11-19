@@ -7,7 +7,7 @@ namespace Ex01_02
         
         public static void Main()
         {
-            int row = 13;
+            int row = 9;
             PrintDiamond(row);
 
         }
@@ -21,20 +21,22 @@ namespace Ex01_02
                 Console.WriteLine("*");
                 return;
             }
+
             if (i_SizeOfDiamond == 2)
             {
                 Console.WriteLine("*\n*");
                 return;
             }
-            int top = (i_SizeOfDiamond / 2) + 1;//3
-            int bottom = i_SizeOfDiamond - top;//2
+
+            int top = (i_SizeOfDiamond / 2) + 1;
+            int bottom = i_SizeOfDiamond - top;
             PrintTopTriangle(top, 1);
             PrintBottomTriangle(bottom, i_SizeOfDiamond - 2, 1);
 
 
         }
 
-        public static void PrintTopTriangle(int rows,int numOfStars)// 3
+        public static void PrintTopTriangle(int rows,int numOfStars)
         {
             int space = rows - 1;
             if(rows == 0)
@@ -70,6 +72,7 @@ namespace Ex01_02
             {
                 return;
             }
+
             PrintSpace(space);
             PrintStar(numOfStars);
             Console.WriteLine();
