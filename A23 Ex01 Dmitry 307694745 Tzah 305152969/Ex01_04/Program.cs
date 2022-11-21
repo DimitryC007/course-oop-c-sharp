@@ -12,7 +12,8 @@ namespace Ex01_04
             if (isParsed)
             {
                 string isDivided = inputNumber % 3 == 0 ? "is divided by 3" : "is not divided by 3";
-                Console.WriteLine("the input you gave it's a number, the number: {0} {1}", inputNumber, isDivided);
+                string textToDisplay = string.Format("the input you gave it's a number, the number: {0} {1}", inputNumber, isDivided);
+                Console.WriteLine(textToDisplay);
                 return;
             }
             Console.WriteLine("Is polyndrom: {0}", IsPolyndromRecursive(input, 0, input.Length - 1));
