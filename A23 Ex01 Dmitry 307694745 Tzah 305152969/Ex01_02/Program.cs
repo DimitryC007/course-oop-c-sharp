@@ -4,12 +4,10 @@ namespace Ex01_02
 {
     public class Program
     {
-        
         public static void Main()
         {
             int row = 9;
             PrintDiamond(row);
-
         }
 
         public static void PrintDiamond(int i_SizeOfDiamond)
@@ -32,8 +30,6 @@ namespace Ex01_02
             int bottom = i_SizeOfDiamond - top;
             PrintTopTriangle(top, 1);
             PrintBottomTriangle(bottom, i_SizeOfDiamond - 2, 1);
-
-
         }
 
         public static void PrintTopTriangle(int rows,int numOfStars)
@@ -78,7 +74,5 @@ namespace Ex01_02
             Console.WriteLine();
             PrintBottomTriangle(rows - 1, numOfStars - 2, space + 1);
         }
-
-
     }
 }

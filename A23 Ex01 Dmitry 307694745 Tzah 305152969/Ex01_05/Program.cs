@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace Ex01_05
 {
     class Program
@@ -9,7 +8,6 @@ namespace Ex01_05
         {
             int[] digitArray = GetNumber();
             PrintStatistics(digitArray);
-
         }
 
         public static void PrintStatistics(int[] digits)
@@ -17,14 +15,12 @@ namespace Ex01_05
             Console.Write("The number is: ");
             PrintNumber(digits);
             string resultMessege =
-                string.Format(
-@"
-The number of digits bigger than the first digit: {0}.
-The smallest digit in the number is: {1}.
-{2} digits divide by 3.
-The average of the digits is {3}.",
-                CountOfNumbersBiggerThanFirstDigit(digits), SmallestDigit(digits),
-                DigitsDividedByThree(digits),AverageOfDigits(digits));
+                string.Format("The number of digits bigger than the first digit: {0}.{4}The smallest digit in the number is: {1}.{4}{2} digits divide by 3.{4}The average of the digits is {3}.",
+                CountOfNumbersBiggerThanFirstDigit(digits),
+                SmallestDigit(digits),
+                DigitsDividedByThree(digits),
+                AverageOfDigits(digits),
+                Environment.NewLine);
             Console.WriteLine(resultMessege);
         }
 
@@ -34,9 +30,9 @@ The average of the digits is {3}.",
             {
                 Console.Write(digits[i]);
             }
+            Console.WriteLine();
         }
 
-        //get input of number
         public static int[] GetNumber()
         {
             Console.Write("Enter a 6 digit number: ");
@@ -54,13 +50,9 @@ The average of the digits is {3}.",
             {
                 digitsFromNumber[i] = (int)char.GetNumericValue(numberBrokenToChar[i]); 
             }
-
             return digitsFromNumber;
-
-
         }
 
-        //check input is 6 digit number
         public static bool IsValidNumber(string number)
         {
             if (number.Length != 6)
@@ -68,7 +60,6 @@ The average of the digits is {3}.",
             return int.TryParse(number, out int placeHolder);
         }
 
-        //check how many digits are bigger than the first digit
         public static int CountOfNumbersBiggerThanFirstDigit(int[] digits)
         {
             int biggerNumbersThanFirstDigit = 0;
@@ -81,7 +72,6 @@ The average of the digits is {3}.",
             return biggerNumbersThanFirstDigit;
         }
        
-        //minimal digit
         public static int SmallestDigit(int[] digits)
         {
             int minimum = int.MaxValue;
@@ -96,7 +86,6 @@ The average of the digits is {3}.",
        
         }
 
-        //how many digits divide by 3
         public static int DigitsDividedByThree(int[] digits)
         {
             int numberOfDigitsDividedByThree = 0;
@@ -109,8 +98,6 @@ The average of the digits is {3}.",
             return numberOfDigitsDividedByThree;
         }
 
-
-        //mean of digits
         public static float AverageOfDigits(int[] digits)
         {
             float sumOfDigits = 0;
@@ -121,8 +108,5 @@ The average of the digits is {3}.",
 
             return sumOfDigits/digits.Length;
         }
-
-
-
     }
 }

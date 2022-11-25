@@ -16,8 +16,14 @@ namespace Ex01_04
                 Console.WriteLine(textToDisplay);
                 return;
             }
-            Console.WriteLine("Is polyndrom: {0}", IsPolyndromRecursive(input, 0, input.Length - 1));
 
+            if (!IsValidString(input))
+            {
+                Console.WriteLine("your text is incorrect");
+                return;
+            }
+                
+            Console.WriteLine("Is polyndrom: {0}", IsPolyndromRecursive(input, 0, input.Length - 1));
             int lowerCaseCounter = 0;
             for (int i = 0; i < input.Length; i++)
             {
@@ -28,12 +34,23 @@ namespace Ex01_04
         }
 
 
+        public static bool IsValidString(string text)
+        {
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (int.TryParse(text[i].ToString(), out int res))
+                    return false;
+            }
+            return true;
+        }
+
+
         public static bool IsPolyndromRecursive(string text, int start, int end)
         {
             if (text[start] != text[end])
                 return false;
 
-            if (start == end)
+            if (start >= end)
                 return true;
 
             return IsPolyndromRecursive(text, start + 1, end - 1);

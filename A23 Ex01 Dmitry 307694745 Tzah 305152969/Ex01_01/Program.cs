@@ -17,7 +17,6 @@ namespace Ex01_01
             Array.Reverse(base10Numbers);
             PrintArray(base10Numbers);
             PrintStatistics(binaryNumbers , base10Numbers);
-
         }
 
         public static void PrintArray(int[] arr)

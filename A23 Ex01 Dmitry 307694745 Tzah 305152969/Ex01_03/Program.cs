@@ -1,6 +1,4 @@
 ﻿using System;
-using Ex01_02;
-
 
 namespace Ex01_03
 {
@@ -10,7 +8,6 @@ namespace Ex01_03
         {
             int sizeOfDiamond = GetSizeOfDiamond();
             Ex01_02.Program.PrintDiamond(sizeOfDiamond);
-
         }
 
         public static int GetSizeOfDiamond()
@@ -22,11 +19,9 @@ namespace Ex01_03
                 Console.Write("Please enter a valid number:");
                 input = Console.ReadLine();
             }
+
             int sizeOfDiamond = int.Parse(input);
-
-
             return FixedSize(sizeOfDiamond);
-
         }
 
         public static bool IsValidSizeOfDiamond(string input)
