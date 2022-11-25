@@ -26,7 +26,7 @@ namespace Ex01_05
 
         private static void PrintNumber(int[] digits)
         {
-            for(int i = 0; i < digits.Length; i++)
+            for (int i = 0; i < digits.Length; i++)
             {
                 Console.Write(digits[i]);
             }
@@ -37,7 +37,7 @@ namespace Ex01_05
         {
             Console.Write("Enter a 6 digit number: ");
             string number = Console.ReadLine();
-            int[] digitsFromNumber = new int[6]; 
+            int[] digitsFromNumber = new int[6];
 
             while (!IsValidNumber(number))
             {
@@ -46,9 +46,9 @@ namespace Ex01_05
             }
 
             char[] numberBrokenToChar = number.ToCharArray();
-            for(int i = 0; i < number.Length; i++)
+            for (int i = 0; i < number.Length; i++)
             {
-                digitsFromNumber[i] = (int)char.GetNumericValue(numberBrokenToChar[i]); 
+                digitsFromNumber[i] = (int)char.GetNumericValue(numberBrokenToChar[i]);
             }
             return digitsFromNumber;
         }
@@ -56,26 +56,29 @@ namespace Ex01_05
         public static bool IsValidNumber(string number)
         {
             if (number.Length != 6)
+            {
                 return false;
+            }
             return int.TryParse(number, out int placeHolder);
         }
 
         public static int CountOfNumbersBiggerThanFirstDigit(int[] digits)
         {
             int biggerNumbersThanFirstDigit = 0;
-            for(int i = 0; i < digits.Length - 1; i++)
+            for (int i = 0; i < digits.Length - 1; i++)
             {
                 if (digits[i] > digits[digits.Length - 1])
+                {
                     biggerNumbersThanFirstDigit++;
+                }
             }
-
             return biggerNumbersThanFirstDigit;
         }
-       
+
         public static int SmallestDigit(int[] digits)
         {
             int minimum = int.MaxValue;
-            for(int i = 0; i < digits.Length; i++)
+            for (int i = 0; i < digits.Length; i++)
             {
                 if (digits[i] < minimum)
                 {
@@ -83,14 +86,12 @@ namespace Ex01_05
                 }
             }
             return minimum;
-       
         }
 
         public static int DigitsDividedByThree(int[] digits)
         {
             int numberOfDigitsDividedByThree = 0;
-
-            for(int i = 0; i < digits.Length; i++)
+            for (int i = 0; i < digits.Length; i++)
             {
                 if (digits[i] % 3 == 0)
                     numberOfDigitsDividedByThree++;
@@ -101,12 +102,11 @@ namespace Ex01_05
         public static float AverageOfDigits(int[] digits)
         {
             float sumOfDigits = 0;
-            for(int i = 0; i < digits.Length; i++)
+            for (int i = 0; i < digits.Length; i++)
             {
                 sumOfDigits += digits[i];
             }
-
-            return sumOfDigits/digits.Length;
+            return sumOfDigits / digits.Length;
         }
     }
 }

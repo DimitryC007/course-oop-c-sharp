@@ -32,9 +32,10 @@ namespace Ex01_03
         public static int FixedSize(int number)
         {
             if (number % 2 == 0)
+            {
                 return number + 1;
-            else
-                return number;
+            }
+            return number;
         }
     }
 }

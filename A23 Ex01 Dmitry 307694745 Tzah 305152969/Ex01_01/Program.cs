@@ -16,7 +16,7 @@ namespace Ex01_01
 
             Array.Reverse(base10Numbers);
             PrintArray(base10Numbers);
-            PrintStatistics(binaryNumbers , base10Numbers);
+            PrintStatistics(binaryNumbers, base10Numbers);
         }
 
         public static void PrintArray(int[] arr)
@@ -36,11 +36,13 @@ namespace Ex01_01
             for (int i = 0; i < base10Numbers.Length; i++)
             {
                 if (IsPolyndrom(base10Numbers[i]))
+                {
                     numOfPolyndroms++;
-
+                }
                 if (IsDescendingSeries(base10Numbers[i]))
+                {
                     numOfDescendingSeries++;
-
+                }
             }
             Console.WriteLine("number of polyndroms are: {0}", numOfPolyndroms);
             Console.WriteLine("number of descending series are: {0}", numOfDescendingSeries);
@@ -54,7 +56,9 @@ namespace Ex01_01
             {
                 int currentLastDigit = number % 10;
                 if (currentLastDigit >= lastDigit)
+                {
                     return false;
+                }
                 number /= 10;
             }
             return true;
@@ -66,8 +70,9 @@ namespace Ex01_01
             while (number > 0)
             {
                 if (number % 10 != reversedNumber % 10)
+                {
                     return false;
-
+                }
                 reversedNumber /= 10;
                 number /= 10;
             }
@@ -105,7 +110,9 @@ namespace Ex01_01
             for (int i = 0; i < base10Numbers.Length; i++)
             {
                 if (base10Numbers[i] % 4 == 0)
+                {
                     counter++;
+                }
             }
             return counter;
         }
@@ -121,13 +128,17 @@ namespace Ex01_01
                 {
                     int lastDigit = binaryNumber % 10;
                     if (lastDigit == digit)
+                    {
                         countOfDigit++;
+                    }
 
                     binaryNumber /= 10;
                     size--;
                 }
                 if (digit == 0 && size != 0)
+                {
                     countOfDigit += size;
+                }
             }
             return countOfDigit / binaryNumbers.Length;
         }
@@ -173,18 +184,23 @@ namespace Ex01_01
         public static bool IsValidBinaryNumber(string inputNumber)
         {
             if (inputNumber.Length != 8)
+            {
                 return false;
+            }
 
             bool isValidNumber = int.TryParse(inputNumber, out int number);
             if (!isValidNumber)
+            {
                 return false;
+            }
 
             while (number > 0)
             {
                 int lastDigit = number % 10;
                 if (lastDigit != 1 && lastDigit != 0)
+                {
                     return false;
-
+                }
                 number = number / 10;
             }
             return true;
