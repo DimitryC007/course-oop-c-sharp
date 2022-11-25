@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Ex01_05
 {
@@ -26,11 +27,12 @@ namespace Ex01_05
 
         private static void PrintNumber(int[] digits)
         {
+            StringBuilder digitBuilder = new StringBuilder();
             for (int i = 0; i < digits.Length; i++)
             {
-                Console.Write(digits[i]);
+                digitBuilder.Append(digits[i]);
             }
-            Console.WriteLine();
+            Console.WriteLine(digitBuilder.ToString());
         }
 
         public static int[] GetNumber()
