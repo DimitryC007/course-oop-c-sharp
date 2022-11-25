@@ -7,6 +7,7 @@ namespace Ex01_02
         public static void Main()
         {
             int row = 9;
+
             PrintDiamond(row);
         }
 
@@ -16,67 +17,76 @@ namespace Ex01_02
             {
                 return;
             }
+
             if (i_SizeOfDiamond == 1)
             {
                 Console.WriteLine("*");
+
                 return;
             }
 
             if (i_SizeOfDiamond == 2)
             {
                 Console.WriteLine("*\n*");
+
                 return;
             }
 
             int top = (i_SizeOfDiamond / 2) + 1;
             int bottom = i_SizeOfDiamond - top;
+
             PrintTopTriangle(top, 1);
             PrintBottomTriangle(bottom, i_SizeOfDiamond - 2, 1);
         }
 
-        public static void PrintTopTriangle(int rows, int numOfStars)
+        public static void PrintTopTriangle(int i_rows, int i_numOfStars)
         {
-            int space = rows - 1;
-            if (rows == 0)
+            int space = i_rows - 1;
+
+            if (i_rows == 0)
             {
                 return;
             }
+
             PrintSpace(space);
-            PrintStar(numOfStars);
+            PrintStar(i_numOfStars);
             Console.WriteLine();
-            PrintTopTriangle(rows - 1, numOfStars + 2);
+            PrintTopTriangle(i_rows - 1, i_numOfStars + 2);
         }
 
-        public static void PrintSpace(int space)
+        public static void PrintSpace(int i_space)
         {
-            if (space < 1)
+            if (i_space < 1)
             {
                 return;
             }
+
             Console.Write(" ");
-            PrintSpace(space - 1);
+            PrintSpace(i_space - 1);
         }
 
-        public static void PrintStar(int numberOfStars)
+        public static void PrintStar(int i_numberOfStars)
         {
-            if (numberOfStars < 1)
+            if (i_numberOfStars < 1)
             {
                 return;
             }
+
             Console.Write("*");
-            PrintStar(numberOfStars - 1);
+            PrintStar(i_numberOfStars - 1);
         }
 
-        public static void PrintBottomTriangle(int rows, int numOfStars, int space)
+        public static void PrintBottomTriangle(int i_rows, int i_numOfStars, int i_space)
         {
-            if (rows == 0)
+            if (i_rows == 0)
             {
                 return;
             }
-            PrintSpace(space);
-            PrintStar(numOfStars);
+
+            PrintSpace(i_space);
+            PrintStar(i_numOfStars);
             Console.WriteLine();
-            PrintBottomTriangle(rows - 1, numOfStars - 2, space + 1);
+            PrintBottomTriangle(i_rows - 1, i_numOfStars - 2, i_space + 1);
         }
     }
 }
