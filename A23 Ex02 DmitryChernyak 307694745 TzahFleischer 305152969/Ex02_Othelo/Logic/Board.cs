@@ -23,7 +23,8 @@ namespace Ex02_Othelo.Logic
 
         public void SetMove(int cellValue, string move)
         {
-
+            ///move will be something like this E_5
+            ///we will split by _ and need a dictonary maybe to convert char to number 
         }
 
 

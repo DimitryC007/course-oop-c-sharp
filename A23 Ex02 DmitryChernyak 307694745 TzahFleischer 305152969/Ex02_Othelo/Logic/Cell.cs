@@ -8,7 +8,7 @@ namespace Ex02_Othelo.Logic
     public class Cell
     {
         public bool IsTaken => Value != null;
-        public int? Value { get; set; }
+        public int? Value { get; internal set; }
 
     }
 }
