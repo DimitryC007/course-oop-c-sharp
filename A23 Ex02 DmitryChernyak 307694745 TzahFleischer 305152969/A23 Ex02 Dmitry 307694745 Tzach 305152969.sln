@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex02_Othelo", "Ex02_Othelo\Ex02_Othelo.csproj", "{53AC192F-B22F-4F6B-9A06-865076C2FDB4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtheloUI", "OtheloUI\OtheloUI.csproj", "{49DFA8FA-A82F-4930-BD0F-DF224B90A696}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtheloLogic", "OtheloLogic\OtheloLogic.csproj", "{3ED62D35-3C4B-4ED0-AA17-FCABE5E29454}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{53AC192F-B22F-4F6B-9A06-865076C2FDB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53AC192F-B22F-4F6B-9A06-865076C2FDB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53AC192F-B22F-4F6B-9A06-865076C2FDB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49DFA8FA-A82F-4930-BD0F-DF224B90A696}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49DFA8FA-A82F-4930-BD0F-DF224B90A696}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49DFA8FA-A82F-4930-BD0F-DF224B90A696}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49DFA8FA-A82F-4930-BD0F-DF224B90A696}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ED62D35-3C4B-4ED0-AA17-FCABE5E29454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ED62D35-3C4B-4ED0-AA17-FCABE5E29454}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ED62D35-3C4B-4ED0-AA17-FCABE5E29454}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ED62D35-3C4B-4ED0-AA17-FCABE5E29454}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

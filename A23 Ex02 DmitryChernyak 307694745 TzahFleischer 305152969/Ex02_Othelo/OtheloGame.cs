@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using OtheloUI;
 
 namespace Ex02_Othelo
 {
     public class OtheloGame
     {
         private UserInterface _userInterface;
-        ///In the future we can add GameStats
+
         public OtheloGame()
         {
             _userInterface = new UserInterface();
@@ -17,6 +14,11 @@ namespace Ex02_Othelo
         public void LaunchGame()
         {
             _userInterface.LaunchGame();
+        }
+
+        public void PlayGame()
+        {
+            _userInterface.PlayGame();
         }
     }
 }

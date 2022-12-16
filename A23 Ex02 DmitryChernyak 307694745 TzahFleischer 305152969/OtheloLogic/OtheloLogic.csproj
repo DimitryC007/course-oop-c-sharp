@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{53AC192F-B22F-4F6B-9A06-865076C2FDB4}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Ex02_Othelo</RootNamespace>
-    <AssemblyName>Ex02_Othelo</AssemblyName>
+    <ProjectGuid>{3ED62D35-3C4B-4ED0-AA17-FCABE5E29454}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OtheloLogic</RootNamespace>
+    <AssemblyName>OtheloLogic</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,15 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OtheloGame.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Board.cs" />
+    <Compile Include="Cell.cs" />
+    <Compile Include="GameLogic.cs" />
+    <Compile Include="GameReport.cs" />
+    <Compile Include="GameSettings.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OtheloUI\OtheloUI.csproj">
-      <Project>{49dfa8fa-a82f-4930-bd0f-df224b90a696}</Project>
-      <Name>OtheloUI</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

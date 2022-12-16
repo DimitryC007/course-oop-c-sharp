@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{53AC192F-B22F-4F6B-9A06-865076C2FDB4}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Ex02_Othelo</RootNamespace>
-    <AssemblyName>Ex02_Othelo</AssemblyName>
+    <ProjectGuid>{49DFA8FA-A82F-4930-BD0F-DF224B90A696}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OtheloUI</RootNamespace>
+    <AssemblyName>OtheloUI</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ex02.ConsoleUtils">
+      <HintPath>..\..\..\..\..\..\..\..\Temp\Ex02.ConsoleUtils.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,14 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OtheloGame.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Messages.cs" />
+    <Compile Include="UserInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validations.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OtheloUI\OtheloUI.csproj">
-      <Project>{49dfa8fa-a82f-4930-bd0f-df224b90a696}</Project>
-      <Name>OtheloUI</Name>
+    <ProjectReference Include="..\OtheloLogic\OtheloLogic.csproj">
+      <Project>{3ed62d35-3c4b-4ed0-aa17-fcabe5e29454}</Project>
+      <Name>OtheloLogic</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
