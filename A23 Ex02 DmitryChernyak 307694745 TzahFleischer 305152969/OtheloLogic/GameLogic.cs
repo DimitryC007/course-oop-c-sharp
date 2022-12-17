@@ -378,8 +378,6 @@ namespace OtheloLogic
                 char character = (char)i;
                 _characterDict.Add(character, i - unicode);
             }
-
-     
         }
     }
 
