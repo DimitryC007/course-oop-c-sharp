@@ -15,7 +15,7 @@
         public void InitializeBoard()
         {
             int matrixSize = _matrix.GetLength(0);
-            int middleLocation = matrixSize / 2;
+            int middleLocation = matrixSize / 2 - 1;
 
             for(int rows = 0; rows < matrixSize; rows++)
             {
