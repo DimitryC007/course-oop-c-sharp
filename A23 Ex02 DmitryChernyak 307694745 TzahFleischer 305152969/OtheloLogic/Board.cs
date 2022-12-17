@@ -32,8 +32,8 @@
         }
 
         public void SetMove(int value, int row, int column)
-        {   
-            ///TODO: set move on the board with value
+        {
+            _matrix[row, column].Value = value;
         }
 
         public bool IsCellEmpty(int row, int column)

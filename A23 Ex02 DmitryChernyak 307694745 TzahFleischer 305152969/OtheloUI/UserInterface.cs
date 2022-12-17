@@ -152,7 +152,6 @@ namespace OtheloUI
         private void PrintBoard(Cell[,] matrix)
         {
             Screen.Clear();
-            ///TODO: print board
             int matrixSize = GetMatrixSize(); // need to get size from game setting
             Console.Write("   ");
             for(int columns = 0; columns < matrixSize; columns++)
