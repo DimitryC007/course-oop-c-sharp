@@ -9,12 +9,26 @@
         public Board(int matrixSize)
         {
             _matrix = new Cell[matrixSize, matrixSize];
+            InitializeBoard();
         }
 
         public void InitializeBoard()
-        {            
-            ///TODO: init mat with with new cell each col,row
-            ///TODO: calc center and init X,O in the center of the matrix
+        {
+            int matrixSize = _matrix.GetLength(0);
+            int middleLocation = matrixSize / 2;
+
+            for(int rows = 0; rows < matrixSize; rows++)
+            {
+                for(int cols = 0; cols< matrixSize; cols++)
+                {
+                    _matrix[rows, cols] = new Cell();
+                }
+            }
+            _matrix[middleLocation, middleLocation].Value = 0;
+            _matrix[middleLocation + 1 , middleLocation].Value = 1;
+            _matrix[middleLocation, middleLocation + 1].Value = 1;
+            _matrix[middleLocation + 1, middleLocation + 1].Value = 0;
+
         }
 
         public void SetMove(int value, int row, int column)

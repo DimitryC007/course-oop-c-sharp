@@ -19,6 +19,7 @@ namespace OtheloUI
         {
             while (true)
             {
+                PrintBoard(_gameLogic._board.Matrix);
                 GameReport gameReport = null;
                 //Human
                 if (!_gameLogic.CurrentPlayer.IsComputer)
@@ -152,7 +153,30 @@ namespace OtheloUI
         {
             Screen.Clear();
             ///TODO: print board
+            int matrixSize = GetMatrixSize();
+            const string divide = "=================================";
+            for(int rows = 0; rows < matrixSize; rows++)
+            {
+                Console.WriteLine(divide);
+                Console.Write($"{rows + 1} ");
+
+                for(int cols = 0; cols < matrixSize; cols++)
+                {
+                    if (matrix[rows, cols].IsTaken)
+                    {
+                        if (matrix[rows, cols].Value == 0)
+                            Console.Write(" O ");
+                        else
+                            Console.Write(" X ");
+                    }
+                    else
+                        Console.Write("   ");
+                    Console.Write("|");
+                }
+            }
+
             throw new NotImplementedException();
         }
+
     }
 }
