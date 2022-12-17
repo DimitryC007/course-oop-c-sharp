@@ -204,22 +204,159 @@ namespace OtheloLogic
                         }
                     case MoveDirection.Right:
                         {
+                            if (_board.Matrix[row, column + 1].IsTaken && _board.Matrix[row, column + 1].Value == oponentValue)
+                            {
+                                int matrixColumns = _board.Matrix.GetLength(1);
+                                List<Coordinate> innerCoordinate = new List<Coordinate>();
+                                bool isFlippable = false;
+
+                                for (int i = column + 1; i < matrixColumns; i++)
+                                {
+                                    if (!_board.Matrix[row, i].IsTaken)
+                                        break;
+
+                                    if (_board.Matrix[row, i].Value == oponentValue)
+                                    {
+                                        innerCoordinate.Add(new Coordinate(row, i));
+                                    }
+                                    else
+                                    {
+                                        isFlippable = true;
+                                        break;
+                                    }
+
+                                }
+
+                                if (isFlippable)
+                                {
+                                    coordinates.AddRange(innerCoordinate);
+                                }
+                            }
                             break;
+                            
                         }
                     case MoveDirection.UpRightDiagonal:
                         {
+                            if (_board.Matrix[row - 1, column + 1].IsTaken && _board.Matrix[row, column + 1].Value == oponentValue)
+                            {
+                                int matrixColumns = _board.Matrix.GetLength(1);
+                                List<Coordinate> innerCoordinate = new List<Coordinate>();
+                                bool isFlippable = false;
+                                for (int i = row -1, j = column + 1; i >= 0 && j < matrixColumns; i--, j++)
+                                {
+                                    if (!_board.Matrix[i, j].IsTaken)
+                                        break;
+
+                                    if (_board.Matrix[i, j].Value == oponentValue)
+                                    {
+                                        innerCoordinate.Add(new Coordinate(i, j));
+                                    }
+                                    else
+                                    {
+                                        isFlippable = true;
+                                        break;
+                                    }
+
+                                }
+
+                                if (isFlippable)
+                                {
+                                    coordinates.AddRange(innerCoordinate);
+                                }
+                            }
                             break;
                         }
                     case MoveDirection.DownRightDiagonal:
                         {
+                            if (_board.Matrix[row + 1, column + 1].IsTaken && _board.Matrix[row + 1, column + 1].Value == oponentValue)
+                            {
+                                int matrixColumns = _board.Matrix.GetLength(1);
+                                List<Coordinate> innerCoordinate = new List<Coordinate>();
+                                bool isFlippable = false;
+                                for (int i = row + 1, j = column + 1; i < matrixColumns && j < matrixColumns; i++, j++)
+                                {
+                                    if (!_board.Matrix[i, j].IsTaken)
+                                        break;
+
+                                    if (_board.Matrix[i, j].Value == oponentValue)
+                                    {
+                                        innerCoordinate.Add(new Coordinate(i, j));
+                                    }
+                                    else
+                                    {
+                                        isFlippable = true;
+                                        break;
+                                    }
+
+                                }
+
+                                if (isFlippable)
+                                {
+                                    coordinates.AddRange(innerCoordinate);
+                                }
+                            }
                             break;
                         }
                     case MoveDirection.UpLeftDiagonal:
                         {
+                            if (_board.Matrix[row - 1, column - 1].IsTaken && _board.Matrix[row - 1, column - 1].Value == oponentValue)
+                            {
+                                int matrixColumns = _board.Matrix.GetLength(1);
+                                List<Coordinate> innerCoordinate = new List<Coordinate>();
+                                bool isFlippable = false;
+                                for (int i = row - 1, j = column - 1; i >= 0 && j >= 0; i--, j--)
+                                {
+                                    if (!_board.Matrix[i, j].IsTaken)
+                                        break;
+
+                                    if (_board.Matrix[i, j].Value == oponentValue)
+                                    {
+                                        innerCoordinate.Add(new Coordinate(i, j));
+                                    }
+                                    else
+                                    {
+                                        isFlippable = true;
+                                        break;
+                                    }
+
+                                }
+
+                                if (isFlippable)
+                                {
+                                    coordinates.AddRange(innerCoordinate);
+                                }
+                            }
                             break;
                         }
                     case MoveDirection.DownLeftDiagonal:
                         {
+                            if (_board.Matrix[row + 1, column - 1].IsTaken && _board.Matrix[row + 1, column - 1].Value == oponentValue)
+                            {
+                                int matrixColumns = _board.Matrix.GetLength(1);
+                                List<Coordinate> innerCoordinate = new List<Coordinate>();
+                                bool isFlippable = false;
+                                for (int i = row + 1, j = column - 1; i <= matrixColumns && j >= 0; i++, j--)
+                                {
+                                    if (!_board.Matrix[i, j].IsTaken)
+                                        break;
+
+                                    if (_board.Matrix[i, j].Value == oponentValue)
+                                    {
+                                        innerCoordinate.Add(new Coordinate(i, j));
+                                    }
+                                    else
+                                    {
+                                        isFlippable = true;
+                                        break;
+                                    }
+
+                                }
+
+                                if (isFlippable)
+                                {
+                                    coordinates.AddRange(innerCoordinate);
+                                }
+                            }
                             break;
                         }
                     default:
@@ -341,14 +478,37 @@ namespace OtheloLogic
             return availableMovesToCheck;
         }
 
-        private int[] GetComputerRandomMove()
-        {   ///TODO: return random move arr[0] = row, arr[1] = column
-            throw new NotImplementedException();
+        private Coordinate GetComputerRandomMove(List<Coordinate> availableMoves)
+        {
+            var random = new Random();
+            int index = random.Next(availableMoves.Count);
+            return availableMoves[index];
         }
 
         private MoveStatus ComputerMove(int row, int col)
         {
+            List<Coordinate> availableComputerMoves = new List<Coordinate>();
+            for (int rows = 0; rows < _board.Matrix.GetLength(0); rows++)
+            {
+                
+                for(int cols = 0; cols < _board.Matrix.GetLength(0); cols++)
+                {
+                    if(!_board.Matrix[rows,cols].IsTaken)
+                    {
+                        var availableMovesDirections = GetAvailableMovesDirectionsCheck(row, cols);
+                        List<Coordinate> flipCoordinates = GetFlipCoordinates(availableMovesDirections, row, cols);
+                        if(flipCoordinates.Count > 0)
+                        {
+                            availableComputerMoves.Add(new Coordinate(rows, cols));
+                        }
+                    }
+                }
+                
+            }
+            Coordinate chosenMove = GetComputerRandomMove(availableComputerMoves);
+            //TODO: flip from chosen options;
             throw new NotImplementedException();
+
         }
 
         private GameStatus GetGameStatus()
