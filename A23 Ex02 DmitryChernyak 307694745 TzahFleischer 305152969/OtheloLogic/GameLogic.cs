@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace OtheloLogic
 {
@@ -10,11 +11,23 @@ namespace OtheloLogic
     }
 
     public enum MoveStatus
-    { 
+    {
         CellIsTaken = 0, // we need to know cell is taken to ask input from the user again 
         MoveSuccess = 1, // continue playing
         MoveFailure = 2, // input not valid from --> User
         MoveSkipped = 3 // doesn't have a move to make
+    }
+
+    public enum MoveDirection
+    {
+        Up = 0,
+        Down = 1,
+        Left = 2,
+        Right = 3,
+        UpRightDiagonal = 4,
+        DownRightDiagonal = 5,
+        UpLeftDiagonal = 6,
+        DownLeftDiagonal = 7,
     }
 
     public class GameLogic
@@ -31,7 +44,7 @@ namespace OtheloLogic
 
 
         public GameReport MakeMove(string position = "")
-        {   
+        {
             GameReport gameReport;
             ///TODO: check if board is Full
             ///TODO: check currentUser has any move to make - if not return MoveStatus.MoveSkipped 
@@ -39,15 +52,16 @@ namespace OtheloLogic
             if (!CurrentPlayer.IsComputer)
             {
                 ///TODO: convert position to row,col --> User
-                int column = ConvertInputToColumn(position[0]);
-                int row = ConvertInputToRow(position[1]);
-                if (row == -1 || column == -1)
-                {   
-                    ///TODO: return MoveStatus.Failure
-                    gameReport = new GameReport { };
-                    return gameReport;
-                }
-
+                //int column = ConvertInputToColumn(position[0]);
+                //int row = ConvertInputToRow(position[1]);
+                //if (row == -1 || column == -1)
+                //{
+                //    ///TODO: return MoveStatus.Failure
+                //    gameReport = new GameReport { };
+                //    return gameReport;
+                //}
+                int row = 4, column = 2;
+                UserMove(row, column);
                 ///TODO: call UserMove with row and column if returned status is MoveStatus.MoveSuccess
                 ///TODO: 
             }
@@ -66,11 +80,205 @@ namespace OtheloLogic
             throw new NotImplementedException();
         }
 
-        private MoveStatus UserMove(int row, int col)
-        {   
-            ///TODO: check if the cell it taken - if so return MoveStatus.CellIsTaken
+        private MoveStatus UserMove(int row, int column)
+        {
+            if (_board.Matrix[row, column].IsTaken)
+            {
+                return MoveStatus.CellIsTaken;
+            }
+
+            var availableMovesDirections = GetAvailableMovesDirectionsCheck(row, column);
+            List<Coordinate> flipCoordinates = GetFlipCoordinates(availableMovesDirections, row, column);
             ///TODO: check if the move is legit - if not legit return MoveStatus.Failure
+            ///TODO: flip all available oponent coins
             throw new NotImplementedException();
+        }
+
+        private List<Coordinate> GetFlipCoordinates(List<MoveDirection> moveDirections, int row, int column)
+        {
+            List<Coordinate> coordinates = new List<Coordinate>();
+            int currentPlayerValue = _playerIndex;
+            int oponentValue = GetOponentValue();
+
+            foreach (var direction in moveDirections)
+            {
+                switch (direction)
+                {
+                    case MoveDirection.Up:
+                        {
+                            if (_board.Matrix[row - 1, column].IsTaken && _board.Matrix[row - 1, column].Value == oponentValue)
+                            {
+                                List<Coordinate> innerCoordinate = new List<Coordinate>();
+                                bool isFlippable = false;
+                                for (int i = row - 1; i >= 0; i--)
+                                {
+                                    if (!_board.Matrix[row - 1, column].IsTaken)
+                                        break;
+
+                                    if (_board.Matrix[i, column].Value == oponentValue)
+                                    {
+                                        innerCoordinate.Add(new Coordinate(i, column));
+                                    }
+                                    else
+                                    {
+                                        isFlippable = true;
+                                        break;
+                                    }
+
+                                }
+
+                                if (isFlippable)
+                                {
+                                    coordinates.AddRange(innerCoordinate);
+                                }
+                            }
+                            break;
+                        }
+                    case MoveDirection.Down:
+                        {
+                            break;
+                        }
+                    case MoveDirection.Left:
+                        {
+                            break;
+                        }
+                    case MoveDirection.Right:
+                        {
+                            break;
+                        }
+                    case MoveDirection.UpRightDiagonal:
+                        {
+                            break;
+                        }
+                    case MoveDirection.DownRightDiagonal:
+                        {
+                            break;
+                        }
+                    case MoveDirection.UpLeftDiagonal:
+                        {
+                            break;
+                        }
+                    case MoveDirection.DownLeftDiagonal:
+                        {
+                            break;
+                        }
+                    default:
+                        throw new NotSupportedException();
+                }
+            }
+
+            if (coordinates.Count > 0)
+            {
+                coordinates.Add(new Coordinate(row, column));
+            }
+
+            return coordinates;
+        }
+
+        private List<MoveDirection> GetAvailableMovesDirectionsCheck(int row, int column)
+        {
+            int matrixRows = _board.Matrix.GetLength(0);
+            int matrixCols = _board.Matrix.GetLength(1);
+            List<MoveDirection> availableMovesToCheck = new List<MoveDirection>();
+
+            if (row == 0 || row == 1)
+            {
+                availableMovesToCheck.Add(MoveDirection.Down);
+                if (column == 0 || column == 1)
+                {
+                    availableMovesToCheck.AddRange(new List<MoveDirection>
+                    {
+                        MoveDirection.Right,
+                        MoveDirection.DownRightDiagonal,
+                    });
+                }
+                else if (column == matrixCols - 1 || column == matrixCols - 2)
+                {
+                    availableMovesToCheck.AddRange(new List<MoveDirection>
+                    {
+                        MoveDirection.Left,
+                        MoveDirection.DownLeftDiagonal,
+                    });
+                }
+                else
+                {
+                    availableMovesToCheck.AddRange(new List<MoveDirection>
+                    {
+                        MoveDirection.Left,
+                        MoveDirection.Right,
+                        MoveDirection.DownLeftDiagonal,
+                        MoveDirection.DownRightDiagonal,
+                    });
+                }
+            }
+            else if (row == matrixRows - 1 || row == matrixRows - 2)
+            {
+                availableMovesToCheck.Add(MoveDirection.Up);
+                if (column == 0 || column == 1)
+                {
+                    availableMovesToCheck.AddRange(new List<MoveDirection>
+                    {
+                        MoveDirection.Right,
+                        MoveDirection.UpRightDiagonal,
+                    });
+                }
+                else if (column == matrixCols - 1 || column == matrixCols - 2)
+                {
+                    availableMovesToCheck.AddRange(new List<MoveDirection>
+                    {
+                        MoveDirection.Left,
+                        MoveDirection.UpLeftDiagonal,
+                    });
+                }
+                else
+                {
+                    availableMovesToCheck.AddRange(new List<MoveDirection>
+                    {
+                        MoveDirection.Left,
+                        MoveDirection.Right,
+                        MoveDirection.UpLeftDiagonal,
+                        MoveDirection.UpRightDiagonal,
+                    });
+                }
+            }
+            else if (row != 0 && row == 1 && row != matrixRows - 1 && row != matrixRows - 2 && (column == 0 || column == 1))
+            {
+                availableMovesToCheck.AddRange(new List<MoveDirection>
+                {
+                        MoveDirection.Up,
+                        MoveDirection.Down,
+                        MoveDirection.Right,
+                        MoveDirection.UpRightDiagonal,
+                        MoveDirection.DownRightDiagonal,
+                });
+            }
+            else if (row != 0 && row == 1 && row != matrixRows - 1 && row != matrixRows - 2 && (column == matrixCols - 1 || column == matrixCols - 2))
+            {
+                availableMovesToCheck.AddRange(new List<MoveDirection>
+                {
+                        MoveDirection.Up,
+                        MoveDirection.Down,
+                        MoveDirection.Left,
+                        MoveDirection.UpLeftDiagonal,
+                        MoveDirection.DownLeftDiagonal,
+                });
+            }
+            else
+            {
+                availableMovesToCheck.AddRange(new List<MoveDirection>
+                {
+                    MoveDirection.Up,
+                    MoveDirection.Down,
+                    MoveDirection.Left,
+                    MoveDirection.Right,
+                    MoveDirection.UpRightDiagonal,
+                    MoveDirection.DownRightDiagonal,
+                    MoveDirection.UpLeftDiagonal,
+                    MoveDirection.DownLeftDiagonal,
+                });
+            }
+
+            return availableMovesToCheck;
         }
 
         private int[] GetComputerRandomMove()
@@ -79,12 +287,12 @@ namespace OtheloLogic
         }
 
         private MoveStatus ComputerMove(int row, int col)
-        {   
+        {
             throw new NotImplementedException();
         }
 
         private GameStatus GetGameStatus()
-        {   
+        {
             ///TODO: Check if avialbe moves remains on board for the oppsite player 
             throw new NotImplementedException();
         }
@@ -105,6 +313,11 @@ namespace OtheloLogic
         private void SwitchPlayer()
         {
             _playerIndex = _playerIndex == 0 ? 1 : 0;
+        }
+
+        private int GetOponentValue()
+        {
+            return _playerIndex == 0 ? 1 : 0;
         }
     }
 }

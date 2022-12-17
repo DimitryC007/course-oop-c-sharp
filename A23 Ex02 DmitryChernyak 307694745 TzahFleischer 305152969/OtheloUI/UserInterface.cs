@@ -19,7 +19,7 @@ namespace OtheloUI
         {
             while (true)
             {
-                PrintBoard(_gameLogic._board.Matrix);
+                //PrintBoard(_gameLogic._board.Matrix);
                 GameReport gameReport = null;
                 //Human
                 if (!_gameLogic.CurrentPlayer.IsComputer)
