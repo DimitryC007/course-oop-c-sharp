@@ -34,12 +34,13 @@ namespace OtheloLogic
         {   
             GameReport gameReport;
             ///TODO: check if board is Full
-            ///TODO: check currentUser has any move to make - if not return MoveStatus.MoveSkipped
+            ///TODO: check currentUser has any move to make - if not return MoveStatus.MoveSkipped 
+            ///TODO: check if both players in the last moves didn't have moves - return game over  
             if (!CurrentPlayer.IsComputer)
             {
                 ///TODO: convert position to row,col --> User
-                int row = ConvertInputToColumn(position[0]);
-                int column = ConvertInputToRow(position[1]);
+                int column = ConvertInputToColumn(position[0]);
+                int row = ConvertInputToRow(position[1]);
                 if (row == -1 || column == -1)
                 {   
                     ///TODO: return MoveStatus.Failure
@@ -48,7 +49,7 @@ namespace OtheloLogic
                 }
 
                 ///TODO: call UserMove with row and column if returned status is MoveStatus.MoveSuccess
-                ///TODO:
+                ///TODO: 
             }
             else
             {
@@ -92,7 +93,6 @@ namespace OtheloLogic
         {
             ///TODO: convert the input to position using dictionary
             ///TODO: if not exists in dictionary it means that the input is not valid - if it is not valid return -1
-
             throw new NotImplementedException();
         }
 
