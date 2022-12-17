@@ -62,7 +62,9 @@ namespace OtheloLogic
                     return gameReport;
                 }
 
-                //int row = 1, column = 3;
+                row = 1;
+                column = 3;
+
                 UserMove(row, column);
                 ///TODO: call UserMove with row and column if returned status is MoveStatus.MoveSuccess
                 ///TODO: 
@@ -99,7 +101,6 @@ namespace OtheloLogic
         private List<Coordinate> GetFlipCoordinates(List<MoveDirection> moveDirections, int row, int column)
         {
             List<Coordinate> coordinates = new List<Coordinate>();
-            int currentPlayerValue = _playerIndex;
             int oponentValue = GetOponentValue();
 
             foreach (var direction in moveDirections)
@@ -144,7 +145,7 @@ namespace OtheloLogic
                                 List<Coordinate> innerCoordinate = new List<Coordinate>();
                                 bool isFlippable = false;
 
-                                for (int i = row + 1; i < matrixRows; i--)
+                                for (int i = row + 1; i < matrixRows; i++)
                                 {
                                     if (!_board.Matrix[i, column].IsTaken)
                                         break;
