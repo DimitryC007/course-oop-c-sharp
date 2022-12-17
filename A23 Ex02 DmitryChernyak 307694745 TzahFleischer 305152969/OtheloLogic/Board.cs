@@ -3,8 +3,8 @@
     public class Board
     {
         private Cell[,] _matrix;
-        public Cell[,] Matrix => _matrix;
-        public bool IsBoardFull { get; }
+        public int Size => _matrix.GetLength(0);
+        public bool IsFull => GetIsFull();
 
         public Board(int matrixSize)
         {
@@ -12,7 +12,7 @@
             InitializeBoard();
         }
 
-        public void InitializeBoard()
+        private void InitializeBoard()
         {
             int matrixSize = _matrix.GetLength(0);
             int middleLocation = matrixSize / 2 - 1;
@@ -31,14 +31,38 @@
 
         }
 
-        public void SetMove(int value, int row, int column)
+        private bool GetIsFull()
+        { 
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
+                    int? cellValue = GetCellValue(i, j);
+                    if (cellValue == null)
+                    {
+                        return false;
+                    }
+                }
+            }
+            
+            return true;
+        }
+
+        internal void SetCellValue(int value, int row, int column)
         {
             _matrix[row, column].Value = value;
+        }
+
+        public int? GetCellValue(int row, int column)
+        {
+            return _matrix[row, column].Value;
         }
 
         public bool IsCellEmpty(int row, int column)
         {
             return !_matrix[row, column].IsTaken;
         }
+
+        
     }
 }

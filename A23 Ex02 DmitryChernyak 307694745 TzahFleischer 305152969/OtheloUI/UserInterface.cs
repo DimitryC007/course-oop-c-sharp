@@ -1,6 +1,7 @@
 ﻿using OtheloLogic;
 using Ex02.ConsoleUtils;
 using System;
+using System.Threading;
 
 namespace OtheloUI
 {
@@ -17,9 +18,10 @@ namespace OtheloUI
 
         public void PlayGame()
         {
+            PrintBoard();
+
             while (true)
             {
-                //PrintBoard(_gameLogic._board.Matrix);
                 GameReport gameReport = null;
                 //Human
                 if (!_gameLogic.CurrentPlayer.IsComputer)
@@ -38,8 +40,15 @@ namespace OtheloUI
                 {
                     ///TODO: add message computer is playing his turn now from messages
                     Console.WriteLine("Computer is playing now");
+
                     gameReport = _gameLogic.MakeMove();
                 }
+                _gameLogic.SwitchPlayer();
+                
+                PrintBoard();
+
+                if (_gameLogic.CurrentPlayer.IsComputer)
+                    Thread.Sleep(5000);
                 ///TODO: check game report and behave accordingly to it
             }
         }
@@ -113,7 +122,7 @@ namespace OtheloUI
 
             string playerMove = string.Empty;
             bool isValidMove = false;
-            
+
             while (!isValidMove)
             {
                 playerMove = Console.ReadLine();
@@ -149,28 +158,27 @@ namespace OtheloUI
             return int.Parse(matrixSize);
         }
 
-        private void PrintBoard(Cell[,] matrix)
+        private void PrintBoard()
         {
             Screen.Clear();
-            int matrixSize = _gameLogic._board.Matrix.GetLength(1);
             Console.Write("   ");
-            for(int columns = 0; columns < matrixSize; columns++)
+            for (int columns = 0; columns < _gameLogic.Board.Size; columns++)
             {
                 Console.Write(" {0}  ", Convert.ToChar(columns + (int)'A'));
             }
             Console.WriteLine();
-            
-            for(int rows = 0; rows < matrixSize; rows++)
+
+            for (int rows = 0; rows < _gameLogic.Board.Size; rows++)
             {
-                printDivide(matrixSize);
+                printDivide(_gameLogic.Board.Size);
                 Console.Write($"{rows + 1} |");
 
-                for(int cols = 0; cols < matrixSize; cols++)
+                for (int cols = 0; cols < _gameLogic.Board.Size; cols++)
                 {
 
-                    if (matrix[rows, cols].IsTaken)
+                    if (!_gameLogic.Board.IsCellEmpty(rows, cols))
                     {
-                        if (matrix[rows, cols].Value == 0)
+                        if (_gameLogic.Board.GetCellValue(rows, cols) == 0)
                             Console.Write(" O ");
                         else
                             Console.Write(" X ");
@@ -181,15 +189,15 @@ namespace OtheloUI
                 }
                 Console.WriteLine();
             }
-            printDivide(matrixSize);
+            printDivide(_gameLogic.Board.Size);
             Console.WriteLine();
 
         }
 
-        private void printDivide(int matrixSize)
+        private void printDivide(int boardSize)
         {
             Console.Write("  ");
-            for(int i = 0;i < matrixSize * 4 + 1; i++)
+            for (int i = 0; i < boardSize * 4 + 1; i++)
             {
                 Console.Write("=");
             }
