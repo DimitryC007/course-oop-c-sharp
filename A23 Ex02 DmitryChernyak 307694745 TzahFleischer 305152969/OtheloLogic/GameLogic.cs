@@ -60,7 +60,7 @@ namespace OtheloLogic
                 //    gameReport = new GameReport { };
                 //    return gameReport;
                 //}
-                int row = 4, column = 2;
+                int row = 1, column = 3;
                 UserMove(row, column);
                 ///TODO: call UserMove with row and column if returned status is MoveStatus.MoveSuccess
                 ///TODO: 
@@ -112,7 +112,7 @@ namespace OtheloLogic
                                 bool isFlippable = false;
                                 for (int i = row - 1; i >= 0; i--)
                                 {
-                                    if (!_board.Matrix[row - 1, column].IsTaken)
+                                    if (!_board.Matrix[i, column].IsTaken)
                                         break;
 
                                     if (_board.Matrix[i, column].Value == oponentValue)
@@ -136,6 +136,34 @@ namespace OtheloLogic
                         }
                     case MoveDirection.Down:
                         {
+                            if (_board.Matrix[row + 1, column].IsTaken && _board.Matrix[row + 1, column].Value == oponentValue)
+                            {
+                                int matrixRows = _board.Matrix.GetLength(0);
+                                List<Coordinate> innerCoordinate = new List<Coordinate>();
+                                bool isFlippable = false;
+
+                                for (int i = row + 1; i < matrixRows; i--)
+                                {
+                                    if (!_board.Matrix[i, column].IsTaken)
+                                        break;
+
+                                    if (_board.Matrix[i, column].Value == oponentValue)
+                                    {
+                                        innerCoordinate.Add(new Coordinate(i, column));
+                                    }
+                                    else
+                                    {
+                                        isFlippable = true;
+                                        break;
+                                    }
+
+                                }
+
+                                if (isFlippable)
+                                {
+                                    coordinates.AddRange(innerCoordinate);
+                                }
+                            }
                             break;
                         }
                     case MoveDirection.Left:
