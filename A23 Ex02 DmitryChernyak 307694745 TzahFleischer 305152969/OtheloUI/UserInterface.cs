@@ -152,16 +152,22 @@ namespace OtheloUI
         private void PrintBoard(Cell[,] matrix)
         {
             Screen.Clear();
-            ///TODO: print board
-            int matrixSize = GetMatrixSize();
-            const string divide = "=================================";
+            int matrixSize = GetMatrixSize(); // need to get size from game setting
+            Console.Write("   ");
+            for(int columns = 0; columns < matrixSize; columns++)
+            {
+                Console.Write(" {0}  ", Convert.ToChar(columns + (int)'A'));
+            }
+            Console.WriteLine();
+            
             for(int rows = 0; rows < matrixSize; rows++)
             {
-                Console.WriteLine(divide);
-                Console.Write($"{rows + 1} ");
+                printDivide(matrixSize);
+                Console.Write($"{rows + 1} |");
 
                 for(int cols = 0; cols < matrixSize; cols++)
                 {
+
                     if (matrix[rows, cols].IsTaken)
                     {
                         if (matrix[rows, cols].Value == 0)
@@ -173,10 +179,19 @@ namespace OtheloUI
                         Console.Write("   ");
                     Console.Write("|");
                 }
+                Console.WriteLine();
             }
 
-            throw new NotImplementedException();
         }
 
+        private void printDivide(int matrixSize)
+        {
+            Console.Write("   ");
+            for(int i = 0;i < matrixSize * 4 + 1; i++)
+            {
+                Console.Write("=");
+            }
+            Console.WriteLine();
+        }
     }
 }

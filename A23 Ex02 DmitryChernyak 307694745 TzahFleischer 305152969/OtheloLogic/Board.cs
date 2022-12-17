@@ -15,7 +15,7 @@
         public void InitializeBoard()
         {
             int matrixSize = _matrix.GetLength(0);
-            int middleLocation = matrixSize / 2;
+            int middleLocation = matrixSize / 2 - 1;
 
             for(int rows = 0; rows < matrixSize; rows++)
             {
@@ -32,8 +32,8 @@
         }
 
         public void SetMove(int value, int row, int column)
-        {   
-            ///TODO: set move on the board with value
+        {
+            _matrix[row, column].Value = value;
         }
 
         public bool IsCellEmpty(int row, int column)
