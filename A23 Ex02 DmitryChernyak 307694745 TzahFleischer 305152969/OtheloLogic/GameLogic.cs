@@ -62,8 +62,8 @@ namespace OtheloLogic
                     return gameReport;
                 }
 
-                row = 1;
-                column = 3;
+                row = 4;
+                column = 2;
 
                 UserMove(row, column);
                 ///TODO: call UserMove with row and column if returned status is MoveStatus.MoveSuccess
@@ -171,6 +171,34 @@ namespace OtheloLogic
                         }
                     case MoveDirection.Left:
                         {
+                            if (_board.Matrix[row, column - 1].IsTaken && _board.Matrix[row, column - 1].Value == oponentValue)
+                            {
+                                int matrixColumns = _board.Matrix.GetLength(1);
+                                List<Coordinate> innerCoordinate = new List<Coordinate>();
+                                bool isFlippable = false;
+
+                                for (int i = column - 1; i >= 0; i--)
+                                {
+                                    if (!_board.Matrix[row, i].IsTaken)
+                                        break;
+
+                                    if (_board.Matrix[row, i].Value == oponentValue)
+                                    {
+                                        innerCoordinate.Add(new Coordinate(row, i));
+                                    }
+                                    else
+                                    {
+                                        isFlippable = true;
+                                        break;
+                                    }
+
+                                }
+
+                                if (isFlippable)
+                                {
+                                    coordinates.AddRange(innerCoordinate);
+                                }
+                            }
                             break;
                         }
                     case MoveDirection.Right:
@@ -272,7 +300,7 @@ namespace OtheloLogic
                     });
                 }
             }
-            else if (row != 0 && row == 1 && row != matrixRows - 1 && row != matrixRows - 2 && (column == 0 || column == 1))
+            else if (column == 0 || column == 1)
             {
                 availableMovesToCheck.AddRange(new List<MoveDirection>
                 {
@@ -283,7 +311,7 @@ namespace OtheloLogic
                         MoveDirection.DownRightDiagonal,
                 });
             }
-            else if (row != 0 && row == 1 && row != matrixRows - 1 && row != matrixRows - 2 && (column == matrixCols - 1 || column == matrixCols - 2))
+            else if (column == matrixCols - 1 || column == matrixCols - 2)
             {
                 availableMovesToCheck.AddRange(new List<MoveDirection>
                 {
