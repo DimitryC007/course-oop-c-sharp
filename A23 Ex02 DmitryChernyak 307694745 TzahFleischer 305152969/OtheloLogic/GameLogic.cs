@@ -93,6 +93,7 @@ namespace OtheloLogic
 
             var availableMovesDirections = GetAvailableMovesDirectionsCheck(row, column);
             List<Coordinate> flipCoordinates = GetFlipCoordinates(availableMovesDirections, row, column);
+            ///TODO: if flipCoordinates is empty return Failure not valid
             ///TODO: check if the move is legit - if not legit return MoveStatus.Failure
             ///TODO: flip all available oponent coins
             throw new NotImplementedException();
