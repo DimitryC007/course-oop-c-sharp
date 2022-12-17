@@ -152,7 +152,7 @@ namespace OtheloUI
         private void PrintBoard(Cell[,] matrix)
         {
             Screen.Clear();
-            int matrixSize = GetMatrixSize(); // need to get size from game setting
+            int matrixSize = _gameLogic._board.Matrix.GetLength(1);
             Console.Write("   ");
             for(int columns = 0; columns < matrixSize; columns++)
             {
@@ -181,12 +181,14 @@ namespace OtheloUI
                 }
                 Console.WriteLine();
             }
+            printDivide(matrixSize);
+            Console.WriteLine();
 
         }
 
         private void printDivide(int matrixSize)
         {
-            Console.Write("   ");
+            Console.Write("  ");
             for(int i = 0;i < matrixSize * 4 + 1; i++)
             {
                 Console.Write("=");

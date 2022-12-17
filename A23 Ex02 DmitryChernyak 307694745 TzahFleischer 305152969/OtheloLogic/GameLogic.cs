@@ -36,10 +36,12 @@ namespace OtheloLogic
         private Player[] _players;
         public Player CurrentPlayer => _players[_playerIndex];
         private int _playerIndex = 0;
+        private Dictionary<char, int> _characterDict = new Dictionary<char,int>();
         public GameLogic(GameSettings gameSettings)
         {
             _board = new Board(gameSettings.MatrixSize);
             _players = gameSettings.Players;
+            InitializeDict(gameSettings.MatrixSize);
         }
 
 
@@ -51,16 +53,16 @@ namespace OtheloLogic
             ///TODO: check if both players in the last moves didn't have moves - return game over  
             if (!CurrentPlayer.IsComputer)
             {
-                ///TODO: convert position to row,col --> User
-                //int column = ConvertInputToColumn(position[0]);
-                //int row = ConvertInputToRow(position[1]);
-                //if (row == -1 || column == -1)
-                //{
-                //    ///TODO: return MoveStatus.Failure
-                //    gameReport = new GameReport { };
-                //    return gameReport;
-                //}
-                int row = 1, column = 3;
+                int column = ConvertInputToColumn(position[0]);
+                int row = ConvertInputToRow(position[1]);
+                if (row == -1 || column == -1)
+                {
+                    ///TODO: return MoveStatus.Failure
+                    gameReport = new GameReport { };
+                    return gameReport;
+                }
+
+                //int row = 1, column = 3;
                 UserMove(row, column);
                 ///TODO: call UserMove with row and column if returned status is MoveStatus.MoveSuccess
                 ///TODO: 
@@ -327,15 +329,33 @@ namespace OtheloLogic
 
         private int ConvertInputToColumn(char columnChar)
         {
-            ///TODO: convert the input to position using dictionary
-            ///TODO: if not exists in dictionary it means that the input is not valid - if it is not valid return -1
-            throw new NotImplementedException();
+            int column = -1;
+            char upperCaseColumn = char.ToUpper(columnChar);
+            if(_characterDict.ContainsKey(upperCaseColumn))
+            {
+                column = _characterDict[upperCaseColumn];
+            }
+
+            return column;
         }
 
         private int ConvertInputToRow(char rowChar)
         {
-            ///TODO: check if row char is valid and between matrix[row][0]:start - matrix[row][0]:end - if it is not valid return -1
-            throw new NotImplementedException();
+            int row = -1;
+
+            if (rowChar >= '1' && rowChar <= '8')
+            {
+                if(this._board.Matrix.GetLength(0) == 6)
+                {
+                    if (rowChar >= '1' && rowChar <= '6')
+                        row = (int)char.GetNumericValue(rowChar) - 1;
+                }
+                else
+                {
+                    row = (int)char.GetNumericValue(rowChar) - 1;
+                }
+            }
+            return row;
         }
 
         private void SwitchPlayer()
@@ -347,5 +367,21 @@ namespace OtheloLogic
         {
             return _playerIndex == 0 ? 1 : 0;
         }
+
+        public void InitializeDict(int matrixSize)
+        {
+            int maxUnicode = matrixSize == 8 ? 72 : 70;
+            int unicode = 65;
+
+            for (int i = unicode; i <= maxUnicode; i++)
+            {
+                char character = (char)i;
+                _characterDict.Add(character, i - unicode);
+            }
+
+     
+        }
     }
+
+
 }
