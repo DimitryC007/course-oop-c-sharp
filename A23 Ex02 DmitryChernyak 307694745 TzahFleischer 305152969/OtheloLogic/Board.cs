@@ -59,7 +59,7 @@
         }
 
         public bool IsCellEmpty(int row, int column)
-        {
+        {   
             return !_matrix[row, column].IsTaken;
         }
 

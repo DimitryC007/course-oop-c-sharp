@@ -7,7 +7,6 @@ namespace OtheloLogic
     {
         GameOver = 0, // no moves left
         InProgress = 1, // game in progress
-        BoardIsFull = 2 // board is full
     }
 
     public enum MoveStatus
@@ -15,19 +14,8 @@ namespace OtheloLogic
         CellIsTaken = 0, // we need to know cell is taken to ask input from the user again 
         MoveSuccess = 1, // continue playing
         MoveFailure = 2, // input not valid from --> User
-        MoveSkipped = 3 // doesn't have a move to make
-    }
-
-    public enum MoveDirection
-    {
-        Up = 0,
-        Down = 1,
-        Left = 2,
-        Right = 3,
-        UpRightDiagonal = 4,
-        DownRightDiagonal = 5,
-        UpLeftDiagonal = 6,
-        DownLeftDiagonal = 7,
+        MoveSkipped = 3, // doesn't have a move to make
+        HasMoveToMake = 4 // has move to make
     }
 
     public class GameLogic
@@ -40,38 +28,49 @@ namespace OtheloLogic
         private int _oponentValue => _playerIndex == 0 ? 1 : 0;
         private Dictionary<char, int> _characterDict = new Dictionary<char, int>();
         private CurrentPlayerPoolMoves _currentPlayerPoolMoves;
+        private int _skippedTurns = 0;
+
         public GameLogic(GameSettings gameSettings)
         {
             Board = new Board(gameSettings.MatrixSize);
             _currentPlayerPoolMoves = new CurrentPlayerPoolMoves(Board);
             _players = gameSettings.Players;
-            InitializeDict(gameSettings.MatrixSize);
+            InitializeInputDictionary(gameSettings.MatrixSize);
         }
 
-
-        public GameReport MakeMove(string position = "")
+        public GameReport CheckHasAnyMove()
         {
-            GameReport gameReport = new GameReport();
-            gameReport.GameStatus = GameStatus.InProgress;
-
-            List<Coordinate> effectedFlipCoins;
+            _currentPlayerPoolMoves.InitializeAvailablePlayerMoves(_oponentValue);
+            GameReport gameReport = InitializeGameReport();
 
             if (Board.IsFull)
             {
-                gameReport.GameStatus = GameStatus.GameOver;
-                return gameReport;
+                return CalcGameReport(MoveStatus.MoveFailure);
             }
-
-            _currentPlayerPoolMoves.InitializeAvailablePlayerMoves(_oponentValue);
 
             if (!_currentPlayerPoolMoves.HasAnyMove)
             {
-                SwitchPlayer();
                 gameReport.MoveStatus = MoveStatus.MoveSkipped;
+                _skippedTurns++;
+
+                if (_skippedTurns == 2)
+                {
+                    return CalcGameReport(gameReport.MoveStatus);
+                }
+
                 return gameReport;
             }
 
-            ///TODO: check if both players in the last moves didn't have moves - return game over  
+            _skippedTurns = 0;
+
+            return gameReport;
+        }
+
+        public GameReport MakeMove(string position = "")
+        {
+            List<Coordinate> effectedFlipCoins;
+            GameReport gameReport = InitializeGameReport();
+            
             if (!CurrentPlayer.IsComputer)
             {
                 int column = ConvertInputToColumn(position[0]);
@@ -92,16 +91,60 @@ namespace OtheloLogic
             }
             else
             {
-
                 Coordinate computerMove = GetComputerRandomMove();
                 effectedFlipCoins = _currentPlayerPoolMoves.GetEffectedFlipCoins(computerMove.Row, computerMove.Column);
             }
 
-
             gameReport.MoveStatus = SetPlayerMoves(effectedFlipCoins);
-
-            ///TODO: check if game is over - if really game is over return fill the GameReport and return it
             return gameReport;
+        }
+
+        private GameReport CalcGameReport(MoveStatus moveStatus)
+        {
+            int one = 0, zero = 0;
+            for (int i = 0; i < Board.Size; i++)
+            {
+                for (int j = 0; j < Board.Size; j++)
+                {
+                    if (Board.GetCellValue(i, j) == 0)
+                        zero++;
+                    if (Board.GetCellValue(i, j) == 1)
+                        one++;
+
+                }
+            }
+
+            GameReport gameReport = new GameReport
+            {
+                GameStatus = GameStatus.GameOver,
+                MoveStatus = moveStatus,
+            };
+            
+            if (one > zero)
+            {
+                gameReport.WinnerPoints = one;
+                gameReport.LoserPoints = zero;
+                gameReport.Winner = _players[1];
+                gameReport.Loser = _players[0];
+            }
+            else
+            {
+                gameReport.WinnerPoints = zero;
+                gameReport.LoserPoints = one;
+                gameReport.Winner = _players[0];
+                gameReport.Loser = _players[1];
+            }
+
+            return gameReport;
+        }
+
+        private GameReport InitializeGameReport()
+        {
+            return new GameReport
+            {
+                GameStatus = GameStatus.InProgress,
+                MoveStatus = MoveStatus.HasMoveToMake
+            };
         }
 
         private MoveStatus SetPlayerMoves(List<Coordinate> moves)
@@ -110,7 +153,7 @@ namespace OtheloLogic
             {
                 return MoveStatus.MoveFailure;
             }
-            
+
             foreach (var move in moves)
             {
                 Board.SetCellValue(_playerValue, move.Row, move.Column);
@@ -125,12 +168,6 @@ namespace OtheloLogic
             var random = new Random();
             int index = random.Next(availableMoves.Count);
             return availableMoves[index];
-        }
-
-        private GameStatus GetGameStatus()
-        {
-            ///TODO: Check if avialbe moves remains on board for the oppsite player 
-            throw new NotImplementedException();
         }
 
         private int ConvertInputToColumn(char columnChar)
@@ -169,7 +206,7 @@ namespace OtheloLogic
             _playerIndex = _playerIndex == 0 ? 1 : 0;
         }
 
-        public void InitializeDict(int matrixSize)
+        public void InitializeInputDictionary(int matrixSize)
         {
             int maxUnicode = matrixSize == 8 ? 72 : 70;
             int unicode = 65;
@@ -181,6 +218,4 @@ namespace OtheloLogic
             }
         }
     }
-
-
 }

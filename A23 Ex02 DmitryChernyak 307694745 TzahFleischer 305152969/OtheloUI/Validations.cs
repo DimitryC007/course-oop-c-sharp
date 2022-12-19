@@ -21,5 +21,10 @@
         {
             return int.TryParse(secondOponentInput, out int secondOponent) && (secondOponent == 1 || secondOponent == 2);
         }
+
+        public static bool IsAnotherRoundChoiseValid(string choise)
+        {
+            return int.TryParse(choise, out int result) ? (result == 1 || result == 2) : false;
+        }
     }
 }

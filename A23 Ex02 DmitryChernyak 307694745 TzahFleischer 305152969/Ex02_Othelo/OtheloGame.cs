@@ -11,14 +11,14 @@ namespace Ex02_Othelo
             _userInterface = new UserInterface();
         }
 
-        public void LaunchGame()
-        {
-            _userInterface.LaunchGame();
-        }
-
         public void PlayGame()
         {
-            _userInterface.PlayGame();
+            bool anotherRound = true;
+            while (anotherRound)
+            {
+                _userInterface.LaunchGame();
+                anotherRound = _userInterface.PlayGame();
+            }
         }
     }
 }
