@@ -87,6 +87,7 @@ namespace OtheloUI
             }
             return int.Parse(anotherRoundChoise) == 1;
         }
+
         private GameSettings GetGameSettings()
         {
             GameSettings gameSettings = new GameSettings(2);
@@ -242,6 +243,5 @@ namespace OtheloUI
         {
             Console.WriteLine(message);
         }
-
     }
 }

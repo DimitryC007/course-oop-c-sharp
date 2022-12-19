@@ -48,6 +48,44 @@ namespace OtheloLogic
             return boardMoveDirections;
         }
 
+        private List<Coordinate> GetDirectionCoordinates(int row, int column, int increaceDecreaseRow, int increaseDecreaseColumn, int oponentValue)
+        {
+            row += increaceDecreaseRow;
+            column += increaseDecreaseColumn;
+
+            List<Coordinate> coordinates = new List<Coordinate>();
+            bool isFlippable = false;
+
+            if (_board.GetCellValue(row, column) == oponentValue)
+            {
+                while (row >= 0 && row <= _board.Size - 1 && column >= 0 && column <= _board.Size - 1)
+                {
+                    if (_board.IsCellEmpty(row, column))
+                        break;
+
+                    if (_board.GetCellValue(row, column) == oponentValue)
+                    {
+                        coordinates.Add(new Coordinate(row, column));
+                    }
+                    else
+                    {
+                        isFlippable = true;
+                        break;
+                    }
+
+                    row += increaceDecreaseRow;
+                    column += increaseDecreaseColumn;
+                }
+
+
+                if (!isFlippable)
+                {
+                    coordinates.Clear();
+                }
+            }
+            return coordinates;
+        }
+
         private List<Coordinate> GetMoveEffectedFlipCoins(int row, int column, int oponentValue)
         {
             var availableMovesDirections = _boardMoveDirections[CreateKey(row, column)];
@@ -170,253 +208,44 @@ namespace OtheloLogic
                     {
                         case MoveDirection.Up:
                             {
-                                if (_board.GetCellValue(row - 1, column) == oponentValue)
-                                {
-                                    List<Coordinate> innerCoordinate = new List<Coordinate>();
-                                    bool isFlippable = false;
-                                    for (int i = row - 1; i >= 0; i--)
-                                    {
-                                        if (_board.IsCellEmpty(i, column))
-                                            break;
-
-                                        if (_board.GetCellValue(i, column) == oponentValue)
-                                        {
-                                            innerCoordinate.Add(new Coordinate(i, column));
-                                        }
-                                        else
-                                        {
-                                            isFlippable = true;
-                                            break;
-                                        }
-                                    }
-
-                                    if (isFlippable)
-                                    {
-                                        coordinates.AddRange(innerCoordinate);
-                                    }
-                                }
+                                coordinates.AddRange(GetDirectionCoordinates(row, column, -1, 0, oponentValue));
                                 break;
                             }
                         case MoveDirection.Down:
                             {
-                                if (_board.GetCellValue(row + 1, column) == oponentValue)
-                                {
-                                    int matrixRows = _board.Size;
-                                    List<Coordinate> innerCoordinate = new List<Coordinate>();
-                                    bool isFlippable = false;
-
-                                    for (int i = row + 1; i < matrixRows; i++)
-                                    {
-                                        if (_board.IsCellEmpty(i, column))
-                                            break;
-
-                                        if (_board.GetCellValue(i, column) == oponentValue)
-                                        {
-                                            innerCoordinate.Add(new Coordinate(i, column));
-                                        }
-                                        else
-                                        {
-                                            isFlippable = true;
-                                            break;
-                                        }
-
-                                    }
-
-                                    if (isFlippable)
-                                    {
-                                        coordinates.AddRange(innerCoordinate);
-                                    }
-                                }
+                                coordinates.AddRange(GetDirectionCoordinates(row, column, 1, 0, oponentValue));
                                 break;
                             }
                         case MoveDirection.Left:
                             {
-                                if (_board.GetCellValue(row, column - 1) == oponentValue)
-                                {
-                                    int matrixColumns = _board.Size;
-                                    List<Coordinate> innerCoordinate = new List<Coordinate>();
-                                    bool isFlippable = false;
-
-                                    for (int i = column - 1; i >= 0; i--)
-                                    {
-                                        if (_board.IsCellEmpty(row, i))
-                                            break;
-
-                                        if (_board.GetCellValue(row, i) == oponentValue)
-                                        {
-                                            innerCoordinate.Add(new Coordinate(row, i));
-                                        }
-                                        else
-                                        {
-                                            isFlippable = true;
-                                            break;
-                                        }
-
-                                    }
-
-                                    if (isFlippable)
-                                    {
-                                        coordinates.AddRange(innerCoordinate);
-                                    }
-                                }
+                                coordinates.AddRange(GetDirectionCoordinates(row, column, 0, -1, oponentValue));
                                 break;
                             }
                         case MoveDirection.Right:
                             {
-                                if (_board.GetCellValue(row, column + 1) == oponentValue)
-                                {
-                                    int matrixColumns = _board.Size;
-                                    List<Coordinate> innerCoordinate = new List<Coordinate>();
-                                    bool isFlippable = false;
-
-                                    for (int i = column + 1; i < matrixColumns; i++)
-                                    {
-                                        if (_board.IsCellEmpty(row, i))
-                                            break;
-
-                                        if (_board.GetCellValue(row, i) == oponentValue)
-                                        {
-                                            innerCoordinate.Add(new Coordinate(row, i));
-                                        }
-                                        else
-                                        {
-                                            isFlippable = true;
-                                            break;
-                                        }
-
-                                    }
-
-                                    if (isFlippable)
-                                    {
-                                        coordinates.AddRange(innerCoordinate);
-                                    }
-                                }
+                                coordinates.AddRange(GetDirectionCoordinates(row, column, 0, 1, oponentValue));
                                 break;
 
                             }
                         case MoveDirection.UpRightDiagonal:
                             {
-                                if (_board.GetCellValue(row - 1, column + 1) == oponentValue)
-                                {
-                                    int matrixColumns = _board.Size;
-                                    List<Coordinate> innerCoordinate = new List<Coordinate>();
-                                    bool isFlippable = false;
-                                    for (int i = row - 1, j = column + 1; i >= 0 && j < matrixColumns; i--, j++)
-                                    {
-                                        if (_board.IsCellEmpty(i, j))
-                                            break;
-
-                                        if (_board.GetCellValue(i, j) == oponentValue)
-                                        {
-                                            innerCoordinate.Add(new Coordinate(i, j));
-                                        }
-                                        else
-                                        {
-                                            isFlippable = true;
-                                            break;
-                                        }
-
-                                    }
-
-                                    if (isFlippable)
-                                    {
-                                        coordinates.AddRange(innerCoordinate);
-                                    }
-                                }
+                                coordinates.AddRange(GetDirectionCoordinates(row, column, -1, 1, oponentValue));
                                 break;
                             }
                         case MoveDirection.DownRightDiagonal:
                             {
-                                if (_board.GetCellValue(row + 1, column + 1) == oponentValue)
-                                {
-                                    int matrixColumns = _board.Size;
-                                    List<Coordinate> innerCoordinate = new List<Coordinate>();
-                                    bool isFlippable = false;
-                                    for (int i = row + 1, j = column + 1; i < matrixColumns && j < matrixColumns; i++, j++)
-                                    {
-                                        if (_board.IsCellEmpty(i, j))
-                                            break;
-
-                                        if (_board.GetCellValue(i, j) == oponentValue)
-                                        {
-                                            innerCoordinate.Add(new Coordinate(i, j));
-                                        }
-                                        else
-                                        {
-                                            isFlippable = true;
-                                            break;
-                                        }
-
-                                    }
-
-                                    if (isFlippable)
-                                    {
-                                        coordinates.AddRange(innerCoordinate);
-                                    }
-                                }
+                                coordinates.AddRange(GetDirectionCoordinates(row, column, 1, 1, oponentValue));
                                 break;
                             }
                         case MoveDirection.UpLeftDiagonal:
                             {
-                                if (_board.GetCellValue(row - 1, column - 1) == oponentValue)
-                                {
-                                    int matrixColumns = _board.Size;
-                                    List<Coordinate> innerCoordinate = new List<Coordinate>();
-                                    bool isFlippable = false;
-                                    for (int i = row - 1, j = column - 1; i >= 0 && j >= 0; i--, j--)
-                                    {
-
-                                        if (_board.IsCellEmpty(i, j))
-                                            break;
-
-                                        if (_board.GetCellValue(i, j) == oponentValue)
-                                        {
-                                            innerCoordinate.Add(new Coordinate(i, j));
-                                        }
-                                        else
-                                        {
-                                            isFlippable = true;
-                                            break;
-                                        }
-
-                                    }
-
-                                    if (isFlippable)
-                                    {
-                                        coordinates.AddRange(innerCoordinate);
-                                    }
-                                }
+                                coordinates.AddRange(GetDirectionCoordinates(row, column, -1, -1, oponentValue));
                                 break;
                             }
                         case MoveDirection.DownLeftDiagonal:
                             {
-                                if (_board.GetCellValue(row + 1, column - 1) == oponentValue)
-                                {
-                                    int matrixColumns = _board.Size;
-                                    List<Coordinate> innerCoordinate = new List<Coordinate>();
-                                    bool isFlippable = false;
-                                    for (int i = row + 1, j = column - 1; i < matrixColumns && j >= 0; i++, j--)
-                                    {
-                                        if (_board.IsCellEmpty(i, j))
-                                            break;
 
-                                        if (_board.GetCellValue(i, j) == oponentValue)
-                                        {
-                                            innerCoordinate.Add(new Coordinate(i, j));
-                                        }
-                                        else
-                                        {
-                                            isFlippable = true;
-                                            break;
-                                        }
-
-                                    }
-
-                                    if (isFlippable)
-                                    {
-                                        coordinates.AddRange(innerCoordinate);
-                                    }
-                                }
+                                coordinates.AddRange(GetDirectionCoordinates(row, column, 1, -1, oponentValue));
                                 break;
                             }
                         default:
@@ -424,6 +253,7 @@ namespace OtheloLogic
                     }
                 }
             }
+
             if (coordinates.Count > 0)
             {
                 coordinates.Add(new Coordinate(row, column));
