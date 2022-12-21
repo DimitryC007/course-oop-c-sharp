@@ -20,5 +20,10 @@ namespace Ex02_Othelo
         {
             _userInterface.PlayGame();
         }
+
+        public void PlayAgain()
+        {
+            _userInterface.PlayAgain();
+        }
     }
 }

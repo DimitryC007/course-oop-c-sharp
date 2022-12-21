@@ -1,6 +1,6 @@
 ﻿namespace OtheloLogic
 {
-    public  class Coordinate
+    public  struct Coordinate
     {
         public Coordinate(int row,int column)
         {

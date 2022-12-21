@@ -35,26 +35,40 @@ namespace OtheloLogic
         public Board Board { get; }
         private Player[] _players;
         public Player CurrentPlayer => _players[_playerIndex];
+        //private int _playerIndex = 1;
         private int _playerIndex = 0;
         private int _playerValue => _playerIndex;
         private int _oponentValue => _playerIndex == 0 ? 1 : 0;
         private Dictionary<char, int> _characterDict = new Dictionary<char, int>();
-        private CurrentPlayerPoolMoves _currentPlayerPoolMoves;
+        //private CurrentPlayerPoolMoves _currentPlayerPoolMoves;
+        private CurrentPlayerMoves _currentPlayerMoves;
         public GameLogic(GameSettings gameSettings)
         {
             Board = new Board(gameSettings.MatrixSize);
-            _currentPlayerPoolMoves = new CurrentPlayerPoolMoves(Board);
+
+            //_currentPlayerPoolMoves = new CurrentPlayerPoolMoves(Board);
+            _currentPlayerMoves = new CurrentPlayerMoves(Board);
             _players = gameSettings.Players;
             InitializeDict(gameSettings.MatrixSize);
+            _currentPlayerMoves.AllCurrentPlayerMoves(_oponentValue);
+
         }
 
+        public string GetPlayerName(int playerNum)
+        {
+            return _players[playerNum].Name;
+        }
 
+        public void FindAllAvailableMoves()
+        {
+            _currentPlayerMoves.AllCurrentPlayerMoves(_oponentValue);
+        }
         public GameReport MakeMove(string position = "")
         {
             GameReport gameReport = new GameReport();
             gameReport.GameStatus = GameStatus.InProgress;
 
-            List<Coordinate> effectedFlipCoins;
+            //List<Coordinate> effectedFlipCoins;
 
             if (Board.IsFull)
             {
@@ -62,9 +76,11 @@ namespace OtheloLogic
                 return gameReport;
             }
 
-            _currentPlayerPoolMoves.InitializeAvailablePlayerMoves(_oponentValue);
+            //_currentPlayerMoves.AllCurrentPlayerMoves(_oponentValue);
+            //_currentPlayerPoolMoves.InitializeAvailablePlayerMoves(_oponentValue);
 
-            if (!_currentPlayerPoolMoves.HasAnyMove)
+            //if (!_currentPlayerPoolMoves.HasAnyMove)
+            if (!_currentPlayerMoves.HasAnyMove)
             {
                 SwitchPlayer();
                 gameReport.MoveStatus = MoveStatus.MoveSkipped;
@@ -82,23 +98,40 @@ namespace OtheloLogic
                     return gameReport;
                 }
 
-                if (!Board.IsCellEmpty(row, column))
+                Coordinate playerChosenMove = new Coordinate(row, column);
+
+                if(!_currentPlayerMoves.IsMoveAvailable(playerChosenMove))
                 {
-                    gameReport.MoveStatus = MoveStatus.CellIsTaken;
+                    gameReport.MoveStatus = MoveStatus.MoveFailure;
                     return gameReport;
                 }
+               
+                FlipCoins(playerChosenMove, _currentPlayerMoves.ReturnFlippableList(playerChosenMove));
 
-                effectedFlipCoins = _currentPlayerPoolMoves.GetEffectedFlipCoins(row, column);
+                //if (!Board.IsCellEmpty(row, column))
+                //{
+                //    gameReport.MoveStatus = MoveStatus.CellIsTaken;
+                //    return gameReport;
+                //}
+
+                //effectedFlipCoins = _currentPlayerPoolMoves.GetEffectedFlipCoins(row, column);
             }
+
             else
             {
-
-                Coordinate computerMove = GetComputerRandomMove();
-                effectedFlipCoins = _currentPlayerPoolMoves.GetEffectedFlipCoins(computerMove.Row, computerMove.Column);
+                if(_currentPlayerMoves.HasAnyMove)
+                    SetComputerRandomMove();
+                else 
+                {
+                    gameReport.MoveStatus = MoveStatus.MoveSkipped;
+                    return gameReport;
+                }
+   
+                    //effectedFlipCoins = _currentPlayerPoolMoves.GetEffectedFlipCoins(computerMove.Row, computerMove.Column);
             }
 
-
-            gameReport.MoveStatus = SetPlayerMoves(effectedFlipCoins);
+            gameReport.MoveStatus = MoveStatus.MoveSuccess;
+            //gameReport.MoveStatus = SetPlayerMoves(effectedFlipCoins);
 
             ///TODO: check if game is over - if really game is over return fill the GameReport and return it
             return gameReport;
@@ -119,12 +152,34 @@ namespace OtheloLogic
             return MoveStatus.MoveSuccess;
         }
 
-        private Coordinate GetComputerRandomMove()
+        public bool IsThereMoves()
         {
-            List<Coordinate> availableMoves = _currentPlayerPoolMoves.GetAllAvailableMoves();
+            return _currentPlayerMoves.CountOfMoves() > 0;
+        }
+
+        //private Coordinate GetComputerRandomMove()
+        //{
+            
+        //    List<Coordinate> availableMoves = _currentPlayerPoolMoves.GetAllAvailableMoves();
+
+        //    var random = new Random();
+            
+        //    int index = random.Next(availableMoves.Count);
+           
+        //    return availableMoves[index];
+        //}
+
+        private void SetComputerRandomMove()
+        {
+
+            //List<Coordinate> availableMoves = _currentPlayerPoolMoves.GetAllAvailableMoves();
+
             var random = new Random();
-            int index = random.Next(availableMoves.Count);
-            return availableMoves[index];
+            int index = random.Next(_currentPlayerMoves.CountOfMoves());
+            //int index = random.Next(availableMoves.Count);
+            Coordinate move = _currentPlayerMoves.LocationAtIndex(index);
+            FlipCoins(move, _currentPlayerMoves.ReturnFlippableList(move));
+
         }
 
         private GameStatus GetGameStatus()
@@ -180,7 +235,18 @@ namespace OtheloLogic
                 _characterDict.Add(character, i - unicode);
             }
         }
+
+        public void FlipCoins(Coordinate location, List<Coordinate> flippableCoins)
+        {
+            Board.SetCellValue(_playerValue, location.Row, location.Column);
+            foreach(Coordinate coin in flippableCoins)
+            {
+                Board.SetCellValue(_playerValue, coin.Row, coin.Column);
+            }
+        }
     }
+
+    
 
 
 }

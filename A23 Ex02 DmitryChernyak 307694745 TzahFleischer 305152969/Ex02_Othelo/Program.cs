@@ -12,6 +12,7 @@ namespace Ex02_Othelo
             OtheloGame otheloGame = new OtheloGame();
             otheloGame.LaunchGame();
             otheloGame.PlayGame();
+            otheloGame.PlayAgain();
         }
     }
 }

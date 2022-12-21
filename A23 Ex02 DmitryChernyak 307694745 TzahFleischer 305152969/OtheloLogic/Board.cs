@@ -24,10 +24,10 @@
                     _matrix[rows, cols] = new Cell();
                 }
             }
-            _matrix[middleLocation, middleLocation].Value = 0;
-            _matrix[middleLocation + 1 , middleLocation].Value = 1;
-            _matrix[middleLocation, middleLocation + 1].Value = 1;
-            _matrix[middleLocation + 1, middleLocation + 1].Value = 0;
+            _matrix[middleLocation, middleLocation].Value = 1;
+            _matrix[middleLocation + 1 , middleLocation].Value = 0;
+            _matrix[middleLocation, middleLocation + 1].Value = 0;
+            _matrix[middleLocation + 1, middleLocation + 1].Value = 1;
 
         }
 

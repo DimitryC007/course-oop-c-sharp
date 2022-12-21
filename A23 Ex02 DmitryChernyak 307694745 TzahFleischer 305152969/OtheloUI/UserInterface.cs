@@ -19,38 +19,158 @@ namespace OtheloUI
         public void PlayGame()
         {
             PrintBoard();
-
-            while (true)
+            int skipCount = 0;
+            //while (true)
+            while(skipCount < 2)
             {
+                
                 GameReport gameReport = null;
+                //gameReport = _gameLogic.MakeMove();
+                _gameLogic.FindAllAvailableMoves();
+                bool isThereAnyMove = _gameLogic.IsThereMoves();
+
+                if (!isThereAnyMove)
+                {
+                    skipCount++;
+                    _gameLogic.SwitchPlayer();
+                    continue;
+                }
+                
+                
+
+               
+
+                                
                 //Human
                 if (!_gameLogic.CurrentPlayer.IsComputer)
                 {
+                
+
+                    Console.WriteLine(Messages.PlayerTurnIndicationMessage(_gameLogic.CurrentPlayer.Name));
                     string userInput = GetPlayerMove();
                     if (userInput == _exitKey)
                     {
-                        ///TODO: add message exit game
+                   
+                        Console.WriteLine("Hope you had a great time");
                         return;
                     }
+
                     gameReport = _gameLogic.MakeMove(userInput);
+
+                    while(gameReport.MoveStatus == MoveStatus.MoveFailure)
+                    {
+                        Console.WriteLine("Unavailable move, Please try again");
+                        userInput = GetPlayerMove();
+                        gameReport = _gameLogic.MakeMove(userInput);
+                    }
+
+                    if (gameReport.MoveStatus == MoveStatus.MoveSkipped)
+                    {
+                        skipCount++;
+                    }
+
+                    else
+                    {
+                        skipCount = 0;
+                    }
+
+                    //if (skipCount == 2)
+                    //{
+                    //    break;
+                    //}
+
 
                 }
                 //Computer
                 if (_gameLogic.CurrentPlayer.IsComputer)
                 {
                     ///TODO: add message computer is playing his turn now from messages
-                    Console.WriteLine("Computer is playing now");
+                    //Console.WriteLine("Computer is playing now");
 
                     gameReport = _gameLogic.MakeMove();
                 }
+
+
+                if (gameReport.GameStatus == GameStatus.GameOver)
+                {
+                    //endgame();
+                  
+                    break;
+                }
+
                 _gameLogic.SwitchPlayer();
                 
                 PrintBoard();
+                PrintScore();
 
                 if (_gameLogic.CurrentPlayer.IsComputer)
-                    Thread.Sleep(5000);
+                {
+                    Console.WriteLine("Computer is playing now");
+                    Thread.Sleep(2000);
+                }
+                    
                 ///TODO: check game report and behave accordingly to it
             }
+
+            int winner = PrintScore();
+            Console.WriteLine("Winner is player {0} ", _gameLogic.GetPlayerName(winner));
+            return;
+            //string playerAnswer = PlayAgain();
+            ////Console.Write("Do you want to play again? (y/n)");
+            
+            //if(playerAnswer.ToLower() == "y")
+            //{
+            //    LaunchGame();
+            //    PlayGame();
+            //}
+
+            //else
+            //{
+            //    return;
+            //}
+            
+        }
+
+        public void PlayAgain()
+        {
+            string playerAnswer = GetPlayAgainAnswer();
+            //Console.Write("Do you want to play again? (y/n)");
+
+            if (playerAnswer.ToLower() == "y")
+            {
+                LaunchGame();
+                PlayGame();
+            }
+
+            else
+            {
+                return;
+            }
+        }
+
+        private string GetPlayAgainAnswer()
+        {
+            Console.Write("Do you want to play again? (y/n)");
+            bool isValidAnswer = false;
+            string PlayerAnswer = string.Empty;
+
+            while (!isValidAnswer)
+            {
+                PlayerAnswer = Console.ReadLine();
+                isValidAnswer = Validations.IsPlayAgainAnswerValid(PlayerAnswer.ToLower());
+
+                if(!isValidAnswer)
+                {
+                    Console.WriteLine("Please input (y/n)");
+                }
+            }
+
+            return PlayerAnswer;
+        }
+
+        private void PrintAvailableMoves()
+        {
+            
         }
 
         private GameSettings GetGameSettings()
@@ -117,7 +237,7 @@ namespace OtheloUI
 
         private string GetPlayerMove()
         {
-            Console.WriteLine(Messages.PlayerTurnIndicationMessage(_gameLogic.CurrentPlayer.Name));
+            //Console.WriteLine(Messages.PlayerTurnIndicationMessage(_gameLogic.CurrentPlayer.Name));
             Console.WriteLine(Messages.PlayerMoveMessage);
 
             string playerMove = string.Empty;
@@ -179,9 +299,9 @@ namespace OtheloUI
                     if (!_gameLogic.Board.IsCellEmpty(rows, cols))
                     {
                         if (_gameLogic.Board.GetCellValue(rows, cols) == 0)
-                            Console.Write(" O ");
-                        else
                             Console.Write(" X ");
+                        else
+                            Console.Write(" 0 ");
                     }
                     else
                         Console.Write("   ");
@@ -203,5 +323,29 @@ namespace OtheloUI
             }
             Console.WriteLine();
         }
+
+        private int PrintScore()
+        {
+            int xCount = 0;
+            int oCount = 0;
+            for(int rows = 0;rows < _gameLogic.Board.Size; rows++)
+            {
+                for(int cols = 0; cols < _gameLogic.Board.Size; cols++)
+                {
+                    if(!_gameLogic.Board.IsCellEmpty(rows,cols))
+                    {
+                        if (_gameLogic.Board.GetCellValue(rows, cols) == 0)
+                            oCount++;
+                        else
+                            xCount++;
+                    }
+                }
+            }
+
+            Console.WriteLine("X Count: {0}, Y Count: {1}", oCount, xCount);
+            return oCount >= xCount ? 0 : 1;
+        }
+
+       
     }
 }

@@ -21,5 +21,10 @@
         {
             return int.TryParse(secondOponentInput, out int secondOponent) && (secondOponent == 1 || secondOponent == 2);
         }
+
+        public static bool IsPlayAgainAnswerValid(string PlayAgainAnswer)
+        {
+            return PlayAgainAnswer.Equals("y")|| PlayAgainAnswer.Equals("n");
+        }
     }
 }
