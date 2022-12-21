@@ -342,7 +342,7 @@ namespace OtheloUI
                 }
             }
 
-            Console.WriteLine("X Count: {0}, Y Count: {1}", oCount, xCount);
+            Console.WriteLine("X Count: {0}, O Count: {1}", oCount, xCount);
             return oCount >= xCount ? 0 : 1;
         }
 
