@@ -17,7 +17,7 @@ namespace OtheloUI
 
         public static string GameReportMessage(GameReport gameReport)
         {
-            return string.Format("| Game report | Winner: {0} Winner Points: {1} | Loser: {2}  Points: {3} |",
+            return string.Format("| Game report | Winner: {0} Points: {1} | Loser: {2} Points: {3} |",
                 gameReport.Winner.Name, gameReport.WinnerPoints, gameReport.Loser.Name, gameReport.LoserPoints);
         }
 
