@@ -19,17 +19,11 @@ namespace OtheloUI
         public void PlayGame()
         {
             PrintBoard();
-            //int skipCount = 0;
+            
             GameReport gameReport = _gameLogic.FindAllAvailableMoves();
-            //while (true)
-            //while(skipCount < 2)
+           
             while(gameReport.GameStatus == GameStatus.InProgress)
             {
-                
-                //GameReport gameReport = null;
-                //gameReport = _gameLogic.MakeMove();
-                //_gameLogic.FindAllAvailableMoves();
-                //bool isThereAnyMove = _gameLogic.IsThereMoves();
 
                 if(gameReport.MoveStatus == MoveStatus.MoveSkipped)
                 {
@@ -40,23 +34,6 @@ namespace OtheloUI
                 }
 
                 
-
-                //if (!isThereAnyMove)
-                //{
-                //    skipCount++;
-                //    _gameLogic.SwitchPlayer();
-                //    continue;
-                //}
-
-                //else
-                //{
-                //    skipCount = 0;
-                //}
-                
-                
-
-               
-
                                 
                 //Human
                 if (!_gameLogic.CurrentPlayer.IsComputer)
@@ -81,28 +58,13 @@ namespace OtheloUI
                         gameReport = _gameLogic.MakeMove(userInput);
                     }
 
-                    //if (gameReport.MoveStatus == MoveStatus.MoveSkipped)
-                    //{
-                    //    skipCount++;
-                    //}
-
-                    //else
-                    //{
-                    //    skipCount = 0;
-                    //}
-
-                    //if (skipCount == 2)
-                    //{
-                    //    break;
-                    //}
-
-
+                  
                 }
+
                 //Computer
                 if (_gameLogic.CurrentPlayer.IsComputer)
                 {
-                    ///TODO: add message computer is playing his turn now from messages
-                    //Console.WriteLine("Computer is playing now");
+                   
                     Console.WriteLine("Computer is playing now");
                     Thread.Sleep(2000);
 
@@ -110,13 +72,7 @@ namespace OtheloUI
                 }
 
 
-                //if (gameReport.GameStatus == GameStatus.GameOver)
-                //{
-                //    //endgame();
-                  
-                //    break;
-                //}
-
+                
                 _gameLogic.SwitchPlayer();
 
                 gameReport = _gameLogic.FindAllAvailableMoves();
@@ -125,38 +81,22 @@ namespace OtheloUI
                 PrintBoard();
                 PrintScore();
 
-                //if (_gameLogic.CurrentPlayer.IsComputer)
-                //{
-                //    Console.WriteLine("Computer is playing now");
-                //    Thread.Sleep(2000);
-                //}
-                    
-                ///TODO: check game report and behave accordingly to it
+               
             }
 
-            int winner = PrintScore();
+            PrintScore();
+            int winner = _gameLogic.GetWinner();
             Console.WriteLine("Winner is player {0} ", _gameLogic.GetPlayerName(winner));
             return;
-            //string playerAnswer = PlayAgain();
-            ////Console.Write("Do you want to play again? (y/n)");
             
-            //if(playerAnswer.ToLower() == "y")
-            //{
-            //    LaunchGame();
-            //    PlayGame();
-            //}
-
-            //else
-            //{
-            //    return;
-            //}
             
         }
 
         public void PlayAgain()
         {
+          
             string playerAnswer = GetPlayAgainAnswer();
-            //Console.Write("Do you want to play again? (y/n)");
+            
 
             if (playerAnswer.ToLower() == "y")
             {
@@ -346,26 +286,10 @@ namespace OtheloUI
             Console.WriteLine();
         }
 
-        private int PrintScore()
+        private void PrintScore()
         {
-            int xCount = 0;
-            int oCount = 0;
-            for(int rows = 0;rows < _gameLogic.Board.Size; rows++)
-            {
-                for(int cols = 0; cols < _gameLogic.Board.Size; cols++)
-                {
-                    if(!_gameLogic.Board.IsCellEmpty(rows,cols))
-                    {
-                        if (_gameLogic.Board.GetCellValue(rows, cols) == 0)
-                            oCount++;
-                        else
-                            xCount++;
-                    }
-                }
-            }
-
-            Console.WriteLine("X Count: {0}, O Count: {1}", oCount, xCount);
-            return oCount >= xCount ? 0 : 1;
+            Console.WriteLine("X Count: {0}, O Count: {1}", _gameLogic.GetPlayerCount(0), _gameLogic.GetPlayerCount(1));
+            
         }
 
        

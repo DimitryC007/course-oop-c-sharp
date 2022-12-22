@@ -44,7 +44,6 @@
     <Compile Include="Cell.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="CurrentPlayerMoves.cs" />
-    <Compile Include="CurrentPlayerPoolMoves.cs" />
     <Compile Include="GameLogic.cs" />
     <Compile Include="GameReport.cs" />
     <Compile Include="GameSettings.cs" />

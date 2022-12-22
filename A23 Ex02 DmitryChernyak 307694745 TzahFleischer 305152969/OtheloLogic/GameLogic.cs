@@ -36,22 +36,22 @@ namespace OtheloLogic
         private Player[] _players;
         private int _skipCount = 0;
         public Player CurrentPlayer => _players[_playerIndex];
-        //private int _playerIndex = 1;
+        
         private int _playerIndex = 0;
         private int _playerValue => _playerIndex;
         private int _oponentValue => _playerIndex == 0 ? 1 : 0;
         private Dictionary<char, int> _characterDict = new Dictionary<char, int>();
-        //private CurrentPlayerPoolMoves _currentPlayerPoolMoves;
+        
         private CurrentPlayerMoves _currentPlayerMoves;
         public GameLogic(GameSettings gameSettings)
         {
             Board = new Board(gameSettings.MatrixSize);
 
-            //_currentPlayerPoolMoves = new CurrentPlayerPoolMoves(Board);
+            
             _currentPlayerMoves = new CurrentPlayerMoves(Board);
             _players = gameSettings.Players;
             InitializeDict(gameSettings.MatrixSize);
-            _currentPlayerMoves.AllCurrentPlayerMoves(_oponentValue);
+            
 
         }
 
@@ -65,15 +65,17 @@ namespace OtheloLogic
             GameReport gameReport = new GameReport();
             _currentPlayerMoves.AllCurrentPlayerMoves(_oponentValue);
 
-            if(Board.IsFull)
+            if (Board.IsFull)
             {
-                gameReport.GameStatus = GameStatus.GameOver;                
+                gameReport.GameStatus = GameStatus.GameOver;
             }
 
-            else if(!_currentPlayerMoves.HasAnyMove)
+            else if (!_currentPlayerMoves.HasAnyMove)
             {
                 _skipCount++;
                 gameReport.MoveStatus = MoveStatus.MoveSkipped;
+                gameReport.GameStatus = GameStatus.InProgress;
+         
             }
 
             else
@@ -83,38 +85,20 @@ namespace OtheloLogic
                 gameReport.MoveStatus = MoveStatus.MoveSuccess;
             }
 
-            if(_skipCount == 2)
+            if (_skipCount == 2)
             {
                 gameReport.GameStatus = GameStatus.GameOver;
             }
 
             return gameReport;
         }
+
         public GameReport MakeMove(string position = "")
         {
             GameReport gameReport = new GameReport();
             gameReport.GameStatus = GameStatus.InProgress;
 
-            //List<Coordinate> effectedFlipCoins;
 
-            //if (Board.IsFull)
-            //{
-            //    gameReport.GameStatus = GameStatus.GameOver;
-            //    return gameReport;
-            //}
-
-            //_currentPlayerMoves.AllCurrentPlayerMoves(_oponentValue);
-            //_currentPlayerPoolMoves.InitializeAvailablePlayerMoves(_oponentValue);
-
-            //if (!_currentPlayerPoolMoves.HasAnyMove)
-            //if (!_currentPlayerMoves.HasAnyMove)
-            //{
-            //    SwitchPlayer();
-            //    gameReport.MoveStatus = MoveStatus.MoveSkipped;
-            //    return gameReport;
-            //}
-
-            ///TODO: check if both players in the last moves didn't have moves - return game over  
             if (!CurrentPlayer.IsComputer)
             {
                 int column = ConvertInputToColumn(position[0]);
@@ -127,95 +111,88 @@ namespace OtheloLogic
 
                 Coordinate playerChosenMove = new Coordinate(row, column);
 
-                if(!_currentPlayerMoves.IsMoveAvailable(playerChosenMove))
+                if (!_currentPlayerMoves.IsMoveAvailable(playerChosenMove))
                 {
                     gameReport.MoveStatus = MoveStatus.MoveFailure;
                     return gameReport;
                 }
-               
+
                 FlipCoins(playerChosenMove, _currentPlayerMoves.ReturnFlippableList(playerChosenMove));
                 gameReport.MoveStatus = MoveStatus.MoveSuccess;
 
-                //if (!Board.IsCellEmpty(row, column))
-                //{
-                //    gameReport.MoveStatus = MoveStatus.CellIsTaken;
-                //    return gameReport;
-                //}
 
-                //effectedFlipCoins = _currentPlayerPoolMoves.GetEffectedFlipCoins(row, column);
             }
 
             else
             {
-                //if(_currentPlayerMoves.HasAnyMove)
+
                 SetComputerRandomMove();
                 gameReport.MoveStatus = MoveStatus.MoveSuccess;
-                //else 
-                //{
-                //    gameReport.MoveStatus = MoveStatus.MoveSkipped;
-                //    return gameReport;
-                //}
 
-                //effectedFlipCoins = _currentPlayerPoolMoves.GetEffectedFlipCoins(computerMove.Row, computerMove.Column);
             }
 
-            
-            //gameReport.MoveStatus = SetPlayerMoves(effectedFlipCoins);
+            CheckCount();
 
-            ///TODO: check if game is over - if really game is over return fill the GameReport and return it
             return gameReport;
         }
 
-        private MoveStatus SetPlayerMoves(List<Coordinate> moves)
-        {
-            if (moves.Count == 0)
-            {
-                return MoveStatus.MoveFailure;
-            }
-            
-            foreach (var move in moves)
-            {
-                Board.SetCellValue(_playerValue, move.Row, move.Column);
-            }
-
-            return MoveStatus.MoveSuccess;
-        }
 
         public bool IsThereMoves()
         {
             return _currentPlayerMoves.CountOfMoves() > 0;
         }
 
-        //private Coordinate GetComputerRandomMove()
-        //{
-            
-        //    List<Coordinate> availableMoves = _currentPlayerPoolMoves.GetAllAvailableMoves();
+        public void CheckCount()
+        {
+            int xCount = 0;
+            int oCount = 0;
+            for (int rows = 0; rows < Board.Size; rows++)
+            {
+                for (int cols = 0; cols < Board.Size; cols++)
+                {
+                    if (!Board.IsCellEmpty(rows, cols))
+                    {
+                        if (Board.GetCellValue(rows, cols) == 0)
+                            oCount++;
+                        else
+                            xCount++;
+                    }
+                }
+            }
 
-        //    var random = new Random();
-            
-        //    int index = random.Next(availableMoves.Count);
-           
-        //    return availableMoves[index];
-        //}
+            _players[0].Count = xCount;
+            _players[1].Count = oCount;
+            //Console.WriteLine("X Count: {0}, O Count: {1}", oCount, xCount);
+            //return oCount >= xCount ? 0 : 1;
+        }
 
+        public int GetPlayerCount(int playerIndex)
+        {
+            return _players[playerIndex].Count;
+        }
+
+        public int GetWinner()
+        {
+            return _players[0].Count >= _players[1].Count ? 0 : 1;
+        }
+
+     
         private void SetComputerRandomMove()
         {
 
-            //List<Coordinate> availableMoves = _currentPlayerPoolMoves.GetAllAvailableMoves();
-
             var random = new Random();
             int index = random.Next(_currentPlayerMoves.CountOfMoves());
-            //int index = random.Next(availableMoves.Count);
+          
             Coordinate move = _currentPlayerMoves.LocationAtIndex(index);
             FlipCoins(move, _currentPlayerMoves.ReturnFlippableList(move));
 
         }
 
-        private GameStatus GetGameStatus()
-        {
-            ///TODO: Check if avialbe moves remains on board for the oppsite player 
-            throw new NotImplementedException();
-        }
+        //private GameStatus GetGameStatus()
+        //{
+        //    ///TODO: Check if avialbe moves remains on board for the oppsite player 
+        //    throw new NotImplementedException();
+        //}
 
         private int ConvertInputToColumn(char columnChar)
         {
