@@ -79,7 +79,11 @@ namespace OtheloUI
 
 
                 PrintBoard();
-                PrintScore();
+                if(gameReport.MoveStatus == MoveStatus.MoveSuccess)
+                {
+                    PrintScore();
+                }
+                
 
                
             }
@@ -130,10 +134,7 @@ namespace OtheloUI
             return PlayerAnswer;
         }
 
-        private void PrintAvailableMoves()
-        {
-            
-        }
+       
 
         private GameSettings GetGameSettings()
         {
@@ -288,7 +289,7 @@ namespace OtheloUI
 
         private void PrintScore()
         {
-            Console.WriteLine("X Count: {0}, O Count: {1}", _gameLogic.GetPlayerCount(0), _gameLogic.GetPlayerCount(1));
+            Console.WriteLine("X Count: {0}, O Count: {1}", _gameLogic.GetPlayerCount(1), _gameLogic.GetPlayerCount(0));
             
         }
 
