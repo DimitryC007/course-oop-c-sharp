@@ -100,7 +100,7 @@ namespace OtheloLogic
             }
 
             gameReport.MoveStatus = SetPlayerMoves(effectedFlipCoins);
-            if (gameReport.MoveStatus != MoveStatus.MoveFailure)
+            if (gameReport.MoveStatus == MoveStatus.MoveSuccess)
             {
                 SwitchPlayer();
             }
