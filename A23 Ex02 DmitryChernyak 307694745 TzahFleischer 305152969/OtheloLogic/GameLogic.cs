@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace OtheloLogic
 {
@@ -23,12 +24,13 @@ namespace OtheloLogic
         public Board Board { get; }
         private Player[] _players;
         public Player CurrentPlayer => _players[_playerIndex];
-        private int _playerIndex = 0;
+        private int _playerIndex = 1;
         private int _playerValue => _playerIndex;
         private int _oponentValue => _playerIndex == 0 ? 1 : 0;
         private Dictionary<char, int> _characterDict = new Dictionary<char, int>();
         private CurrentPlayerPoolMoves _currentPlayerPoolMoves;
         private int _skippedTurns = 0;
+        private const int MaxSkippedTurnsAllowed = 2;
 
         public GameLogic(GameSettings gameSettings)
         {
@@ -43,7 +45,7 @@ namespace OtheloLogic
             _currentPlayerPoolMoves.InitializeAvailablePlayerMoves(_oponentValue);
             GameReport gameReport = InitializeGameReport();
 
-            if (Board.IsFull)
+            if (Board.IsFull || IsGameOver())
             {
                 return CalcGameReport(MoveStatus.MoveFailure);
             }
@@ -52,16 +54,17 @@ namespace OtheloLogic
             {
                 gameReport.MoveStatus = MoveStatus.MoveSkipped;
                 _skippedTurns++;
-
-                if (_skippedTurns == 2)
+                Sleep(2);
+                if (_skippedTurns == MaxSkippedTurnsAllowed)
                 {
                     return CalcGameReport(gameReport.MoveStatus);
                 }
 
+                SwitchPlayer();
                 return gameReport;
             }
 
-            _skippedTurns = 0;
+            ResetSkippedTurns();
 
             return gameReport;
         }
@@ -93,10 +96,45 @@ namespace OtheloLogic
             {
                 Coordinate computerMove = GetComputerRandomMove();
                 effectedFlipCoins = _currentPlayerPoolMoves.GetEffectedFlipCoins(computerMove.Row, computerMove.Column);
+                Sleep(2);
             }
 
             gameReport.MoveStatus = SetPlayerMoves(effectedFlipCoins);
+            if (gameReport.MoveStatus != MoveStatus.MoveFailure)
+            {
+                SwitchPlayer();
+            }
+            
             return gameReport;
+        }
+
+        private bool IsGameOver()
+        {
+            bool hasOneValue = false;
+            bool hasZeroValue = false;
+
+            for (int i = 0; i < Board.Size; i++)
+            {
+                for (int j = 0; j < Board.Size; j++)
+                {
+                    if (Board.GetCellValue(i, j) == 0)
+                    {
+                        hasZeroValue = true;
+                    }
+
+                    if (Board.GetCellValue(i, j) == 1)
+                    {
+                        hasOneValue = true;
+                    }
+
+                    if (hasZeroValue && hasOneValue)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return hasZeroValue || hasOneValue;
         }
 
         private GameReport CalcGameReport(MoveStatus moveStatus)
@@ -143,7 +181,8 @@ namespace OtheloLogic
             return new GameReport
             {
                 GameStatus = GameStatus.InProgress,
-                MoveStatus = MoveStatus.HasMoveToMake
+                MoveStatus = MoveStatus.HasMoveToMake,
+                LastMovePlayerName = CurrentPlayer.Name
             };
         }
 
@@ -201,12 +240,17 @@ namespace OtheloLogic
             return row;
         }
 
-        public void SwitchPlayer()
+        private void SwitchPlayer()
         {
             _playerIndex = _playerIndex == 0 ? 1 : 0;
         }
 
-        public void InitializeInputDictionary(int matrixSize)
+        private void ResetSkippedTurns()
+        {
+            _skippedTurns = 0;
+        }
+
+        private void InitializeInputDictionary(int matrixSize)
         {
             int maxUnicode = matrixSize == 8 ? 72 : 70;
             int unicode = 65;
@@ -216,6 +260,11 @@ namespace OtheloLogic
                 char character = (char)i;
                 _characterDict.Add(character, i - unicode);
             }
+        }
+
+        private void Sleep(int seconds)
+        {
+            Thread.Sleep(seconds * 1000);
         }
     }
 }

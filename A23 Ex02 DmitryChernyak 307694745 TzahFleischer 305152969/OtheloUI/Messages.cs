@@ -26,19 +26,19 @@ namespace OtheloUI
             string moveText = string.Empty;
             if (moveStatus == MoveStatus.MoveSkipped)
             {
-                moveText = "has skipped his move";
+                moveText = "Skipped";
             }
             if (moveStatus == MoveStatus.MoveSuccess)
             {
-                moveText = "did a successfully move";
+                moveText = "Success";
             }
             if (moveStatus == MoveStatus.CellIsTaken)
             {
-                moveText = "choosed a taken cell";
+                moveText = "Cell is taken";
             }
             if (moveStatus == MoveStatus.MoveFailure)
             {
-                moveText = "entered invalid move";
+                moveText = "Failed";
             }
 
             return string.Format("| Last move | Player: {0} | Move status: {1} |", playerName, moveText);

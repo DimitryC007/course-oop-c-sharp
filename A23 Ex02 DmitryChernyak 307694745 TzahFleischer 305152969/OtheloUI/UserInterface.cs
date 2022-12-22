@@ -1,14 +1,14 @@
 ﻿using OtheloLogic;
 using Ex02.ConsoleUtils;
 using System;
-using System.Threading;
 
 namespace OtheloUI
 {
     public class UserInterface
     {
         private GameLogic _gameLogic;
-        private const string _exitKey = "Q";
+        private const string ExitKey = "Q";
+        private const int PlayAgain = 1;
 
         public void LaunchGame()
         {
@@ -17,55 +17,46 @@ namespace OtheloUI
             PrintMessage(Messages.LineMessage);
             GameSettings gameSettings = GetGameSettings();
             _gameLogic = new GameLogic(gameSettings);
+            PrintBoard();
         }
 
         public bool PlayGame()
         {
-            PrintBoard(0);
+            string userInput = string.Empty;
 
             while (true)
-            {
+            {                
                 GameReport gameReport = _gameLogic.CheckHasAnyMove();
+
                 if (gameReport.GameStatus == GameStatus.GameOver)
                 {
                     PrintMessage(Messages.GameReportMessage(gameReport));
                     return RestartGame();
                 }
 
-                if (gameReport.MoveStatus != MoveStatus.HasMoveToMake)
+                if (gameReport.MoveStatus == MoveStatus.MoveSkipped)
                 {
-                    PrintBoard(0);
-                    PrintMessage(Messages.PlayerMoveIndicationMessage(_gameLogic.CurrentPlayer.Name, gameReport.MoveStatus));
-                    _gameLogic.SwitchPlayer();
+                    PrintBoard();
+                    PrintMessage(Messages.PlayerMoveIndicationMessage(gameReport.LastMovePlayerName, gameReport.MoveStatus));
                     continue;
                 }
 
                 PrintMessage(Messages.PlayerTurnIndicationMessage(_gameLogic.CurrentPlayer.Name));
+
                 //Human
                 if (!_gameLogic.CurrentPlayer.IsComputer)
                 {
-                    string userInput = GetPlayerMove();
-                    if (userInput == _exitKey)
+                    userInput = GetPlayerMove();
+                    if (userInput == ExitKey)
                     {
                         PrintMessage(Messages.ExitGameMessage);
                         return false;
                     }
-                    gameReport = _gameLogic.MakeMove(userInput);
-                }
-                //Computer
-                if (_gameLogic.CurrentPlayer.IsComputer)
-                {
-                    gameReport = _gameLogic.MakeMove();
                 }
 
-                PrintBoard(_gameLogic.CurrentPlayer.IsComputer ? 0 : 0);
-                PrintMessage(Messages.PlayerMoveIndicationMessage(_gameLogic.CurrentPlayer.Name, gameReport.MoveStatus));
-
-                if (gameReport.GameStatus == GameStatus.InProgress
-                    && (gameReport.MoveStatus == MoveStatus.MoveSkipped || gameReport.MoveStatus == MoveStatus.MoveSuccess))
-                {
-                    _gameLogic.SwitchPlayer();
-                }
+                gameReport = _gameLogic.MakeMove(userInput);
+                PrintBoard();
+                PrintMessage(Messages.PlayerMoveIndicationMessage(gameReport.LastMovePlayerName, gameReport.MoveStatus));
             }
         }
 
@@ -85,14 +76,14 @@ namespace OtheloUI
                     Console.WriteLine(Messages.InputNotValidMessage);
                 }
             }
-            return int.Parse(anotherRoundChoise) == 1;
+            return int.Parse(anotherRoundChoise) == PlayAgain;
         }
 
         private GameSettings GetGameSettings()
         {
             GameSettings gameSettings = new GameSettings(2);
-            gameSettings.Players[0] = GetPlayer(1);
-            gameSettings.Players[1] = GetOponent();
+            gameSettings.Players[1] = GetPlayer(1);
+            gameSettings.Players[0] = GetOponent();
             gameSettings.MatrixSize = GetMatrixSize();
 
             return gameSettings;
@@ -160,7 +151,7 @@ namespace OtheloUI
             while (!isValidMove)
             {
                 playerMove = Console.ReadLine();
-                isValidMove = Validations.IsMoveInputValid(playerMove, _exitKey);
+                isValidMove = Validations.IsMoveInputValid(playerMove, ExitKey);
 
                 if (!isValidMove)
                 {
@@ -192,9 +183,8 @@ namespace OtheloUI
             return int.Parse(matrixSize);
         }
 
-        private void PrintBoard(int printDelayInSecondes)
+        private void PrintBoard()
         {
-            Thread.Sleep(printDelayInSecondes * 1000);
             Screen.Clear();
             Console.Write("   ");
             for (int columns = 0; columns < _gameLogic.Board.Size; columns++)
