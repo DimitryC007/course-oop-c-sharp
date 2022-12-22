@@ -18,22 +18,23 @@ namespace OtheloLogic
         MoveSkipped = 3 // doesn't have a move to make
     }
 
-    public enum MoveDirection
-    {
-        Up = 0,
-        Down = 1,
-        Left = 2,
-        Right = 3,
-        UpRightDiagonal = 4,
-        DownRightDiagonal = 5,
-        UpLeftDiagonal = 6,
-        DownLeftDiagonal = 7,
-    }
+    //public enum MoveDirection
+    //{
+    //    Up = 0,
+    //    Down = 1,
+    //    Left = 2,
+    //    Right = 3,
+    //    UpRightDiagonal = 4,
+    //    DownRightDiagonal = 5,
+    //    UpLeftDiagonal = 6,
+    //    DownLeftDiagonal = 7,
+    //}
 
     public class GameLogic
     {
         public Board Board { get; }
         private Player[] _players;
+        private int _skipCount = 0;
         public Player CurrentPlayer => _players[_playerIndex];
         //private int _playerIndex = 1;
         private int _playerIndex = 0;
@@ -59,9 +60,35 @@ namespace OtheloLogic
             return _players[playerNum].Name;
         }
 
-        public void FindAllAvailableMoves()
+        public GameReport FindAllAvailableMoves()
         {
+            GameReport gameReport = new GameReport();
             _currentPlayerMoves.AllCurrentPlayerMoves(_oponentValue);
+
+            if(Board.IsFull)
+            {
+                gameReport.GameStatus = GameStatus.GameOver;                
+            }
+
+            else if(!_currentPlayerMoves.HasAnyMove)
+            {
+                _skipCount++;
+                gameReport.MoveStatus = MoveStatus.MoveSkipped;
+            }
+
+            else
+            {
+                _skipCount = 0;
+                gameReport.GameStatus = GameStatus.InProgress;
+                gameReport.MoveStatus = MoveStatus.MoveSuccess;
+            }
+
+            if(_skipCount == 2)
+            {
+                gameReport.GameStatus = GameStatus.GameOver;
+            }
+
+            return gameReport;
         }
         public GameReport MakeMove(string position = "")
         {
@@ -70,22 +97,22 @@ namespace OtheloLogic
 
             //List<Coordinate> effectedFlipCoins;
 
-            if (Board.IsFull)
-            {
-                gameReport.GameStatus = GameStatus.GameOver;
-                return gameReport;
-            }
+            //if (Board.IsFull)
+            //{
+            //    gameReport.GameStatus = GameStatus.GameOver;
+            //    return gameReport;
+            //}
 
             //_currentPlayerMoves.AllCurrentPlayerMoves(_oponentValue);
             //_currentPlayerPoolMoves.InitializeAvailablePlayerMoves(_oponentValue);
 
             //if (!_currentPlayerPoolMoves.HasAnyMove)
-            if (!_currentPlayerMoves.HasAnyMove)
-            {
-                SwitchPlayer();
-                gameReport.MoveStatus = MoveStatus.MoveSkipped;
-                return gameReport;
-            }
+            //if (!_currentPlayerMoves.HasAnyMove)
+            //{
+            //    SwitchPlayer();
+            //    gameReport.MoveStatus = MoveStatus.MoveSkipped;
+            //    return gameReport;
+            //}
 
             ///TODO: check if both players in the last moves didn't have moves - return game over  
             if (!CurrentPlayer.IsComputer)
@@ -107,6 +134,7 @@ namespace OtheloLogic
                 }
                
                 FlipCoins(playerChosenMove, _currentPlayerMoves.ReturnFlippableList(playerChosenMove));
+                gameReport.MoveStatus = MoveStatus.MoveSuccess;
 
                 //if (!Board.IsCellEmpty(row, column))
                 //{
@@ -119,18 +147,19 @@ namespace OtheloLogic
 
             else
             {
-                if(_currentPlayerMoves.HasAnyMove)
-                    SetComputerRandomMove();
-                else 
-                {
-                    gameReport.MoveStatus = MoveStatus.MoveSkipped;
-                    return gameReport;
-                }
-   
-                    //effectedFlipCoins = _currentPlayerPoolMoves.GetEffectedFlipCoins(computerMove.Row, computerMove.Column);
+                //if(_currentPlayerMoves.HasAnyMove)
+                SetComputerRandomMove();
+                gameReport.MoveStatus = MoveStatus.MoveSuccess;
+                //else 
+                //{
+                //    gameReport.MoveStatus = MoveStatus.MoveSkipped;
+                //    return gameReport;
+                //}
+
+                //effectedFlipCoins = _currentPlayerPoolMoves.GetEffectedFlipCoins(computerMove.Row, computerMove.Column);
             }
 
-            gameReport.MoveStatus = MoveStatus.MoveSuccess;
+            
             //gameReport.MoveStatus = SetPlayerMoves(effectedFlipCoins);
 
             ///TODO: check if game is over - if really game is over return fill the GameReport and return it

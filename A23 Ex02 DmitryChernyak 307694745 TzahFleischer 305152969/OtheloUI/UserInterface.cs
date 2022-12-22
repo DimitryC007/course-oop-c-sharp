@@ -19,22 +19,39 @@ namespace OtheloUI
         public void PlayGame()
         {
             PrintBoard();
-            int skipCount = 0;
+            //int skipCount = 0;
+            GameReport gameReport = _gameLogic.FindAllAvailableMoves();
             //while (true)
-            while(skipCount < 2)
+            //while(skipCount < 2)
+            while(gameReport.GameStatus == GameStatus.InProgress)
             {
                 
-                GameReport gameReport = null;
+                //GameReport gameReport = null;
                 //gameReport = _gameLogic.MakeMove();
-                _gameLogic.FindAllAvailableMoves();
-                bool isThereAnyMove = _gameLogic.IsThereMoves();
+                //_gameLogic.FindAllAvailableMoves();
+                //bool isThereAnyMove = _gameLogic.IsThereMoves();
 
-                if (!isThereAnyMove)
+                if(gameReport.MoveStatus == MoveStatus.MoveSkipped)
                 {
-                    skipCount++;
+                    Console.WriteLine("No available moves turn skipped");
                     _gameLogic.SwitchPlayer();
+                    gameReport = _gameLogic.FindAllAvailableMoves();
                     continue;
                 }
+
+                
+
+                //if (!isThereAnyMove)
+                //{
+                //    skipCount++;
+                //    _gameLogic.SwitchPlayer();
+                //    continue;
+                //}
+
+                //else
+                //{
+                //    skipCount = 0;
+                //}
                 
                 
 
@@ -64,15 +81,15 @@ namespace OtheloUI
                         gameReport = _gameLogic.MakeMove(userInput);
                     }
 
-                    if (gameReport.MoveStatus == MoveStatus.MoveSkipped)
-                    {
-                        skipCount++;
-                    }
+                    //if (gameReport.MoveStatus == MoveStatus.MoveSkipped)
+                    //{
+                    //    skipCount++;
+                    //}
 
-                    else
-                    {
-                        skipCount = 0;
-                    }
+                    //else
+                    //{
+                    //    skipCount = 0;
+                    //}
 
                     //if (skipCount == 2)
                     //{
@@ -86,28 +103,33 @@ namespace OtheloUI
                 {
                     ///TODO: add message computer is playing his turn now from messages
                     //Console.WriteLine("Computer is playing now");
+                    Console.WriteLine("Computer is playing now");
+                    Thread.Sleep(2000);
 
                     gameReport = _gameLogic.MakeMove();
                 }
 
 
-                if (gameReport.GameStatus == GameStatus.GameOver)
-                {
-                    //endgame();
+                //if (gameReport.GameStatus == GameStatus.GameOver)
+                //{
+                //    //endgame();
                   
-                    break;
-                }
+                //    break;
+                //}
 
                 _gameLogic.SwitchPlayer();
-                
+
+                gameReport = _gameLogic.FindAllAvailableMoves();
+
+
                 PrintBoard();
                 PrintScore();
 
-                if (_gameLogic.CurrentPlayer.IsComputer)
-                {
-                    Console.WriteLine("Computer is playing now");
-                    Thread.Sleep(2000);
-                }
+                //if (_gameLogic.CurrentPlayer.IsComputer)
+                //{
+                //    Console.WriteLine("Computer is playing now");
+                //    Thread.Sleep(2000);
+                //}
                     
                 ///TODO: check game report and behave accordingly to it
             }
