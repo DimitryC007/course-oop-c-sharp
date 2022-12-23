@@ -1,12 +1,13 @@
 ﻿namespace OtheloLogic
 {
-    public  class Coordinate
+    public class Coordinate
     {
-        public Coordinate(int row,int column)
+        public Coordinate(int row, int column)
         {
             Row = row;
             Column = column;
         }
+
         public int Row { get; set; }
         public int Column { get; set; }
     }

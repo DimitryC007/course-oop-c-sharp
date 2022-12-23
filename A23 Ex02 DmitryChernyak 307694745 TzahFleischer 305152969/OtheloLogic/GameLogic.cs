@@ -28,21 +28,21 @@ namespace OtheloLogic
         private int _playerValue => _playerIndex;
         private int _oponentValue => _playerIndex == 0 ? 1 : 0;
         private Dictionary<char, int> _characterDict = new Dictionary<char, int>();
-        private CurrentPlayerPoolMoves _currentPlayerPoolMoves;
+        private CurrentPlayerMoves _currentPlayerMoves;
         private int _skippedTurns = 0;
         private const int MaxSkippedTurnsAllowed = 2;
 
         public GameLogic(GameSettings gameSettings)
         {
             Board = new Board(gameSettings.MatrixSize);
-            _currentPlayerPoolMoves = new CurrentPlayerPoolMoves(Board);
+            _currentPlayerMoves = new CurrentPlayerMoves(Board);
             _players = gameSettings.Players;
             InitializeInputDictionary(gameSettings.MatrixSize);
         }
 
         public GameReport CheckHasAnyMove()
         {
-            _currentPlayerPoolMoves.InitializeAvailablePlayerMoves(_oponentValue);
+            _currentPlayerMoves.AllCurrentPlayerMoves(_oponentValue);
             GameReport gameReport = InitializeGameReport();
 
             if (Board.IsFull || IsGameOver())
@@ -50,7 +50,7 @@ namespace OtheloLogic
                 return CalcGameReport(MoveStatus.MoveFailure);
             }
 
-            if (!_currentPlayerPoolMoves.HasAnyMove)
+            if (!_currentPlayerMoves.HasAnyMove)
             {
                 gameReport.MoveStatus = MoveStatus.MoveSkipped;
                 _skippedTurns++;
@@ -73,7 +73,7 @@ namespace OtheloLogic
         {
             List<Coordinate> effectedFlipCoins;
             GameReport gameReport = InitializeGameReport();
-            
+
             if (!CurrentPlayer.IsComputer)
             {
                 int column = ConvertInputToColumn(position[0]);
@@ -89,13 +89,13 @@ namespace OtheloLogic
                     gameReport.MoveStatus = MoveStatus.CellIsTaken;
                     return gameReport;
                 }
-
-                effectedFlipCoins = _currentPlayerPoolMoves.GetEffectedFlipCoins(row, column);
+                Coordinate coordinate = new Coordinate(row, column);
+                effectedFlipCoins = _currentPlayerMoves.GetFlippableList(coordinate);
             }
             else
             {
                 Coordinate computerMove = GetComputerRandomMove();
-                effectedFlipCoins = _currentPlayerPoolMoves.GetEffectedFlipCoins(computerMove.Row, computerMove.Column);
+                effectedFlipCoins = _currentPlayerMoves.GetFlippableList(computerMove);
                 Sleep(2);
             }
 
@@ -104,7 +104,7 @@ namespace OtheloLogic
             {
                 SwitchPlayer();
             }
-            
+
             return gameReport;
         }
 
@@ -157,7 +157,7 @@ namespace OtheloLogic
                 GameStatus = GameStatus.GameOver,
                 MoveStatus = moveStatus,
             };
-            
+
             if (one > zero)
             {
                 gameReport.WinnerPoints = one;
@@ -203,7 +203,7 @@ namespace OtheloLogic
 
         private Coordinate GetComputerRandomMove()
         {
-            List<Coordinate> availableMoves = _currentPlayerPoolMoves.GetAllAvailableMoves();
+            List<Coordinate> availableMoves = _currentPlayerMoves.GetAvailableComputerMoves();
             var random = new Random();
             int index = random.Next(availableMoves.Count);
             return availableMoves[index];

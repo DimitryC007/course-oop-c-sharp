@@ -7,6 +7,7 @@
             Name = name;
             IsComputer = isComputer;
         }
+
         public string Name { get; set; }
         public bool IsComputer { get; set; }
     }

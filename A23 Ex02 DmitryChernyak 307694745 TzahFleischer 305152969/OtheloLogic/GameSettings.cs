@@ -6,6 +6,7 @@
         {
             Players = new Player[numOfPlayers];
         }
+
         public int MatrixSize { get; set; }
         public Player[] Players { get; set; }
     }
