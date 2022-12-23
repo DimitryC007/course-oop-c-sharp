@@ -4,11 +4,11 @@ namespace Ex02_Othelo
 {
     public class OtheloGame
     {
-        private UserInterface _userInterface;
+        private UserInterface m_UserInterface;
 
         public OtheloGame()
         {
-            _userInterface = new UserInterface();
+            m_UserInterface = new UserInterface();
         }
 
         public void PlayGame()
@@ -16,8 +16,8 @@ namespace Ex02_Othelo
             bool anotherRound = true;
             while (anotherRound)
             {
-                _userInterface.LaunchGame();
-                anotherRound = _userInterface.PlayGame();
+                m_UserInterface.LaunchGame();
+                anotherRound = m_UserInterface.PlayGame();
             }
         }
     }

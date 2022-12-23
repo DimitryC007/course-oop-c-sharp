@@ -2,10 +2,10 @@
 {
     public class Player
     {
-        public Player(string name, bool isComputer)
+        public Player(string i_Name, bool i_IsComputer)
         {
-            Name = name;
-            IsComputer = isComputer;
+            Name = i_Name;
+            IsComputer = i_IsComputer;
         }
 
         public string Name { get; set; }

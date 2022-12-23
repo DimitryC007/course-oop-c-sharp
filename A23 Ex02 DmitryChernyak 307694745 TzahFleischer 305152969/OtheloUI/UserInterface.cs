@@ -6,17 +6,17 @@ namespace OtheloUI
 {
     public class UserInterface
     {
-        private GameLogic _gameLogic;
-        private const string ExitKey = "Q";
-        private const int PlayAgain = 1;
+        private GameLogic m_GameLogic;
+        private const string k_ExitKey = "Q";
+        private const int k_PlayAgain = 1;
 
         public void LaunchGame()
         {
             Screen.Clear();
-            PrintMessage(Messages.WelcomeMessage);
-            PrintMessage(Messages.LineMessage);
+            PrintMessage(Messages.s_WelcomeMessage);
+            PrintMessage(Messages.s_LineMessage);
             GameSettings gameSettings = GetGameSettings();
-            _gameLogic = new GameLogic(gameSettings);
+            m_GameLogic = new GameLogic(gameSettings);
             PrintBoard();
         }
 
@@ -26,35 +26,36 @@ namespace OtheloUI
 
             while (true)
             {                
-                GameReport gameReport = _gameLogic.CheckHasAnyMove();
+                GameReport gameReport = m_GameLogic.CheckHasAnyMove();
 
-                if (gameReport.GameStatus == GameStatus.GameOver)
+                if (gameReport.GameStatus == eGameStatuses.GameOver)
                 {
                     PrintMessage(Messages.GameReportMessage(gameReport));
                     return RestartGame();
                 }
 
-                if (gameReport.MoveStatus == MoveStatus.MoveSkipped)
+                if (gameReport.MoveStatus == eMoveStatuses.MoveSkipped)
                 {
                     PrintBoard();
                     PrintMessage(Messages.PlayerMoveIndicationMessage(gameReport.LastMovePlayerName, gameReport.MoveStatus));
                     continue;
                 }
 
-                PrintMessage(Messages.PlayerTurnIndicationMessage(_gameLogic.CurrentPlayer.Name));
+                PrintMessage(Messages.PlayerTurnIndicationMessage(m_GameLogic.m_CurrentPlayer.Name));
 
                 //Human
-                if (!_gameLogic.CurrentPlayer.IsComputer)
+                if (!m_GameLogic.m_CurrentPlayer.IsComputer)
                 {
                     userInput = GetPlayerMove();
-                    if (userInput == ExitKey)
+
+                    if (userInput == k_ExitKey)
                     {
-                        PrintMessage(Messages.ExitGameMessage);
+                        PrintMessage(Messages.s_ExitGameMessage);
                         return false;
                     }
                 }
 
-                gameReport = _gameLogic.MakeMove(userInput);
+                gameReport = m_GameLogic.MakeMove(userInput);
                 PrintBoard();
                 PrintMessage(Messages.PlayerMoveIndicationMessage(gameReport.LastMovePlayerName, gameReport.MoveStatus));
             }
@@ -62,7 +63,7 @@ namespace OtheloUI
 
         private bool RestartGame()
         {
-            PrintMessage(Messages.AnotherRoundMessage);
+            PrintMessage(Messages.s_AnotherRoundMessage);
             string anotherRoundChoise = string.Empty;
             bool isValidMove = false;
 
@@ -73,10 +74,11 @@ namespace OtheloUI
 
                 if (!isValidMove)
                 {
-                    Console.WriteLine(Messages.InputNotValidMessage);
+                    Console.WriteLine(Messages.s_InputNotValidMessage);
                 }
             }
-            return int.Parse(anotherRoundChoise) == PlayAgain;
+
+            return int.Parse(anotherRoundChoise) == k_PlayAgain;
         }
 
         private GameSettings GetGameSettings()
@@ -102,7 +104,7 @@ namespace OtheloUI
 
                 if (!isPlayerNameValid)
                 {
-                    Console.WriteLine(Messages.InvalidPlayerNameMessage);
+                    Console.WriteLine(Messages.s_InvalidPlayerNameMessage);
                 }
             }
 
@@ -122,13 +124,13 @@ namespace OtheloUI
 
             while (!isSecondOponentValid)
             {
-                Console.WriteLine(Messages.AgainstWhoPlayingMessage);
+                Console.WriteLine(Messages.s_AgainstWhoPlayingMessage);
                 secondOponentInput = Console.ReadLine();
                 isSecondOponentValid = Validations.IsSecondOponentValid(secondOponentInput);
 
                 if (!isSecondOponentValid)
                 {
-                    Console.WriteLine(Messages.InputNotValidMessage);
+                    Console.WriteLine(Messages.s_InputNotValidMessage);
                 }
             }
 
@@ -143,7 +145,7 @@ namespace OtheloUI
 
         private string GetPlayerMove()
         {
-            Console.WriteLine(Messages.PlayerMoveMessage);
+            Console.WriteLine(Messages.s_PlayerMoveMessage);
 
             string playerMove = string.Empty;
             bool isValidMove = false;
@@ -151,11 +153,11 @@ namespace OtheloUI
             while (!isValidMove)
             {
                 playerMove = Console.ReadLine();
-                isValidMove = Validations.IsMoveInputValid(playerMove, ExitKey);
+                isValidMove = Validations.IsMoveInputValid(playerMove, k_ExitKey);
 
                 if (!isValidMove)
                 {
-                    Console.WriteLine(Messages.InputNotValidMessage);
+                    Console.WriteLine(Messages.s_InputNotValidMessage);
                 }
             }
 
@@ -169,14 +171,14 @@ namespace OtheloUI
 
             while (!isMatrixSizeValid)
             {
-                Console.WriteLine(Messages.MatrixSizeMessage);
+                Console.WriteLine(Messages.s_MatrixSizeMessage);
                 matrixSize = Console.ReadLine();
 
                 isMatrixSizeValid = Validations.IsMatrixSizeInputValid(matrixSize);
 
                 if (!isMatrixSizeValid)
                 {
-                    Console.WriteLine(Messages.InputNotValidMessage);
+                    Console.WriteLine(Messages.s_InputNotValidMessage);
                 }
             }
 
@@ -187,45 +189,57 @@ namespace OtheloUI
         {
             Screen.Clear();
             Console.Write("   ");
-            for (int columns = 0; columns < _gameLogic.Board.Size; columns++)
+
+            for (int columns = 0; columns < m_GameLogic.m_Board.m_Size; columns++)
             {
                 Console.Write(" {0}  ", Convert.ToChar(columns + (int)'A'));
             }
+
             Console.WriteLine();
 
-            for (int rows = 0; rows < _gameLogic.Board.Size; rows++)
+            for (int rows = 0; rows < m_GameLogic.m_Board.m_Size; rows++)
             {
-                PrintDivide(_gameLogic.Board.Size);
+                PrintDivide(m_GameLogic.m_Board.m_Size);
                 Console.Write($"{rows + 1} |");
 
-                for (int cols = 0; cols < _gameLogic.Board.Size; cols++)
+                for (int cols = 0; cols < m_GameLogic.m_Board.m_Size; cols++)
                 {
 
-                    if (!_gameLogic.Board.IsCellEmpty(rows, cols))
+                    if (!m_GameLogic.m_Board.IsCellEmpty(rows, cols))
                     {
-                        if (_gameLogic.Board.GetCellValue(rows, cols) == 0)
+                        if (m_GameLogic.m_Board.GetCellValue(rows, cols) == 0)
+                        {
                             Console.Write(" O ");
+                        }
                         else
+                        {
                             Console.Write(" X ");
+                        }
                     }
                     else
+                    {
                         Console.Write("   ");
+                    }
+
                     Console.Write("|");
                 }
+
                 Console.WriteLine();
             }
-            PrintDivide(_gameLogic.Board.Size);
-            Console.WriteLine();
 
+            PrintDivide(m_GameLogic.m_Board.m_Size);
+            Console.WriteLine();
         }
 
         private void PrintDivide(int boardSize)
         {
             Console.Write("  ");
+
             for (int i = 0; i < boardSize * 4 + 1; i++)
             {
                 Console.Write("=");
             }
+
             Console.WriteLine();
         }
 

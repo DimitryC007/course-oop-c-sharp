@@ -4,58 +4,59 @@ using System.Threading;
 
 namespace OtheloLogic
 {
-    public enum GameStatus
+    public enum eGameStatuses
     {
-        GameOver = 0, // no moves left
-        InProgress = 1, // game in progress
+        GameOver,
+        InProgress
     }
 
-    public enum MoveStatus
+    public enum eMoveStatuses
     {
-        CellIsTaken = 0, // we need to know cell is taken to ask input from the user again 
-        MoveSuccess = 1, // continue playing
-        MoveFailure = 2, // input not valid from --> User
-        MoveSkipped = 3, // doesn't have a move to make
-        HasMoveToMake = 4 // has move to make
+        CellIsTaken,
+        MoveSuccess,
+        MoveFailure,
+        MoveSkipped,
+        HasMoveToMake
     }
 
     public class GameLogic
     {
-        public Board Board { get; }
-        private Player[] _players;
-        public Player CurrentPlayer => _players[_playerIndex];
-        private int _playerIndex = 1;
-        private int _playerValue => _playerIndex;
-        private int _oponentValue => _playerIndex == 0 ? 1 : 0;
-        private Dictionary<char, int> _characterDict = new Dictionary<char, int>();
-        private CurrentPlayerMoves _currentPlayerMoves;
-        private int _skippedTurns = 0;
-        private const int MaxSkippedTurnsAllowed = 2;
+        public Board m_Board { get; }
+        private Player[] m_Players;
+        public Player m_CurrentPlayer => m_Players[m_PlayerIndex];
+        private int m_PlayerIndex = 1;
+        private int m_PlayerValue => m_PlayerIndex;
+        private int m_OponentValue => m_PlayerIndex == 0 ? 1 : 0;
+        private Dictionary<char, int> m_CharacterDict = new Dictionary<char, int>();
+        private CurrentPlayerMoves m_CurrentPlayerMoves;
+        private int m_SkippedTurns = 0;
+        private const int k_MaxSkippedTurnsAllowed = 2;
 
-        public GameLogic(GameSettings gameSettings)
+        public GameLogic(GameSettings i_GameSettings)
         {
-            Board = new Board(gameSettings.MatrixSize);
-            _currentPlayerMoves = new CurrentPlayerMoves(Board);
-            _players = gameSettings.Players;
-            InitializeInputDictionary(gameSettings.MatrixSize);
+            m_Board = new Board(i_GameSettings.MatrixSize);
+            m_CurrentPlayerMoves = new CurrentPlayerMoves(m_Board);
+            m_Players = i_GameSettings.Players;
+            InitializeInputDictionary(i_GameSettings.MatrixSize);
         }
 
         public GameReport CheckHasAnyMove()
         {
-            _currentPlayerMoves.AllCurrentPlayerMoves(_oponentValue);
+            m_CurrentPlayerMoves.AllCurrentPlayerMoves(m_OponentValue);
             GameReport gameReport = InitializeGameReport();
 
-            if (Board.IsFull || IsGameOver())
+            if (m_Board.m_IsFull || IsGameOver())
             {
-                return CalcGameReport(MoveStatus.MoveFailure);
+                return CalcGameReport(eMoveStatuses.MoveFailure);
             }
 
-            if (!_currentPlayerMoves.HasAnyMove)
+            if (!m_CurrentPlayerMoves.HasAnyMove)
             {
-                gameReport.MoveStatus = MoveStatus.MoveSkipped;
-                _skippedTurns++;
+                gameReport.MoveStatus = eMoveStatuses.MoveSkipped;
+                m_SkippedTurns++;
                 Sleep(2);
-                if (_skippedTurns == MaxSkippedTurnsAllowed)
+
+                if (m_SkippedTurns == k_MaxSkippedTurnsAllowed)
                 {
                     return CalcGameReport(gameReport.MoveStatus);
                 }
@@ -69,38 +70,41 @@ namespace OtheloLogic
             return gameReport;
         }
 
-        public GameReport MakeMove(string position = "")
+        public GameReport MakeMove(string i_Position)
         {
             List<Coordinate> effectedFlipCoins;
             GameReport gameReport = InitializeGameReport();
 
-            if (!CurrentPlayer.IsComputer)
+            if (!m_CurrentPlayer.IsComputer)
             {
-                int column = ConvertInputToColumn(position[0]);
-                int row = ConvertInputToRow(position[1]);
+                int column = ConvertInputToColumn(i_Position[0]);
+                int row = ConvertInputToRow(i_Position[1]);
+
                 if (row == -1 || column == -1)
                 {
-                    gameReport.MoveStatus = MoveStatus.MoveFailure;
+                    gameReport.MoveStatus = eMoveStatuses.MoveFailure;
                     return gameReport;
                 }
 
-                if (!Board.IsCellEmpty(row, column))
+                if (!m_Board.IsCellEmpty(row, column))
                 {
-                    gameReport.MoveStatus = MoveStatus.CellIsTaken;
+                    gameReport.MoveStatus = eMoveStatuses.CellIsTaken;
                     return gameReport;
                 }
+
                 Coordinate coordinate = new Coordinate(row, column);
-                effectedFlipCoins = _currentPlayerMoves.GetFlippableList(coordinate);
+                effectedFlipCoins = m_CurrentPlayerMoves.GetFlippableList(coordinate);
             }
             else
             {
                 Coordinate computerMove = GetComputerRandomMove();
-                effectedFlipCoins = _currentPlayerMoves.GetFlippableList(computerMove);
+                effectedFlipCoins = m_CurrentPlayerMoves.GetFlippableList(computerMove);
                 Sleep(2);
             }
 
             gameReport.MoveStatus = SetPlayerMoves(effectedFlipCoins);
-            if (gameReport.MoveStatus == MoveStatus.MoveSuccess)
+
+            if (gameReport.MoveStatus == eMoveStatuses.MoveSuccess)
             {
                 SwitchPlayer();
             }
@@ -113,16 +117,16 @@ namespace OtheloLogic
             bool hasOneValue = false;
             bool hasZeroValue = false;
 
-            for (int i = 0; i < Board.Size; i++)
+            for (int i = 0; i < m_Board.m_Size; i++)
             {
-                for (int j = 0; j < Board.Size; j++)
+                for (int j = 0; j < m_Board.m_Size; j++)
                 {
-                    if (Board.GetCellValue(i, j) == 0)
+                    if (m_Board.GetCellValue(i, j) == 0)
                     {
                         hasZeroValue = true;
                     }
 
-                    if (Board.GetCellValue(i, j) == 1)
+                    if (m_Board.GetCellValue(i, j) == 1)
                     {
                         hasOneValue = true;
                     }
@@ -137,40 +141,45 @@ namespace OtheloLogic
             return hasZeroValue || hasOneValue;
         }
 
-        private GameReport CalcGameReport(MoveStatus moveStatus)
+        private GameReport CalcGameReport(eMoveStatuses i_MoveStatus)
         {
             int one = 0, zero = 0;
-            for (int i = 0; i < Board.Size; i++)
-            {
-                for (int j = 0; j < Board.Size; j++)
-                {
-                    if (Board.GetCellValue(i, j) == 0)
-                        zero++;
-                    if (Board.GetCellValue(i, j) == 1)
-                        one++;
 
+            for (int i = 0; i < m_Board.m_Size; i++)
+            {
+                for (int j = 0; j < m_Board.m_Size; j++)
+                {
+                    if (m_Board.GetCellValue(i, j) == 0)
+                    {
+                        zero++;
+                    }
+
+                    if (m_Board.GetCellValue(i, j) == 1)
+                    {
+                        one++;
+                    }
                 }
             }
 
             GameReport gameReport = new GameReport
             {
-                GameStatus = GameStatus.GameOver,
-                MoveStatus = moveStatus,
+                GameStatus = eGameStatuses.GameOver,
+                MoveStatus = i_MoveStatus,
             };
 
             if (one > zero)
             {
                 gameReport.WinnerPoints = one;
                 gameReport.LoserPoints = zero;
-                gameReport.Winner = _players[1];
-                gameReport.Loser = _players[0];
+                gameReport.Winner = m_Players[1];
+                gameReport.Loser = m_Players[0];
             }
             else
             {
                 gameReport.WinnerPoints = zero;
                 gameReport.LoserPoints = one;
-                gameReport.Winner = _players[0];
-                gameReport.Loser = _players[1];
+                gameReport.Winner = m_Players[0];
+                gameReport.Loser = m_Players[1];
             }
 
             return gameReport;
@@ -180,91 +189,95 @@ namespace OtheloLogic
         {
             return new GameReport
             {
-                GameStatus = GameStatus.InProgress,
-                MoveStatus = MoveStatus.HasMoveToMake,
-                LastMovePlayerName = CurrentPlayer.Name
+                GameStatus = eGameStatuses.InProgress,
+                MoveStatus = eMoveStatuses.HasMoveToMake,
+                LastMovePlayerName = m_CurrentPlayer.Name
             };
         }
 
-        private MoveStatus SetPlayerMoves(List<Coordinate> moves)
+        private eMoveStatuses SetPlayerMoves(List<Coordinate> i_Moves)
         {
-            if (moves.Count == 0)
+            if (i_Moves.Count == 0)
             {
-                return MoveStatus.MoveFailure;
+                return eMoveStatuses.MoveFailure;
             }
 
-            foreach (var move in moves)
+            foreach (var move in i_Moves)
             {
-                Board.SetCellValue(_playerValue, move.Row, move.Column);
+                m_Board.SetCellValue(m_PlayerValue, move.Row, move.Column);
             }
 
-            return MoveStatus.MoveSuccess;
+            return eMoveStatuses.MoveSuccess;
         }
 
         private Coordinate GetComputerRandomMove()
         {
-            List<Coordinate> availableMoves = _currentPlayerMoves.GetAvailableComputerMoves();
+            List<Coordinate> availableMoves = m_CurrentPlayerMoves.GetAvailableComputerMoves();
             var random = new Random();
             int index = random.Next(availableMoves.Count);
             return availableMoves[index];
         }
 
-        private int ConvertInputToColumn(char columnChar)
+        private int ConvertInputToColumn(char i_ColumnChar)
         {
             int column = -1;
-            char upperCaseColumn = char.ToUpper(columnChar);
-            if (_characterDict.ContainsKey(upperCaseColumn))
+            char upperCaseColumn = char.ToUpper(i_ColumnChar);
+
+            if (m_CharacterDict.ContainsKey(upperCaseColumn))
             {
-                column = _characterDict[upperCaseColumn];
+                column = m_CharacterDict[upperCaseColumn];
             }
 
             return column;
         }
 
-        private int ConvertInputToRow(char rowChar)
+        private int ConvertInputToRow(char i_RowChar)
         {
             int row = -1;
 
-            if (rowChar >= '1' && rowChar <= '8')
+            if (i_RowChar >= '1' && i_RowChar <= '8')
             {
-                if (Board.Size == 6)
+                if (m_Board.m_Size == 6)
                 {
-                    if (rowChar >= '1' && rowChar <= '6')
-                        row = (int)char.GetNumericValue(rowChar) - 1;
+                    if (i_RowChar >= '1' && i_RowChar <= '6')
+                    {
+                        row = (int)char.GetNumericValue(i_RowChar) - 1;
+                    }
                 }
                 else
                 {
-                    row = (int)char.GetNumericValue(rowChar) - 1;
+                    row = (int)char.GetNumericValue(i_RowChar) - 1;
                 }
             }
+
             return row;
         }
 
         private void SwitchPlayer()
         {
-            _playerIndex = _playerIndex == 0 ? 1 : 0;
+            m_PlayerIndex = m_PlayerIndex == 0 ? 1 : 0;
         }
 
         private void ResetSkippedTurns()
         {
-            _skippedTurns = 0;
+            m_SkippedTurns = 0;
         }
 
-        private void InitializeInputDictionary(int matrixSize)
+        private void InitializeInputDictionary(int i_MatrixSize)
         {
-            int maxUnicode = matrixSize == 8 ? 72 : 70;
+            int maxUnicode = i_MatrixSize == 8 ? 72 : 70;
             int unicode = 65;
 
             for (int i = unicode; i <= maxUnicode; i++)
             {
                 char character = (char)i;
-                _characterDict.Add(character, i - unicode);
+                m_CharacterDict.Add(character, i - unicode);
             }
         }
 
-        private void Sleep(int seconds)
+        private void Sleep(int i_Seconds)
         {
-            Thread.Sleep(seconds * 1000);
+            Thread.Sleep(i_Seconds * 1000);
         }
     }
 }

@@ -2,9 +2,9 @@
 {
     public class GameSettings
     {
-        public GameSettings(int numOfPlayers)
+        public GameSettings(int i_NumOfPlayers)
         {
-            Players = new Player[numOfPlayers];
+            Players = new Player[i_NumOfPlayers];
         }
 
         public int MatrixSize { get; set; }

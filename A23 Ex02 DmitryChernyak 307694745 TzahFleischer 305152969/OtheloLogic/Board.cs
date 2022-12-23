@@ -2,42 +2,44 @@
 {
     public class Board
     {
-        private Cell[,] _matrix;
-        public int Size => _matrix.GetLength(0);
-        public bool IsFull => GetIsFull();
+        private Cell[,] m_Matrix;
+        public int m_Size => m_Matrix.GetLength(0);
+        public bool m_IsFull => GetIsFull();
 
-        public Board(int matrixSize)
+        public Board(int i_MatrixSize)
         {
-            _matrix = new Cell[matrixSize, matrixSize];
+            m_Matrix = new Cell[i_MatrixSize, i_MatrixSize];
             InitializeBoard();
         }
 
         private void InitializeBoard()
         {
-            int matrixSize = _matrix.GetLength(0);
+            int matrixSize = m_Matrix.GetLength(0);
             int middleLocation = matrixSize / 2 - 1;
 
             for(int rows = 0; rows < matrixSize; rows++)
             {
                 for(int cols = 0; cols< matrixSize; cols++)
                 {
-                    _matrix[rows, cols] = new Cell();
+                    m_Matrix[rows, cols] = new Cell();
                 }
             }
-            _matrix[middleLocation, middleLocation].Value = 0;
-            _matrix[middleLocation + 1 , middleLocation].Value = 1;
-            _matrix[middleLocation, middleLocation + 1].Value = 1;
-            _matrix[middleLocation + 1, middleLocation + 1].Value = 0;
+
+            m_Matrix[middleLocation, middleLocation].Value = 0;
+            m_Matrix[middleLocation + 1 , middleLocation].Value = 1;
+            m_Matrix[middleLocation, middleLocation + 1].Value = 1;
+            m_Matrix[middleLocation + 1, middleLocation + 1].Value = 0;
 
         }
 
         private bool GetIsFull()
         { 
-            for (int i = 0; i < Size; i++)
+            for (int i = 0; i < m_Size; i++)
             {
-                for (int j = 0; j < Size; j++)
+                for (int j = 0; j < m_Size; j++)
                 {
                     int? cellValue = GetCellValue(i, j);
+                    
                     if (cellValue == null)
                     {
                         return false;
@@ -48,21 +50,19 @@
             return true;
         }
 
-        internal void SetCellValue(int value, int row, int column)
+        internal void SetCellValue(int i_Value, int i_Row, int i_Column)
         {
-            _matrix[row, column].Value = value;
+            m_Matrix[i_Row, i_Column].Value = i_Value;
         }
 
-        public int? GetCellValue(int row, int column)
+        public int? GetCellValue(int i_Row, int i_Column)
         {
-            return _matrix[row, column].Value;
+            return m_Matrix[i_Row, i_Column].Value;
         }
 
-        public bool IsCellEmpty(int row, int column)
+        public bool IsCellEmpty(int i_Row, int i_Column)
         {   
-            return !_matrix[row, column].IsTaken;
+            return !m_Matrix[i_Row, i_Column].IsTaken;
         }
-
-        
     }
 }

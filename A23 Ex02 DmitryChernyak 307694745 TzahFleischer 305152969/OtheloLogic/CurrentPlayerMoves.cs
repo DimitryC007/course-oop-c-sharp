@@ -4,48 +4,49 @@ namespace OtheloLogic
 {
     class CurrentPlayerMoves
     {
-        private Dictionary<string, List<Coordinate>> _availablePlayerMoves;
-        private Board _board;
-        public bool HasAnyMove => _availablePlayerMoves.Count > 0;
+        private Dictionary<string, List<Coordinate>> m_AvailablePlayerMoves;
+        private Board m_Board;
+        public bool HasAnyMove => m_AvailablePlayerMoves.Count > 0;
 
-        public CurrentPlayerMoves(Board board)
+        public CurrentPlayerMoves(Board i_Board)
         {
-            _board = board;
+            m_Board = i_Board;
         }
 
-        private string CreateKey(int row, int column)
+        private string CreateKey(int i_Row, int i_Column)
         {
-            return $"{row}_{column}";
+            return $"{i_Row}_{i_Column}";
         }
 
-        private bool isInsideBoard(int row, int column)
+        private bool isInsideBoard(int i_Row, int i_Column)
         {
-            return row >= 0 && row < _board.Size && column >= 0 && column < _board.Size;
+            return i_Row >= 0 && i_Row < m_Board.m_Size && i_Column >= 0 && i_Column < m_Board.m_Size;
         }
 
-        private List<Coordinate> MoveInDirection(Coordinate location, int opponentValue, int rowDirection, int columnDirection)
+        private List<Coordinate> MoveInDirection(Coordinate i_Location, int i_OpponentValue, int i_RowDirection, int i_ColumnDirection)
         {
             List<Coordinate> movesInDirection = new List<Coordinate>();
-            int row = location.Row + rowDirection;
-            int column = location.Column + columnDirection;
+            int row = i_Location.Row + i_RowDirection;
+            int column = i_Location.Column + i_ColumnDirection;
 
-            while (isInsideBoard(row, column) && _board.GetCellValue(row, column) != null)
+            while (isInsideBoard(row, column) && m_Board.GetCellValue(row, column) != null)
             {
-                if (_board.GetCellValue(row, column) == opponentValue)
+                if (m_Board.GetCellValue(row, column) == i_OpponentValue)
                 {
                     movesInDirection.Add(new Coordinate(row, column));
-                    row += rowDirection;
-                    column += columnDirection;
+                    row += i_RowDirection;
+                    column += i_ColumnDirection;
                 }
                 else
                 {
                     return movesInDirection;
                 }
             }
+
             return new List<Coordinate>();
         }
 
-        private List<Coordinate> AllCoordinatesForFlipping(Coordinate location, int opponentValue)
+        private List<Coordinate> AllCoordinatesForFlipping(Coordinate i_Location, int i_OpponentValue)
         {
             List<Coordinate> AllCoordinates = new List<Coordinate>();
 
@@ -57,48 +58,52 @@ namespace OtheloLogic
                     {
                         continue;
                     }
-                    AllCoordinates.AddRange(MoveInDirection(location, opponentValue, rowDirection, colDirection));
+
+                    AllCoordinates.AddRange(MoveInDirection(i_Location, i_OpponentValue, rowDirection, colDirection));
                 }
             }
+            
             return AllCoordinates;
         }
 
-        public Dictionary<string, List<Coordinate>> AllCurrentPlayerMoves(int opponentValue)
+        public Dictionary<string, List<Coordinate>> AllCurrentPlayerMoves(int i_OpponentValue)
         {
-            _availablePlayerMoves = new Dictionary<string, List<Coordinate>>();
+            m_AvailablePlayerMoves = new Dictionary<string, List<Coordinate>>();
 
-            for (int row = 0; row < _board.Size; row++)
+            for (int row = 0; row < m_Board.m_Size; row++)
             {
-                for (int column = 0; column < _board.Size; column++)
+                for (int column = 0; column < m_Board.m_Size; column++)
                 {
                     Coordinate location = new Coordinate(row, column);
-                    if (_board.IsCellEmpty(location.Row, location.Column))
+                    
+                    if (m_Board.IsCellEmpty(location.Row, location.Column))
                     {
-                        List<Coordinate> locationMoves = AllCoordinatesForFlipping(location, opponentValue);
+                        List<Coordinate> locationMoves = AllCoordinatesForFlipping(location, i_OpponentValue);
+                        
                         if (locationMoves.Count > 0)
                         {
                             string key = CreateKey(location.Row, location.Column);
                             locationMoves.Add(location);
-                            _availablePlayerMoves[key] = locationMoves;
+                            m_AvailablePlayerMoves[key] = locationMoves;
                         }
                     }
                 }
             }
 
-            return _availablePlayerMoves;
+            return m_AvailablePlayerMoves;
         }
 
-        public List<Coordinate> GetFlippableList(Coordinate location)
+        public List<Coordinate> GetFlippableList(Coordinate i_Location)
         {
-            string key = CreateKey(location.Row, location.Column);
-            return _availablePlayerMoves.ContainsKey(key) ? _availablePlayerMoves[key] : new List<Coordinate>();
+            string key = CreateKey(i_Location.Row, i_Location.Column);
+            return m_AvailablePlayerMoves.ContainsKey(key) ? m_AvailablePlayerMoves[key] : new List<Coordinate>();
         }
 
         public List<Coordinate> GetAvailableComputerMoves()
         {
             List<Coordinate> moves = new List<Coordinate>();
             
-            foreach (var key in _availablePlayerMoves.Keys)
+            foreach (var key in m_AvailablePlayerMoves.Keys)
             {
                 int row, column;
                 string[] rowAndCol = key.Split('_');

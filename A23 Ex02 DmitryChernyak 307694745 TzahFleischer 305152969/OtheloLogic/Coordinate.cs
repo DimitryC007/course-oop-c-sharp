@@ -2,10 +2,10 @@
 {
     public class Coordinate
     {
-        public Coordinate(int row, int column)
+        public Coordinate(int i_Row, int i_Column)
         {
-            Row = row;
-            Column = column;
+            Row = i_Row;
+            Column = i_Column;
         }
 
         public int Row { get; set; }
