@@ -40,16 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutomobileRepair.cs" />
-    <Compile Include="Car.cs" />
-    <Compile Include="Class1.cs" />
-    <Compile Include="IEngine.cs" />
-    <Compile Include="Motorcycle.cs" />
-    <Compile Include="PetrolEngine.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="GarageManager.cs" />
+    <Compile Include="GarageStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tire.cs" />
-    <Compile Include="Truck.cs" />
-    <Compile Include="Vehicle.cs" />
+    <Compile Include="VehicleFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
