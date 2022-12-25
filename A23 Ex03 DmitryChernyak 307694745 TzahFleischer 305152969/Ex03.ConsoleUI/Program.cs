@@ -9,6 +9,7 @@ namespace Ex03.ConsoleUI
     {
         static void Main(string[] args)
         {
+            var x  = new UserInterface();
         }
     }
 }

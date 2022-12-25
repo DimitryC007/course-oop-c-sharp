@@ -5,19 +5,19 @@ namespace Ex03.GarageLogic
 {
     internal class GarageStorage
     {
-        private Dictionary<string, object> _vehicles;
+        private Dictionary<string, AutomobileRepair> _vehicles;
 
         public GarageStorage()
         {
-            _vehicles = new Dictionary<string, object>();
+            _vehicles = new Dictionary<string, AutomobileRepair>();
         }
 
-        public object GetVehicle(string numberPlate)
+        public AutomobileRepair GetVehicle(string numberPlate)
         {
             throw new NotImplementedException();
         }
 
-        public object AddVehicle(string numberPlate)
+        public void AddVehicle(string numberPlate)
         {
             throw new NotImplementedException();
         }

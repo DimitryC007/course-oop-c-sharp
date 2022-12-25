@@ -7,5 +7,6 @@ namespace Ex03.ConsoleUI
 {
     public static class Messages
     {
+
     }
 }

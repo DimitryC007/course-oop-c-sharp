@@ -16,6 +16,7 @@ namespace Ex03.GarageLogic
 
         public bool AddVehicle(string numberPlate)
         {
+            throw new ValueOutOfRangeException(2, 4, "not good");
             throw new NotImplementedException();
         }
 
