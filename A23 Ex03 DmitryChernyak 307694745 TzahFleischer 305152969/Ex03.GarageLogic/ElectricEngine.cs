@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    class PetrolEngine : IEngine
+    class ElectricEngine : IEngine
     {
         public float CurrenEnergy { get; set; }
         public float MaxEnergy { get; set; }

@@ -40,10 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutomobileRepair.cs" />
+    <Compile Include="Car.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="ElectricEngine.cs" />
     <Compile Include="GarageManager.cs" />
     <Compile Include="GarageStorage.cs" />
+    <Compile Include="IEngine.cs" />
+    <Compile Include="Motorcycle.cs" />
+    <Compile Include="PetrolEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tire.cs" />
+    <Compile Include="Truck.cs" />
+    <Compile Include="ValueOutOfRangeException.cs" />
+    <Compile Include="Vehicle.cs" />
+    <Compile Include="VehicleDto.cs" />
     <Compile Include="VehicleFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

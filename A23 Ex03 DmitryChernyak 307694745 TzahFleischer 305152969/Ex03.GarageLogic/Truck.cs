@@ -7,7 +7,7 @@ namespace Ex03.GarageLogic
 {
     internal class Truck : Vehicle
     {
-        public bool _isDangerousGoods;
-        public int _cargoVolume;
+        public bool IsDangerousGoods;
+        public int CargoVolume;
     }
 }

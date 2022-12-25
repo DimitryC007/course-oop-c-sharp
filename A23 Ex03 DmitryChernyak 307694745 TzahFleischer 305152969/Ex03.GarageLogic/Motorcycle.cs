@@ -7,7 +7,7 @@ namespace Ex03.GarageLogic
 {
     internal class Motorcycle: Vehicle
     {
-        public BikeLicenceType _bikeLicence;
-        public int _cubicCapacity;
+        public BikeLicenceType BikeLicence;
+        public int cubicCapacity;
     }
 }
