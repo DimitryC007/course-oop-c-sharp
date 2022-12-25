@@ -14,9 +14,13 @@ namespace Ex03.GarageLogic
             _vehicleFactory = new VehicleFactory();
         }
 
-        public bool AddVehicle(string numberPlate)
+        public bool IsVehicleExists(string numberPlate)
         {
-            throw new ValueOutOfRangeException(2, 4, "not good");
+            throw new NotImplementedException();
+        }
+
+        public void AddVehicle(object VehicleDto)
+        {
             throw new NotImplementedException();
         }
 
