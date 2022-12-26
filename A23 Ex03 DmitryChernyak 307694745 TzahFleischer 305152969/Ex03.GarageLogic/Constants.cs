@@ -12,7 +12,8 @@
     {
         UnderRepair,
         Fixed,
-        Paid
+        Paid,
+        AllStatus
     }
 
     public enum VehicleEnergy

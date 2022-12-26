@@ -16,7 +16,7 @@ namespace Ex03.GarageLogic
 
         public bool IsVehicleExists(string numberPlate)
         {
-            throw new NotImplementedException();
+            return _garageStorage.CheckIfCarExists(numberPlate);
         }
 
         public void AddVehicle(object VehicleDto)
@@ -24,14 +24,14 @@ namespace Ex03.GarageLogic
             throw new NotImplementedException();
         }
 
-        public List<string> ShowVehiclesNumberPlates(VehicleStatus vehicleStatus)
+        public List<string> ShowVehiclesNumberPlatesByStatus(VehicleStatus vehicleStatus)
         {
-            throw new NotImplementedException();
+            return _garageStorage.FindAllLicencePlatesByStatus(vehicleStatus);
         }
 
-        public bool ChangeVehicleStatus(string numberPlate, VehicleStatus vehicleStatus)
+        public void ChangeVehicleStatus(string numberPlate, VehicleStatus vehicleStatus)
         {
-            throw new NotImplementedException();
+            _garageStorage.ChangeVehicleStatus(numberPlate, vehicleStatus);
         }
 
         public void AddAirToTires(string numberPlate)
