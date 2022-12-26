@@ -12,46 +12,49 @@ namespace Ex03.GarageLogic
             _vehicles = new Dictionary<string, AutomobileRepair>();
         }
 
-        public AutomobileRepair GetVehicle(string numberPlate)
+        public AutomobileRepair GetVehicle(string licensePlate)
         {
             throw new NotImplementedException();
         }
 
-        public void AddVehicle(string numberPlate)
+        public void AddVehicle(string licensePlate, AutomobileRepair automobileRepair)
         {
-            throw new NotImplementedException();
+            if (!_vehicles.ContainsKey(licensePlate))
+            {
+                _vehicles.Add(licensePlate, automobileRepair);
+            }
         }
 
-        public bool CheckIfCarExists(string licencePlate)
+        public bool CheckIfVehicleExists(string licencePlate)
         {
             return _vehicles.ContainsKey(licencePlate);
         }
 
         public List<string> FindAllLicencePlatesByStatus(VehicleStatus vehicleStatus)
         {
-            List<string> vehiclesNumberPlatesByStatus = new List<string>();
+            List<string> vehiclesLicensePlatesByStatus = new List<string>();
 
             if (vehicleStatus == VehicleStatus.AllStatus)
             {
-                vehiclesNumberPlatesByStatus = new List<string>(_vehicles.Keys);
+                vehiclesLicensePlatesByStatus = new List<string>(_vehicles.Keys);
             }
             else
             {
-                foreach(string licencePlate in _vehicles.Keys)
+                foreach (string licensePlate in _vehicles.Keys)
                 {
-                    if(_vehicles[licencePlate]._vehicleStatus == vehicleStatus)
+                    if (_vehicles[licensePlate].VehicleStatus == vehicleStatus)
                     {
-                        vehiclesNumberPlatesByStatus.Add(licencePlate);
+                        vehiclesLicensePlatesByStatus.Add(licensePlate);
                     }
                 }
             }
 
-            return vehiclesNumberPlatesByStatus;
+            return vehiclesLicensePlatesByStatus;
         }
 
-        public void ChangeVehicleStatus(string numberPlate, VehicleStatus vehicleStatus)
+        public void ChangeVehicleStatus(string licensePlate, VehicleStatus vehicleStatus)
         {
-            _vehicles[numberPlate]._vehicleStatus = vehicleStatus;
+            _vehicles[licensePlate].VehicleStatus = vehicleStatus;
         }
 
     }

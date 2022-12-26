@@ -54,7 +54,7 @@
     <Compile Include="Truck.cs" />
     <Compile Include="ValueOutOfRangeException.cs" />
     <Compile Include="Vehicle.cs" />
-    <Compile Include="VehicleDto.cs" />
+    <Compile Include="GarageCustomer.cs" />
     <Compile Include="VehicleFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

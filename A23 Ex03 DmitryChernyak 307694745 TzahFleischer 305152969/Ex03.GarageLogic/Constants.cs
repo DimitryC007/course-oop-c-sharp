@@ -2,10 +2,10 @@
 {
     public enum CarColor
     {
-        Red,
-        Blue,
-        White,
-        Grey
+        Red = 1,
+        Blue = 2,
+        White = 3,
+        Grey = 4
     }
 
     public enum VehicleStatus

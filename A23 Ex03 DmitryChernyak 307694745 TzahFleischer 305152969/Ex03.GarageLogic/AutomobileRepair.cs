@@ -7,9 +7,9 @@ namespace Ex03.GarageLogic
 {
     internal class AutomobileRepair
     {
-        public string _ownerName;
-        public string _ownerPhone;
-        public VehicleStatus _vehicleStatus;
-        public Vehicle _vehicle;
+        public string OwnerName { get; set; }
+        public string OwnerPhone { get; set; }
+        public VehicleStatus VehicleStatus { get; set; }
+        public Vehicle Vehicle { get; set; }
     }
 }

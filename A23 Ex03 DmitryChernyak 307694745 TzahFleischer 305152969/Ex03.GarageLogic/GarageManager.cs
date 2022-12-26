@@ -14,14 +14,35 @@ namespace Ex03.GarageLogic
             _vehicleFactory = new VehicleFactory();
         }
 
-        public bool IsVehicleExists(string numberPlate)
+        public bool TryAddVehicleToGarage(string licensePlate)
         {
-            return _garageStorage.CheckIfCarExists(numberPlate);
+            bool isVehicleExists = _garageStorage.CheckIfVehicleExists(licensePlate);
+
+            if (isVehicleExists)
+            {
+                _garageStorage.ChangeVehicleStatus(licensePlate, VehicleStatus.UnderRepair);
+            }
+
+            return isVehicleExists;
         }
 
-        public void AddVehicle(object VehicleDto)
+        private bool IsVehicleExists(string licensePlate)
         {
-            throw new NotImplementedException();
+            return _garageStorage.CheckIfVehicleExists(licensePlate);
+        }
+
+        public void AddVehicle(GarageCustomer garageCustomer)
+        {
+            Vehicle vehicle = _vehicleFactory.CreateVehicle(garageCustomer.VehicleType, garageCustomer.Vehicle);
+            AutomobileRepair automobileRepair = new AutomobileRepair
+            {
+                Vehicle = vehicle,
+                OwnerName = garageCustomer.OwnerInfo.Name,
+                OwnerPhone = garageCustomer.OwnerInfo.Phone,
+                VehicleStatus = VehicleStatus.UnderRepair
+            };
+
+            _garageStorage.AddVehicle(vehicle.LicensePlate, automobileRepair);
         }
 
         public List<string> ShowVehiclesNumberPlatesByStatus(VehicleStatus vehicleStatus)
@@ -29,27 +50,27 @@ namespace Ex03.GarageLogic
             return _garageStorage.FindAllLicencePlatesByStatus(vehicleStatus);
         }
 
-        public void ChangeVehicleStatus(string numberPlate, VehicleStatus vehicleStatus)
+        public void ChangeVehicleStatus(string licensePlate, VehicleStatus vehicleStatus)
         {
-            _garageStorage.ChangeVehicleStatus(numberPlate, vehicleStatus);
+            _garageStorage.ChangeVehicleStatus(licensePlate, vehicleStatus);
         }
 
-        public void AddAirToTires(string numberPlate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddFuelToVehicle(string numberPlate, EnergyType energyType, float quantity)
+        public void AddAirToTires(string licensePlate)
         {
             throw new NotImplementedException();
         }
 
-        public void ChargeVehicle(string numberPlate, float chargingHours)
+        public void AddFuelToVehicle(string licensePlate, EnergyType energyType, float quantity)
         {
             throw new NotImplementedException();
         }
 
-        public string GetVehicleDetails(string numberPlate)
+        public void ChargeVehicle(string licensePlate, float chargingHours)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetVehicleDetails(string licensePlate)
         {
             throw new NotImplementedException();
         }

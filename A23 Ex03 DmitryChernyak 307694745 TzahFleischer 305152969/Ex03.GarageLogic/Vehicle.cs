@@ -8,7 +8,7 @@ namespace Ex03.GarageLogic
     internal abstract class Vehicle
     {
         public string Model;
-        public string NumberPlate;
+        public string LicensePlate;
         public float RemainingEnergy;
         public List<Tire> Tires;
         public IEngine VehicelEngine;

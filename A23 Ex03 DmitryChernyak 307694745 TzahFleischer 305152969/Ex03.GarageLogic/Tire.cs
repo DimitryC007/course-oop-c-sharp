@@ -7,9 +7,9 @@ namespace Ex03.GarageLogic
 {
     internal class Tire
     {
-        public string ManufacturerName;
-        public float TirePressure;
-        public float MaxTirePressure;
+        public string ManufacturerName { get; set; }
+        public float TirePressure { get; set; }
+        public float MaxTirePressure { get; set; }
 
         public void AddAirToTire(float airAmount)
         {
