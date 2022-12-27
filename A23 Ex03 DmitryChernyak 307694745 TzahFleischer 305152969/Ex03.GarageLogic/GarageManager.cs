@@ -50,9 +50,18 @@ namespace Ex03.GarageLogic
             return _garageStorage.FindAllLicencePlatesByStatus(vehicleStatus);
         }
 
-        public void ChangeVehicleStatus(string licensePlate, VehicleStatus vehicleStatus)
+        public bool ChangeVehicleStatus(string licensePlate, VehicleStatus vehicleStatus)
         {
-            _garageStorage.ChangeVehicleStatus(licensePlate, vehicleStatus);
+            //throw new NotImplementedException();
+            bool exist = IsVehicleExists(licensePlate);
+
+            if(exist)
+            {
+                _garageStorage.ChangeVehicleStatus(licensePlate, vehicleStatus);
+            }
+
+
+            return exist;
         }
 
         public void AddAirToTires(string licensePlate)

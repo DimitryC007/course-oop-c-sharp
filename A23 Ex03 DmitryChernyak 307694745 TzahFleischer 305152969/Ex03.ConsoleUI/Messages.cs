@@ -21,6 +21,14 @@ namespace Ex03.ConsoleUI
         public static readonly string BikeCubicCapacityMessage = "Bike cubic capacity:";
         public static readonly string CargoVolumeMessage = "Cargo volume:";
         public static readonly string IsDangerousGoods = "Is Dangerous Goods: type only true or false";
+        public static readonly string ChangeCarStatusMessage = "To change car status please enter car licence:";
+        public static readonly string EnterCarStatusMessage = "Pleas Choose the status you want to change to";
+        public static readonly string EnterCarStatustToFilterByMessage = "Please Choose the status you want to filter by";
+        public static readonly string VehicleDoesntExistMessage = "The Vehicle Doesnt Exist";
+        public static readonly string VehicleStatusChangedSuccefullyMessage = "The Vehicle status changed succesfully";
+
+
+
 
         public static string GarageMenuMessage()
         {
@@ -38,6 +46,19 @@ namespace Ex03.ConsoleUI
             garageMenu.Append("* For exit press 8");
             return garageMenu.ToString();
         }
+
+        public static string CarStatusMenu()
+        {
+            StringBuilder statusMenu = new StringBuilder();
+            
+                    
+            statusMenu.Append(string.Format("- Press 1 for under rapair status{0}", Environment.NewLine));
+            statusMenu.Append(string.Format("- Press 2 for filter by fixed status{0}", Environment.NewLine));
+            statusMenu.Append(string.Format("- Press 3 for filter by paid status{0}", Environment.NewLine));
+            statusMenu.Append(string.Format("- Press 4 for view all cars{0}", Environment.NewLine));
+            return statusMenu.ToString();
+        }
+         
 
         public static string VehicleTypeMenu()
         {

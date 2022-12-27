@@ -42,6 +42,7 @@ namespace Ex03.ConsoleUI
                         }
                     case (int)UserInterfaceChoise.ShowFilteredVehicle:
                         {
+                            ShowVehiclesLicensePlates();
                             break;
                         }
                     case (int)UserInterfaceChoise.ChangeVehicleStatus:
@@ -79,16 +80,57 @@ namespace Ex03.ConsoleUI
 
         private void ChangeVehicleStatus()
         {
-            ///TODO: check if car licence exists
-            ///if yes change car status
-            ///if not print messege
+            PrintMessage(Messages.ChangeCarStatusMessage);
+            string licencePlate = GetInput();
+            PrintMessage(Messages.EnterCarStatusMessage);
+            PrintMessage(Messages.CarStatusMenu());
+            string vehicleStatus = GetInput();
+            while (!Validations.IsInputEnumTypeValid<VehicleType>(vehicleStatus))
+            {
+                PrintMessage(Messages.InvalidInputMessage);
+                PrintMessage(Messages.VehicleTypeMenu());
+                vehicleStatus = GetInput();
+            }
+
+
+            bool isVehicleExists = _garageManager.ChangeVehicleStatus(licencePlate, (VehicleStatus)Enum.Parse(typeof(VehicleStatus), vehicleStatus));
+            
+            if(!isVehicleExists)
+            {
+                PrintMessage(Messages.VehicleDoesntExistMessage, 2);
+            }
+            else
+            {
+                PrintMessage(Messages.VehicleStatusChangedSuccefullyMessage, 2);
+            }
+  
+
         }
 
         private void ShowVehiclesLicensePlates()
         {
-            ///TODO: prompt for status,
-            ///send to showvehiclesnumberplates with status
-            ///print list
+            Clear();
+            List<string> carLicencePlates = new List<string>();
+            PrintMessage(Messages.EnterCarStatustToFilterByMessage);
+            PrintMessage(Messages.CarStatusMenu());
+            string vehicleStatus = GetInput();
+            
+            
+            while (!Validations.IsInputEnumTypeValid<VehicleStatus>(vehicleStatus))
+            {
+                PrintMessage(Messages.InvalidInputMessage);
+                PrintMessage(Messages.CarStatusMenu());
+                vehicleStatus = GetInput();
+            }
+           
+
+            foreach(string carLicence in carLicencePlates)
+            {
+                Console.WriteLine(carLicence);
+            }
+
+            PrintMessage("", 10);
+                
         }
 
         private void AddAirToTires()

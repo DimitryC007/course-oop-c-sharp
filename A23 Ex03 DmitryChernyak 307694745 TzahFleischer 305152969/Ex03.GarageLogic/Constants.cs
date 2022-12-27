@@ -10,10 +10,10 @@
 
     public enum VehicleStatus
     {
-        UnderRepair,
-        Fixed,
-        Paid,
-        AllStatus
+        UnderRepair = 1,
+        Fixed = 2,
+        Paid = 3,
+        AllStatus = 4
     }
 
     public enum VehicleEnergy
