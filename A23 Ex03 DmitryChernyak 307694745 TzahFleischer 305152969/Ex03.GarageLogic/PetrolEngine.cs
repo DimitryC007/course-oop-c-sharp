@@ -7,7 +7,7 @@ namespace Ex03.GarageLogic
 {
     class PetrolEngine : IEngine
     {
-        public float CurrenEnergy { get; set; }
+        public float CurrentEnergy { get; set; }
         public float MaxEnergy { get; set; }
 
         public void AddEnergy(float quantity, EnergyType energy)

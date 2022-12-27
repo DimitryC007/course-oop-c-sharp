@@ -9,51 +9,56 @@ namespace Ex03.GarageLogic
 
         public Vehicle CreateVehicle(VehicleType vehicleType, GarageCustomer.VehicleBase vehicle)
         {
+            
             switch (vehicleType)
             {
                 case VehicleType.PetrolCar:
                 case VehicleType.ElectricCar:
                     {
                         GarageCustomer.CarDto carDto = vehicle as GarageCustomer.CarDto;
-                        return new Car
-                        {
-                            Color = carDto.Color,
-                            LicensePlate = carDto.LicensePlate,
-                            Model = carDto.Model,
-                            RemainingEnergy = carDto.EnergyCapacity,
-                            NumOfDoors = carDto.NumOfDoors,
-                            Tires = new List<Tire>(4) { new Tire { TirePressure = carDto.TirePressure } },
-                        };
+                        return new Car();
+                        
                     }
                 case VehicleType.PetrolBike:
                 case VehicleType.ElectricBike:
                     {
                         GarageCustomer.BikeDto bikeDto = vehicle as GarageCustomer.BikeDto;
-                        return null;
+                        return new Motorcycle();
                        
                     }
                 case VehicleType.PetrolTruck:
                     {
 
                         GarageCustomer.TruckDto truckDto = vehicle as GarageCustomer.TruckDto;
-                        return new Truck
-                        {
-                            CargoVolume = truckDto.CargoVolume,
-                            IsDangerousGoods = truckDto.IsDangerousGoods,
-                            Model = truckDto.Model,
-                            LicensePlate = truckDto.LicensePlate,
-                            RemainingEnergy = truckDto.EnergyCapacity,
-                            Tires = new List<Tire>(4) { new Tire { TirePressure = truckDto.TirePressure } },
-                        };
+                        return new Truck();
+                        
                     }
                 default:
-                    throw new NotSupportedException("VehicleType is unknown");
+                    throw new NotSupportedException("Vehicle Type is unknown");
             }
         }
 
-        private object CreateVehicleEnergy(VehicleType vehicleType)
+        private IEngine CreateVehicleEnergy(VehicleType vehicleType)
         {
-            throw new NotImplementedException();
+            switch (vehicleType)
+            {
+                case VehicleType.PetrolCar:
+                case VehicleType.PetrolBike:
+                case VehicleType.PetrolTruck:
+                    {
+                        return new PetrolEngine();
+                        
+                    }
+                  
+                case VehicleType.ElectricCar:
+                case VehicleType.ElectricBike:
+                    {
+                        return new ElectricEngine();
+                    }
+                default:
+                    throw new NotSupportedException("Engine Type is unknown");
+
+            }
         }
     }
 }

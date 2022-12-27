@@ -7,7 +7,7 @@ namespace Ex03.GarageLogic
 {
     interface IEngine
     {
-        float CurrenEnergy { get; set; }
+        float CurrentEnergy { get; set; }
         float MaxEnergy { get; set; }
 
         void AddEnergy(float quantity, EnergyType energy);
