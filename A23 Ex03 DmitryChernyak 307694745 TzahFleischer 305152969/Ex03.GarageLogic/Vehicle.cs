@@ -50,5 +50,10 @@ namespace Ex03.GarageLogic
                 wheel.ManufacturerName = manufacturerName;
             }
         }
+
+        public override string ToString()
+        {
+            return $"{Environment.NewLine}vehicle details: {Environment.NewLine}Lisence plate: {LicensePlate}{Environment.NewLine}Model: {Model}{Environment.NewLine}Wheel details: manufactare: {Wheels[0].ManufacturerName} ,wheels: {NumOfWheels} ,max tire pressure: {Wheels[0].MaxTirePressure} ,current tire pressure: {Wheels[0].TirePressure}{Environment.NewLine}Engine details:{Engine.ToString()}";
+        }
     }
 }

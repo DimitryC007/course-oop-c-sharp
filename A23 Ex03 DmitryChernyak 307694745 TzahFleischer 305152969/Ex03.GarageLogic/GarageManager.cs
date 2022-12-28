@@ -54,19 +54,17 @@ namespace Ex03.GarageLogic
 
         public bool ChangeVehicleStatus(string licensePlate, VehicleStatus vehicleStatus)
         {
-            //throw new NotImplementedException();
-            bool exist = IsVehicleExists(licensePlate);
+            bool isExists = IsVehicleExists(licensePlate);
 
-            if(exist)
+            if(isExists)
             {
                 _garageStorage.ChangeVehicleStatus(licensePlate, vehicleStatus);
             }
 
-
-            return exist;
+            return isExists;
         }
 
-        public void AddAirToTires(string licensePlate)
+        public void AddAirToTires(string licensePlate , float tirePressure)
         {
             throw new NotImplementedException();
         }
@@ -83,7 +81,14 @@ namespace Ex03.GarageLogic
 
         public string GetVehicleDetails(string licensePlate)
         {
-            throw new NotImplementedException();
+            AutomobileRepair automobileRepair = _garageStorage.GetVehicle(licensePlate);
+            
+            if (automobileRepair == null)
+            {
+                return "We didn't found your vehicle sir";
+            }
+            string vehicleGeneralInfo = $"owner name: {automobileRepair.OwnerName} ,owner phone: {automobileRepair.OwnerPhone} ,vehicle status: {automobileRepair.VehicleStatus}";
+            return vehicleGeneralInfo + automobileRepair.Vehicle.ToString();
         }
     }
 }

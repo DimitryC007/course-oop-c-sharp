@@ -14,7 +14,14 @@ namespace Ex03.GarageLogic
 
         public AutomobileRepair GetVehicle(string licensePlate)
         {
-            throw new NotImplementedException();
+            bool isVehicleExists = CheckIfVehicleExists(licensePlate);
+
+            if (!isVehicleExists)
+            {
+                return null;
+            }
+
+            return _vehicles[licensePlate];
         }
 
         public void AddVehicle(string licensePlate, AutomobileRepair automobileRepair)

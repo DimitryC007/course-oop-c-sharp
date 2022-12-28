@@ -18,6 +18,7 @@ namespace Ex03.ConsoleUI
         public static readonly string FuelStatusMessage = "Fuel status:";
         public static readonly string NumOfDoorsMessage = "Num of doors:";
         public static readonly string VehicleModelMessage = "Vehicle model:";
+        public static readonly string WheelManufactareMessage = "Wheel manufactare:";
         public static readonly string BikeCubicCapacityMessage = "Bike cubic capacity:";
         public static readonly string CargoVolumeMessage = "Cargo volume:";
         public static readonly string IsDangerousGoods = "Is Dangerous Goods: type only true or false";
@@ -26,6 +27,7 @@ namespace Ex03.ConsoleUI
         public static readonly string EnterCarStatustToFilterByMessage = "Please Choose the status you want to filter by";
         public static readonly string VehicleDoesntExistMessage = "The Vehicle Doesnt Exist";
         public static readonly string VehicleStatusChangedSuccefullyMessage = "The Vehicle status changed succesfully";
+        public static readonly string VehicleLicenseNumberMessage = "Vehicle license number:";
 
 
 
