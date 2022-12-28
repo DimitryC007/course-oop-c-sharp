@@ -26,9 +26,10 @@ namespace Ex03.ConsoleUI
         public static readonly string EnterCarStatustToFilterByMessage = "Please Choose the status you want to filter by";
         public static readonly string VehicleDoesntExistMessage = "The Vehicle Doesnt Exist";
         public static readonly string VehicleStatusChangedSuccefullyMessage = "The Vehicle status changed succesfully";
-
-
-
+        public static readonly string AddFuelMessage = "Please enter the licence plate of the car you want to refuel";
+        public static readonly string EnterAmountOfFuel = "Please enter the amount of fuel";
+        public static readonly string EnterFuelType = "please enter the type of fuel";
+        public static readonly string FuelAddedCorrectlyMessage = "Fuel added succesfully";
 
         public static string GarageMenuMessage()
         {
@@ -58,7 +59,19 @@ namespace Ex03.ConsoleUI
             statusMenu.Append(string.Format("- Press 4 for view all cars{0}", Environment.NewLine));
             return statusMenu.ToString();
         }
-         
+
+        public static string FuelTypeMenu()
+        {
+            StringBuilder statusMenu = new StringBuilder();
+
+
+            statusMenu.Append(string.Format("- Press 1 for under soler{0}", Environment.NewLine));
+            statusMenu.Append(string.Format("- Press 2 for octan 95{0}", Environment.NewLine));
+            statusMenu.Append(string.Format("- Press 2 for octan 96{0}", Environment.NewLine));
+            statusMenu.Append(string.Format("- Press 2 for octan 98{0}", Environment.NewLine));
+            return statusMenu.ToString();
+        }
+
 
         public static string VehicleTypeMenu()
         {

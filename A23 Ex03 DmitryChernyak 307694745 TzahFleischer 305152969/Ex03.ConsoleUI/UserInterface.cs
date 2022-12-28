@@ -122,9 +122,10 @@ namespace Ex03.ConsoleUI
                 PrintMessage(Messages.CarStatusMenu());
                 vehicleStatus = GetInput();
             }
-           
 
-            foreach(string carLicence in carLicencePlates)
+            carLicencePlates = _garageManager.ShowVehiclesNumberPlatesByStatus((VehicleStatus)Enum.Parse(typeof(VehicleStatus), vehicleStatus));
+
+            foreach (string carLicence in carLicencePlates)
             {
                 Console.WriteLine(carLicence);
             }
@@ -143,14 +144,59 @@ namespace Ex03.ConsoleUI
 
         private void AddFuelToVehicle()
         {
+            Clear();
+            PrintMessage(Messages.AddFuelMessage);
+            string licencePlate = GetInput();
+            PrintMessage(Messages.EnterAmountOfFuel);
+            string fuel = GetInput();
+            
+
+            while (!Validations.IsInputFloatValid(fuel) || !Validations.IsPositiveNumberValid(int.Parse(fuel)))
+            {
+                PrintMessage(Messages.InvalidInputMessage);
+                fuel = GetInput();
+            }
+            PrintMessage(Messages.EnterFuelType);
+            EnergyType fuelType = GetFuelType();
+
+
+            float fuelAmount = float.Parse(fuel);
+            try
+            {
+                bool isVehicleExists = _garageManager.AddFuelToVehicle(licencePlate, fuelType, fuelAmount);
+                if (!isVehicleExists)
+                {
+                    PrintMessage(Messages.VehicleDoesntExistMessage, 2);
+                }
+                else
+                {
+                    PrintMessage(Messages.FuelAddedCorrectlyMessage,2);
+                }
+            }
+            catch(ValueOutOfRangeException outOfRangeEx)
+            {
+                PrintMessage(outOfRangeEx.Message, 2);
+            }
+            catch(ArgumentException argumentEx)
+            {
+                PrintMessage(argumentEx.Message,2);
+            }
+
+           
+
+            
+
             ///TODO: prompt for licence plate
             ///check if exists
             ///if yes prompt fuel and call garagefuntcion(needs to throw exception)
             ///if no print messege
         }
 
+        
+
         private void ChargeVehicleBattery()
         {
+            
             ///TODO: prompt for licence plate
             ///check if exists
             ///if yes prompt energy and call garagefuntcion(needs to throw exception)
@@ -269,6 +315,21 @@ namespace Ex03.ConsoleUI
             }
 
             return (CarColor)Enum.Parse(typeof(CarColor), carColor);
+        }
+
+        private EnergyType GetFuelType()
+        {
+            PrintMessage(Messages.FuelTypeMenu());
+            string fuelType = GetInput();
+
+            while (!Validations.IsInputEnumTypeValid<EnergyType>(fuelType))
+            {
+                PrintMessage(Messages.InvalidInputMessage);
+                PrintMessage(Messages.CarColorTypeMenu());
+                fuelType = GetInput();
+            }
+
+            return (EnergyType)Enum.Parse(typeof(EnergyType), fuelType);
         }
 
         private int GetCarNumOfDoorsInput()

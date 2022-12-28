@@ -66,14 +66,20 @@ namespace Ex03.GarageLogic
             return exist;
         }
 
-        public void AddAirToTires(string licensePlate)
+        public void AddAirToTires(string licensePlate,float airAmount)
         {
             throw new NotImplementedException();
         }
 
-        public void AddFuelToVehicle(string licensePlate, EnergyType energyType, float quantity)
+        public bool AddFuelToVehicle(string licensePlate, EnergyType energyType, float quantity)
         {
-            throw new NotImplementedException();
+            bool isVehicleExists = _garageStorage.CheckIfVehicleExists(licensePlate);
+            if (isVehicleExists)
+            {
+                _garageStorage.AddFuel(licensePlate,energyType, quantity);
+            }
+
+            return isVehicleExists;
         }
 
         public void ChargeVehicle(string licensePlate, float chargingHours)

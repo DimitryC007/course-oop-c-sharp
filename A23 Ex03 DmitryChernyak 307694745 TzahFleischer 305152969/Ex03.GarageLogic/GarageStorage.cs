@@ -57,5 +57,9 @@ namespace Ex03.GarageLogic
             _vehicles[licensePlate].VehicleStatus = vehicleStatus;
         }
 
+        internal void AddFuel(string licensePlate, EnergyType energyType, float quantity)
+        {
+            _vehicles[licensePlate].Vehicle.Engine.AddEnergy(quantity, energyType);
+        }
     }
 }
