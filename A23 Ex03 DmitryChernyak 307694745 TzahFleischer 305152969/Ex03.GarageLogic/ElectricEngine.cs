@@ -6,7 +6,7 @@ namespace Ex03.GarageLogic
     {
         public ElectricEngine(float maxEnergy)
         {
-            MaxEnergy = MaxEnergy;
+            MaxEnergy = maxEnergy;
         }
 
         public float CurrentEnergy { get; set; }
@@ -30,7 +30,7 @@ namespace Ex03.GarageLogic
         public override string ToString()
         {
             return string.Format(
-            "Electric Engine: {0}Battery status: {1}",
+            "{0}Electric Engine: {0}Battery status: {1}",
             Environment.NewLine,
             EnergyPercentage);
         }

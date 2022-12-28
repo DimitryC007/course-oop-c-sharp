@@ -36,7 +36,7 @@ namespace Ex03.GarageLogic
         public override string ToString()
         {
             return string.Format(
-                "Petrol Engine: {0}Petrol type: {1}{0}Fuel amount: {2}",
+                "{0}Petrol Engine: {0}Petrol type: {1}{0}Fuel amount: {2}",
                 Environment.NewLine,
                 CurrentEnergyType.ToString(),
                 EnergyPercentage);

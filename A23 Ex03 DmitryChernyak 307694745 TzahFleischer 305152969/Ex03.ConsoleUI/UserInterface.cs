@@ -63,6 +63,7 @@ namespace Ex03.ConsoleUI
                         }
                     case (int)UserInterfaceChoise.ShowVehicleDetails:
                         {
+                            ShowVehicleDetails();
                             break;
                         }
                     case (int)UserInterfaceChoise.Exit:
@@ -94,8 +95,8 @@ namespace Ex03.ConsoleUI
 
 
             bool isVehicleExists = _garageManager.ChangeVehicleStatus(licencePlate, (VehicleStatus)Enum.Parse(typeof(VehicleStatus), vehicleStatus));
-            
-            if(!isVehicleExists)
+
+            if (!isVehicleExists)
             {
                 PrintMessage(Messages.VehicleDoesntExistMessage, 2);
             }
@@ -103,7 +104,7 @@ namespace Ex03.ConsoleUI
             {
                 PrintMessage(Messages.VehicleStatusChangedSuccefullyMessage, 2);
             }
-  
+
 
         }
 
@@ -114,8 +115,8 @@ namespace Ex03.ConsoleUI
             PrintMessage(Messages.EnterCarStatustToFilterByMessage);
             PrintMessage(Messages.CarStatusMenu());
             string vehicleStatus = GetInput();
-            
-            
+
+
             while (!Validations.IsInputEnumTypeValid<VehicleStatus>(vehicleStatus))
             {
                 PrintMessage(Messages.InvalidInputMessage);
@@ -131,7 +132,7 @@ namespace Ex03.ConsoleUI
             }
 
             PrintMessage("", 10);
-                
+
         }
 
         private void AddAirToTires()
@@ -205,10 +206,8 @@ namespace Ex03.ConsoleUI
 
         private void ShowVehicleDetails()
         {
-            ///TODO: prompt for licence plate
-            ///check if exists
-            ///if yes call garagefuntcion(needs to throw exception)
-            ///if no print messege
+            string userInput = GetStringInput(Messages.VehicleLicenseNumberMessage);
+            PrintMessage(_garageManager.GetVehicleDetails(userInput), 3);
         }
 
         private int GetMenuInput()
@@ -270,7 +269,8 @@ namespace Ex03.ConsoleUI
                 LicensePlate = licensePlate,
                 Color = GetCarColorInput(),
                 NumOfDoors = GetCarNumOfDoorsInput(),
-                Model = GetVehicleModelInput(),
+                Model = GetStringInput(Messages.VehicleModelMessage),
+                ManufactareName = GetStringInput(Messages.WheelManufactareMessage),
                 TirePressure = GetFloatInput(Messages.TirePressureMessage),
                 EnergyAmount = GetVehicleEnergyInput(vehicleType)
             };
@@ -283,7 +283,8 @@ namespace Ex03.ConsoleUI
                 LicensePlate = licensePlate,
                 BikeLicence = GetBikeLicenceInput(),
                 CubicCapacity = GetIntInput(Messages.BikeCubicCapacityMessage),
-                Model = GetVehicleModelInput(),
+                Model = GetStringInput(Messages.VehicleModelMessage),
+                ManufactareName = GetStringInput(Messages.WheelManufactareMessage),
                 TirePressure = GetFloatInput(Messages.TirePressureMessage),
                 EnergyAmount = GetVehicleEnergyInput(vehicleType)
             };
@@ -294,7 +295,8 @@ namespace Ex03.ConsoleUI
             return new GarageCustomer.TruckDto
             {
                 LicensePlate = licensePlate,
-                Model = GetVehicleModelInput(),
+                Model = GetStringInput(Messages.VehicleModelMessage),
+                ManufactareName = GetStringInput(Messages.WheelManufactareMessage),
                 TirePressure = GetFloatInput(Messages.TirePressureMessage),
                 EnergyAmount = GetVehicleEnergyInput(vehicleType),
                 CargoVolume = GetFloatInput(Messages.CargoVolumeMessage),
@@ -345,21 +347,6 @@ namespace Ex03.ConsoleUI
             }
 
             return int.Parse(numOfDoors);
-        }
-
-        private string GetVehicleModelInput()
-        {
-            PrintMessage(Messages.VehicleModelMessage);
-            string vehicleModel = GetInput();
-
-            while (!Validations.IsInputStringValid(vehicleModel))
-            {
-                PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(Messages.VehicleModelMessage);
-                vehicleModel = GetInput();
-            }
-
-            return vehicleModel;
         }
 
         private float GetVehicleEnergyInput(VehicleType vehicleType)
