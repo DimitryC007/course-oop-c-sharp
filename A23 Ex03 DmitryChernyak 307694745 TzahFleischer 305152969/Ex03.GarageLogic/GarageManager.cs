@@ -33,7 +33,9 @@ namespace Ex03.GarageLogic
 
         public void AddVehicle(GarageCustomer garageCustomer)
         {
-            Vehicle vehicle = _vehicleFactory.CreateVehicle(garageCustomer.VehicleType, garageCustomer.Vehicle);
+            Vehicle vehicle = _vehicleFactory.CreateVehicle(garageCustomer.VehicleType);
+            vehicle.SetVehicleInformation(garageCustomer.Vehicle);
+
             AutomobileRepair automobileRepair = new AutomobileRepair
             {
                 Vehicle = vehicle,

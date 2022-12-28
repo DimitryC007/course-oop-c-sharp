@@ -1,23 +1,24 @@
 ﻿namespace Ex03.GarageLogic
 {
-    internal class Truck : Vehicle
+    internal class Bike: Vehicle
     {
-        public Truck(IEngine engine)
+        public Bike(IEngine engine)
         {
             Engine = engine;
         }
-        public override int NumOfWheels => 14;
-        public override int MaxTirePressure => 34;
+
+        public override int NumOfWheels => 2;
+        public override int MaxTirePressure => 28;
         public override IEngine Engine { get; set; }
-        public bool IsDangerousGoods { get; set; }
-        public float CargoVolume { get; set; }
+        public BikeLicenceType BikeLicence { get; set; }
+        public int cubicCapacity { get; set; }
 
         public override void SetVehicleInformation(GarageCustomer.VehicleBase vehicle)
         {
             base.SetVehicleInformation(vehicle);
-            GarageCustomer.TruckDto truckDto = vehicle as GarageCustomer.TruckDto;
-            CargoVolume = truckDto.CargoVolume;
-            IsDangerousGoods = truckDto.IsDangerousGoods;
+            GarageCustomer.BikeDto bikeDto = vehicle as GarageCustomer.BikeDto;
+            BikeLicence = bikeDto.BikeLicence;
+            cubicCapacity = bikeDto.CubicCapacity;
         }
 
         public override void UpdateWheels(string manufacturerName, float tirePressure)

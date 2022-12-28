@@ -226,7 +226,7 @@ namespace Ex03.ConsoleUI
                 NumOfDoors = GetCarNumOfDoorsInput(),
                 Model = GetVehicleModelInput(),
                 TirePressure = GetFloatInput(Messages.TirePressureMessage),
-                EnergyCapacity = GetVehicleEnergyInput(vehicleType)
+                EnergyAmount = GetVehicleEnergyInput(vehicleType)
             };
         }
 
@@ -239,7 +239,7 @@ namespace Ex03.ConsoleUI
                 CubicCapacity = GetIntInput(Messages.BikeCubicCapacityMessage),
                 Model = GetVehicleModelInput(),
                 TirePressure = GetFloatInput(Messages.TirePressureMessage),
-                EnergyCapacity = GetVehicleEnergyInput(vehicleType)
+                EnergyAmount = GetVehicleEnergyInput(vehicleType)
             };
         }
 
@@ -250,7 +250,7 @@ namespace Ex03.ConsoleUI
                 LicensePlate = licensePlate,
                 Model = GetVehicleModelInput(),
                 TirePressure = GetFloatInput(Messages.TirePressureMessage),
-                EnergyCapacity = GetVehicleEnergyInput(vehicleType),
+                EnergyAmount = GetVehicleEnergyInput(vehicleType),
                 CargoVolume = GetFloatInput(Messages.CargoVolumeMessage),
                 IsDangerousGoods = IsDangerousGoodsInput()
             };

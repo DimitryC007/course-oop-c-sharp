@@ -1,23 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 
 namespace Ex03.GarageLogic
 {
-    class PetrolEngine : IEngine
+    internal class PetrolEngine : IEngine
     {
+
+        public PetrolEngine(float maxEnergy, EnergyType energyType)
+        {
+            MaxEnergy = maxEnergy;
+            CurrentEnergyType = energyType;
+        }
+
         public float CurrentEnergy { get; set; }
         public float MaxEnergy { get; set; }
+        public EnergyType CurrentEnergyType { get; set; }
+        public float EnergyPercentage => CurrentEnergy / MaxEnergy * 100;
+        public int MinEnergy => 10;
 
-        public void AddEnergy(float quantity, EnergyType energy)
+        public void AddEnergy(float energyAmount, EnergyType energyToAdd)
         {
-            throw new NotImplementedException();
+            if (energyToAdd != CurrentEnergyType)
+            {
+                throw new ArgumentException($"Fuel is not acceptable current fuel type: {CurrentEnergyType} requested fueld to fill up: {energyToAdd}");
+            }
+            
+            if (CurrentEnergy + energyAmount > MaxEnergy)
+            {
+                throw new ValueOutOfRangeException(new Exception(nameof(ValueOutOfRangeException)), MinEnergy, MaxEnergy, "Petrol amount was exceeded maxmium capacity");
+            }
+
+            CurrentEnergy += energyAmount;
         }
 
         public override string ToString()
         {
-            return base.ToString();
+            return string.Format(
+                "Petrol Engine: {0}Petrol type: {1}{0}Fuel amount: {2}",
+                Environment.NewLine,
+                CurrentEnergyType.ToString(),
+                EnergyPercentage);
         }
     }
 }

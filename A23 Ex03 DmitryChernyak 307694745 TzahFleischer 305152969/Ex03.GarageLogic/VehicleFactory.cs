@@ -1,64 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Ex03.GarageLogic
 {
     ///TODO: should be a singletone class (design pattern)
     internal class VehicleFactory
     {
-
-        public Vehicle CreateVehicle(VehicleType vehicleType, GarageCustomer.VehicleBase vehicle)
+        public Vehicle CreateVehicle(VehicleType vehicleType)
         {
-            
+            Vehicle vehicle = null;
+
             switch (vehicleType)
             {
                 case VehicleType.PetrolCar:
+                    {
+                        vehicle = new Car(new PetrolEngine(50f, EnergyType.Octan95));
+                        break;
+
+                    }
                 case VehicleType.ElectricCar:
                     {
-                        GarageCustomer.CarDto carDto = vehicle as GarageCustomer.CarDto;
-                        return new Car();
-                        
+                        vehicle = new Car(new ElectricEngine(4.7f));
+                        break;
+
                     }
                 case VehicleType.PetrolBike:
+                    {
+                        vehicle = new Bike(new PetrolEngine(6f, EnergyType.Octan98));
+                        break;
+
+                    }
                 case VehicleType.ElectricBike:
                     {
-                        GarageCustomer.BikeDto bikeDto = vehicle as GarageCustomer.BikeDto;
-                        return new Motorcycle();
-                       
+                        vehicle = new Bike(new ElectricEngine(1.6f));
+                        break;
+
                     }
                 case VehicleType.PetrolTruck:
                     {
-
-                        GarageCustomer.TruckDto truckDto = vehicle as GarageCustomer.TruckDto;
-                        return new Truck();
-                        
+                        vehicle = new Truck(new PetrolEngine(120f, EnergyType.Soler));
+                        break;
                     }
                 default:
                     throw new NotSupportedException("Vehicle Type is unknown");
             }
-        }
 
-        private IEngine CreateVehicleEnergy(VehicleType vehicleType)
-        {
-            switch (vehicleType)
-            {
-                case VehicleType.PetrolCar:
-                case VehicleType.PetrolBike:
-                case VehicleType.PetrolTruck:
-                    {
-                        return new PetrolEngine();
-                        
-                    }
-                  
-                case VehicleType.ElectricCar:
-                case VehicleType.ElectricBike:
-                    {
-                        return new ElectricEngine();
-                    }
-                default:
-                    throw new NotSupportedException("Engine Type is unknown");
-
-            }
+            return vehicle;
         }
     }
 }

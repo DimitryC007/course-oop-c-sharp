@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    internal class Tire
+    internal class Wheel
     {
         public string ManufacturerName { get; set; }
         public float TirePressure { get; set; }

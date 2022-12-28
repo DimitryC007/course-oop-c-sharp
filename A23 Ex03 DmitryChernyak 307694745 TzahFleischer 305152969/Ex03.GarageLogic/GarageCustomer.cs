@@ -17,7 +17,8 @@
         {
             public string LicensePlate { get; set; }
             public float TirePressure { get; set; }
-            public float EnergyCapacity { get; set; }
+            public string ManufactareName { get; set; }
+            public float EnergyAmount { get; set; }
             public string Model { get; set; }
         }
 

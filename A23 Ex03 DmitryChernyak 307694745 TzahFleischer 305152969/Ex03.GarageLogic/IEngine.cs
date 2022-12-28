@@ -9,11 +9,12 @@ namespace Ex03.GarageLogic
     {
         float CurrentEnergy { get; set; }
         float MaxEnergy { get; set; }
+        int MinEnergy { get; }
+        EnergyType CurrentEnergyType { get; }
+        float EnergyPercentage { get; }
 
-        void AddEnergy(float quantity, EnergyType energy);
+        void AddEnergy(float energyAmount, EnergyType energy);
 
         string ToString();
-      
-
     }
 }
