@@ -32,6 +32,11 @@ namespace Ex03.ConsoleUI
         public const string FuelAddedCorrectlyMessage = "Fuel added succesfully";
         public const string ExitMessage = "Program exited";
         public const string NoCarsInGarageMessage = "No Vehicles in the garage";
+        public const string AddEnergyMessage = "Please enter the licence plate of the car you want to recharge";
+        public const string EnterAmountOfBattery = "Please enter the amount of charge(in hours)";
+        public const string BatteryrechargedCorrectlyMessage = "Battery recharged succesfully";
+        public const string VehicleListMessage = "Please Choose from these Vehicles License plates:\n";
+
         public static string GarageMenu => GetGarageMenuMessage();
         public static string VehicleTypeMenu => GetVehicleTypeMenu();
         public static string CarColorMenu => GetCarColorMenu();
