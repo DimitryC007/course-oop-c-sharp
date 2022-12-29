@@ -32,6 +32,7 @@ namespace Ex03.ConsoleUI
         public static readonly string EnterAmountOfFuel = "Please enter the amount of fuel";
         public static readonly string EnterFuelType = "please enter the type of fuel";
         public static readonly string FuelAddedCorrectlyMessage = "Fuel added succesfully";
+        public static readonly string NoCarsInGarageMessage = "No Vehicles in the garage";
 
         public static string GarageMenuMessage()
         {
