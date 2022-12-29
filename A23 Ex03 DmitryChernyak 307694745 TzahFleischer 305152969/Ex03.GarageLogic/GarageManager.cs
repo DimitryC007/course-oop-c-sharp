@@ -64,7 +64,7 @@ namespace Ex03.GarageLogic
         {
             bool isExists = IsVehicleExists(licensePlate);
 
-            if(isExists)
+            if (isExists)
             {
                 _garageStorage.ChangeVehicleStatus(licensePlate, vehicleStatus);
             }
@@ -72,9 +72,15 @@ namespace Ex03.GarageLogic
             return isExists;
         }
 
-        public void AddAirToTires(string licensePlate , float tirePressure)
+        public string AddAirToTires(string licensePlate)
         {
-            throw new NotImplementedException();
+            if (!IsVehicleExists(licensePlate))
+            {
+                return "Vehicle not exists";
+            }
+
+            _garageStorage.GetVehicle(licensePlate).Vehicle.AddAirToTire();
+            return "Tires updated successfully";
         }
 
         public bool AddFuelToVehicle(string licensePlate, EnergyType energyType, float quantity)
@@ -82,7 +88,7 @@ namespace Ex03.GarageLogic
             bool isVehicleExists = _garageStorage.CheckIfVehicleExists(licensePlate);
             if (isVehicleExists)
             {
-                _garageStorage.AddFuel(licensePlate,energyType, quantity);
+                _garageStorage.AddFuel(licensePlate, energyType, quantity);
             }
 
             return isVehicleExists;
@@ -96,12 +102,12 @@ namespace Ex03.GarageLogic
         public string GetVehicleDetails(string licensePlate)
         {
             AutomobileRepair automobileRepair = _garageStorage.GetVehicle(licensePlate);
-            
+
             if (automobileRepair == null)
             {
                 return "We didn't found your vehicle sir";
             }
-            string vehicleGeneralInfo = $"owner name: {automobileRepair.OwnerName} ,owner phone: {automobileRepair.OwnerPhone} ,vehicle status: {automobileRepair.VehicleStatus}";
+            string vehicleGeneralInfo = $"--- Customer details---{Environment.NewLine}owner name: {automobileRepair.OwnerName} ,owner phone: {automobileRepair.OwnerPhone} ,vehicle status: {automobileRepair.VehicleStatus}";
             return vehicleGeneralInfo + automobileRepair.Vehicle.ToString();
         }
 

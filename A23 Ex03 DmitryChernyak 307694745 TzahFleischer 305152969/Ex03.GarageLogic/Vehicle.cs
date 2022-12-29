@@ -12,9 +12,9 @@ namespace Ex03.GarageLogic
 
         public string Model { get; set; }
         public string LicensePlate { get; set; }
-        List<Wheel> Wheels { get; set; }
+        public List<Wheel> Wheels { get; set; }
         public abstract int NumOfWheels { get; }
-        public abstract int MaxTirePressure { get; }
+        public abstract float MaxTirePressure { get; }
         public abstract IEngine Engine { get; set; }
 
         public virtual void SetVehicleInformation(GarageCustomer.VehicleBase vehicle)
@@ -23,6 +23,14 @@ namespace Ex03.GarageLogic
             LicensePlate = vehicle.LicensePlate;
             Engine.AddEnergy(vehicle.EnergyAmount, Engine.CurrentEnergyType);
             UpdateWheels(vehicle.ManufactareName, vehicle.TirePressure);
+        }
+
+        public void AddAirToTire()
+        {
+            foreach (Wheel wheel in Wheels)
+            {
+                wheel.AddAirToTire();
+            }
         }
 
         private void CreateWheels()
@@ -37,7 +45,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public virtual void UpdateWheels(string manufacturerName, float tirePressure)
+        private void UpdateWheels(string manufacturerName, float tirePressure)
         {
             foreach (var wheel in Wheels)
             {
@@ -53,7 +61,7 @@ namespace Ex03.GarageLogic
 
         public override string ToString()
         {
-            return $"{Environment.NewLine}vehicle details: {Environment.NewLine}Lisence plate: {LicensePlate}{Environment.NewLine}Model: {Model}{Environment.NewLine}Wheel details: manufactare: {Wheels[0].ManufacturerName} ,wheels: {NumOfWheels} ,max tire pressure: {Wheels[0].MaxTirePressure} ,current tire pressure: {Wheels[0].TirePressure}{Environment.NewLine}Engine details:{Engine.ToString()}";
+            return $"{Environment.NewLine}--vehicle details---{Environment.NewLine}Lisence plate: {LicensePlate} ,Model: {Model}{Environment.NewLine}Wheel details: manufactare: {Wheels[0].ManufacturerName} ,wheels: {NumOfWheels} ,max tire pressure: {Wheels[0].MaxTirePressure} ,current tire pressure: {Wheels[0].TirePressure}{Engine.ToString()}";
         }
     }
 }

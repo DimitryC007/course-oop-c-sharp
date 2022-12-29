@@ -10,7 +10,7 @@ namespace Ex03.GarageLogic
         }
         private int _numOfDoors;
         public override int NumOfWheels => 5;
-        public override int MaxTirePressure => 32;
+        public override float MaxTirePressure => 32;
         public override IEngine Engine { get; set; }
         public CarColor Color { get; set; }
         public int NumOfDoors
@@ -35,9 +35,9 @@ namespace Ex03.GarageLogic
             NumOfDoors = carDto.NumOfDoors;
         }
 
-        public override void UpdateWheels(string manufacturerName, float tirePressure)
+        public override string ToString()
         {
-            base.UpdateWheels(manufacturerName, tirePressure);
+            return $"{base.ToString()}{Environment.NewLine}---Car details---{Environment.NewLine}Color: {Color} ,Number of doors: {NumOfDoors}";
         }
     }
 }

@@ -51,6 +51,7 @@ namespace Ex03.ConsoleUI
                         }
                     case (int)UserInterfaceChoise.AddAirToVehicleTires:
                         {
+                            AddAirToTires();
                             break;
                         }
                     case (int)UserInterfaceChoise.FillUpFuel:
@@ -85,27 +86,27 @@ namespace Ex03.ConsoleUI
             Clear();
             if (!_garageManager.IsGarageEmpty())
             {
-                
+
                 string licencePlate = GetStringInput(Messages.ChangeCarStatusMessage);
                 PrintMessage(Messages.EnterCarStatusMessage);
-                
+
                 VehicleStatus vehicleStatus = GetEnumInput<VehicleStatus>(Messages.CarStatusMenu);
-                
+
 
                 //PrintMessage(_garageManager.ChangeVehicleStatus(licencePlate, vehicleStatus));
 
-            //    if (!isVehicleExists)
-            //    {
-            //        PrintMessage(Messages.VehicleDoesntExistMessage, 2);
-            //    }
-            //    else
-            //    {
-            //        PrintMessage(Messages.VehicleStatusChangedSuccefullyMessage, 2);
-            //    }
-            //}
-            //else
-            //{
-            //    PrintMessage(Messages.NoCarsInGarageMessage, 2);
+                //    if (!isVehicleExists)
+                //    {
+                //        PrintMessage(Messages.VehicleDoesntExistMessage, 2);
+                //    }
+                //    else
+                //    {
+                //        PrintMessage(Messages.VehicleStatusChangedSuccefullyMessage, 2);
+                //    }
+                //}
+                //else
+                //{
+                //    PrintMessage(Messages.NoCarsInGarageMessage, 2);
             }
 
 
@@ -137,16 +138,14 @@ namespace Ex03.ConsoleUI
             {
                 PrintMessage(Messages.NoCarsInGarageMessage, 2);
             }
-            
+
 
         }
 
         private void AddAirToTires()
         {
-            ///TODO: prompt for licence plate
-            ///check if exists
-            ///if yes prompt airpressure and call garagefuntcion(needs to throw exception)
-            ///if no print messege
+            string licensePlate = GetStringInput(Messages.AddAirToTiresMessage);
+            PrintMessage(_garageManager.AddAirToTires(licensePlate), 2);
         }
 
         private void AddFuelToVehicle()
@@ -212,7 +211,7 @@ namespace Ex03.ConsoleUI
         private void ShowVehicleDetails()
         {
             string userInput = GetStringInput(Messages.VehicleLicenseNumberMessage);
-            PrintMessage(_garageManager.GetVehicleDetails(userInput), 3);
+            PrintMessage(_garageManager.GetVehicleDetails(userInput), 5);
         }
 
         private int GetMenuInput()

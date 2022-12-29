@@ -29,10 +29,7 @@ namespace Ex03.GarageLogic
 
         public override string ToString()
         {
-            return string.Format(
-            "{0}Electric Engine: {0}Battery status: {1}",
-            Environment.NewLine,
-            EnergyPercentage);
+            return $"{Environment.NewLine}---Engine details (Electric)--- Energy type: {CurrentEnergyType} ,Min energy: {MinEnergy} ,Max energy: {MaxEnergy} ,Battery percentage: {EnergyPercentage}%";
         }
     }
 }
