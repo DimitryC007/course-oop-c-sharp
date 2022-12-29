@@ -1,39 +1,44 @@
 ﻿using Ex03.GarageLogic;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Ex03.ConsoleUI
 {
     public static class Messages
     {
-        public static readonly string InvalidInputMessage = "Invalid input, please try again";
-        public static readonly string AddCarMessage = "For Adding new vehicle to garage, enter license plate";
-        public static readonly string VehicleAddedSuccessfullyMessage = "Vehicle added successfully";
-        public static readonly string OwnerNameMessage = "Owner name:";
-        public static readonly string OwnerPhoneMessage = "Owner phone";
-        public static readonly string TirePressureMessage = "Tire pressure";
-        public static readonly string BatteryStatusMessage = "Battery status:";
-        public static readonly string FuelStatusMessage = "Fuel status:";
-        public static readonly string NumOfDoorsMessage = "Num of doors:";
-        public static readonly string VehicleModelMessage = "Vehicle model:";
-        public static readonly string WheelManufactareMessage = "Wheel manufactare:";
-        public static readonly string BikeCubicCapacityMessage = "Bike cubic capacity:";
-        public static readonly string CargoVolumeMessage = "Cargo volume:";
-        public static readonly string IsDangerousGoods = "Is Dangerous Goods: type only true or false";
-        public static readonly string ChangeCarStatusMessage = "To change car status please enter car licence:";
-        public static readonly string EnterCarStatusMessage = "Pleas Choose the status you want to change to";
-        public static readonly string EnterCarStatustToFilterByMessage = "Please Choose the status you want to filter by";
-        public static readonly string VehicleDoesntExistMessage = "The Vehicle Doesnt Exist";
-        public static readonly string VehicleStatusChangedSuccefullyMessage = "The Vehicle status changed succesfully";
-        public static readonly string VehicleLicenseNumberMessage = "Vehicle license number:";
-        public static readonly string AddFuelMessage = "Please enter the licence plate of the car you want to refuel";
-        public static readonly string EnterAmountOfFuel = "Please enter the amount of fuel";
-        public static readonly string EnterFuelType = "please enter the type of fuel";
-        public static readonly string FuelAddedCorrectlyMessage = "Fuel added succesfully";
+        public const string InvalidInputMessage = "Invalid input, please try again";
+        public const string AddCarMessage = "For Adding new vehicle to garage, enter license plate";
+        public const string VehicleAddedSuccessfullyMessage = "Vehicle added successfully";
+        public const string OwnerNameMessage = "Owner name:";
+        public const string OwnerPhoneMessage = "Owner phone";
+        public const string TirePressureMessage = "Tire pressure";
+        public const string BatteryStatusMessage = "Battery status:";
+        public const string FuelStatusMessage = "Fuel status:";
+        public const string NumOfDoorsMessage = "Num of doors:";
+        public const string VehicleModelMessage = "Vehicle model:";
+        public const string WheelManufactareMessage = "Wheel manufactare:";
+        public const string BikeCubicCapacityMessage = "Bike cubic capacity:";
+        public const string CargoVolumeMessage = "Cargo volume:";
+        public const string IsDangerousGoods = "Is Dangerous Goods: type only true or false";
+        public const string ChangeCarStatusMessage = "To change car status please enter car licence:";
+        public const string EnterCarStatusMessage = "Pleas Choose the status you want to change to";
+        public const string EnterCarStatustToFilterByMessage = "Please Choose the status you want to filter by";
+        public const string VehicleDoesntExistMessage = "The Vehicle Doesnt Exist";
+        public const string VehicleStatusChangedSuccefullyMessage = "The Vehicle status changed succesfully";
+        public const string VehicleLicenseNumberMessage = "Vehicle license number:";
+        public const string AddFuelMessage = "Please enter the licence plate of the car you want to refuel";
+        public const string EnterAmountOfFuel = "Please enter the amount of fuel";
+        public const string EnterFuelType = "please enter the type of fuel";
+        public const string FuelAddedCorrectlyMessage = "Fuel added succesfully";
+        public const string ExitMessage = "Program exited";
+        public static string GarageMenu => GetGarageMenuMessage();
+        public static string VehicleTypeMenu => GetVehicleTypeMenu();
+        public static string CarColorMenu => GetCarColorMenu();
+        public static string BikeLicenseMenu => GetBikeLicenseMenu();
+        public static string CarStatusMenu => GetCarStatusMenu();
+        public static string FuelTypeMenu => GetFuelTypeMenu();
 
-        public static string GarageMenuMessage()
+        private static string GetGarageMenuMessage()
         {
             StringBuilder garageMenu = new StringBuilder();
             garageMenu.Append("=================================");
@@ -50,32 +55,31 @@ namespace Ex03.ConsoleUI
             return garageMenu.ToString();
         }
 
-        public static string CarStatusMenu()
+        private static string GetCarStatusMenu()
         {
             StringBuilder statusMenu = new StringBuilder();
-            
-                    
+
             statusMenu.Append(string.Format("- Press 1 for under rapair status{0}", Environment.NewLine));
             statusMenu.Append(string.Format("- Press 2 for filter by fixed status{0}", Environment.NewLine));
             statusMenu.Append(string.Format("- Press 3 for filter by paid status{0}", Environment.NewLine));
             statusMenu.Append(string.Format("- Press 4 for view all cars{0}", Environment.NewLine));
+            
             return statusMenu.ToString();
         }
 
-        public static string FuelTypeMenu()
+        private static string GetFuelTypeMenu()
         {
             StringBuilder statusMenu = new StringBuilder();
-
 
             statusMenu.Append(string.Format("- Press 1 for under soler{0}", Environment.NewLine));
             statusMenu.Append(string.Format("- Press 2 for octan 95{0}", Environment.NewLine));
             statusMenu.Append(string.Format("- Press 2 for octan 96{0}", Environment.NewLine));
             statusMenu.Append(string.Format("- Press 2 for octan 98{0}", Environment.NewLine));
+            
             return statusMenu.ToString();
         }
 
-
-        public static string VehicleTypeMenu()
+        private static string GetVehicleTypeMenu()
         {
             StringBuilder vehicleTypesMenu = new StringBuilder();
             Array vehicleTypeValues = Enum.GetValues(typeof(VehicleType));
@@ -103,7 +107,7 @@ namespace Ex03.ConsoleUI
             return vehicleTypesMenu.ToString();
         }
 
-        public static string CarColorTypeMenu()
+        private static string GetCarColorMenu()
         {
             StringBuilder menuBuilder = new StringBuilder();
             Array CarColors = Enum.GetValues(typeof(CarColor));
@@ -116,7 +120,7 @@ namespace Ex03.ConsoleUI
             return menuBuilder.ToString();
         }
 
-        public static string BikeLicenseTypeMenu()
+        private static string GetBikeLicenseMenu()
         {
             StringBuilder menuBuilder = new StringBuilder();
             Array bikeLisences = Enum.GetValues(typeof(BikeLicenceType));
@@ -127,6 +131,12 @@ namespace Ex03.ConsoleUI
             }
 
             return menuBuilder.ToString();
+        }
+
+        public static string GetVehicleEnergyMessage(VehicleType vehicleType)
+        {
+            bool isPetrol = vehicleType.ToString().IndexOf("petrol", StringComparison.OrdinalIgnoreCase) > -1;
+            return isPetrol ? FuelStatusMessage : BatteryStatusMessage;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Ex03.GarageLogic
 
         public string Model { get; set; }
         public string LicensePlate { get; set; }
-        public List<Wheel> Wheels { get; set; }
+        List<Wheel> Wheels { get; set; }
         public abstract int NumOfWheels { get; }
         public abstract int MaxTirePressure { get; }
         public abstract IEngine Engine { get; set; }

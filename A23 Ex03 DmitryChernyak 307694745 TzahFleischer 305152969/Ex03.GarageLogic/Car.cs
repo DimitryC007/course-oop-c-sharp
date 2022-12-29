@@ -1,4 +1,6 @@
-﻿namespace Ex03.GarageLogic
+﻿using System;
+
+namespace Ex03.GarageLogic
 {
     internal class Car : Vehicle
     {
@@ -6,12 +8,24 @@
         {
             Engine = engine;
         }
-
+        private int _numOfDoors;
         public override int NumOfWheels => 5;
         public override int MaxTirePressure => 32;
         public override IEngine Engine { get; set; }
         public CarColor Color { get; set; }
-        public int NumOfDoors { get; set; }
+        public int NumOfDoors
+        {
+            get => _numOfDoors;
+            set
+            {
+                if (value < 2 || value > 5)
+                {
+                    throw new ArgumentException($"Num of door should be 2 - 5 and not {value}");
+                }
+
+                _numOfDoors = value;
+            }
+        }
 
         public override void SetVehicleInformation(GarageCustomer.VehicleBase vehicle)
         {

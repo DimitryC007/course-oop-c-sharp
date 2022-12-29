@@ -30,7 +30,7 @@ namespace Ex03.ConsoleUI
             while (true)
             {
                 Clear();
-                PrintMessage(Messages.GarageMenuMessage());
+                PrintMessage(Messages.GarageMenu);
                 int input = GetMenuInput();
 
                 switch (input)
@@ -68,6 +68,7 @@ namespace Ex03.ConsoleUI
                         }
                     case (int)UserInterfaceChoise.Exit:
                         {
+                            PrintMessage(Messages.ExitMessage, 2);
                             return;
                         }
                     default:
@@ -84,12 +85,12 @@ namespace Ex03.ConsoleUI
             PrintMessage(Messages.ChangeCarStatusMessage);
             string licencePlate = GetInput();
             PrintMessage(Messages.EnterCarStatusMessage);
-            PrintMessage(Messages.CarStatusMenu());
+            PrintMessage(Messages.CarStatusMenu);
             string vehicleStatus = GetInput();
             while (!Validations.IsInputEnumTypeValid<VehicleType>(vehicleStatus))
             {
                 PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(Messages.VehicleTypeMenu());
+                PrintMessage(Messages.VehicleTypeMenu);
                 vehicleStatus = GetInput();
             }
 
@@ -113,14 +114,14 @@ namespace Ex03.ConsoleUI
             Clear();
             List<string> carLicencePlates = new List<string>();
             PrintMessage(Messages.EnterCarStatustToFilterByMessage);
-            PrintMessage(Messages.CarStatusMenu());
+            PrintMessage(Messages.CarStatusMenu);
             string vehicleStatus = GetInput();
 
 
             while (!Validations.IsInputEnumTypeValid<VehicleStatus>(vehicleStatus))
             {
                 PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(Messages.CarStatusMenu());
+                PrintMessage(Messages.CarStatusMenu);
                 vehicleStatus = GetInput();
             }
 
@@ -150,7 +151,7 @@ namespace Ex03.ConsoleUI
             string licencePlate = GetInput();
             PrintMessage(Messages.EnterAmountOfFuel);
             string fuel = GetInput();
-            
+
 
             while (!Validations.IsInputFloatValid(fuel) || !Validations.IsPositiveNumberValid(int.Parse(fuel)))
             {
@@ -158,7 +159,7 @@ namespace Ex03.ConsoleUI
                 fuel = GetInput();
             }
             PrintMessage(Messages.EnterFuelType);
-            EnergyType fuelType = GetFuelType();
+            EnergyType fuelType = GetEnumInput<EnergyType>(Messages.FuelTypeMenu);
 
 
             float fuelAmount = float.Parse(fuel);
@@ -171,21 +172,21 @@ namespace Ex03.ConsoleUI
                 }
                 else
                 {
-                    PrintMessage(Messages.FuelAddedCorrectlyMessage,2);
+                    PrintMessage(Messages.FuelAddedCorrectlyMessage, 2);
                 }
             }
-            catch(ValueOutOfRangeException outOfRangeEx)
+            catch (ValueOutOfRangeException outOfRangeEx)
             {
                 PrintMessage(outOfRangeEx.Message, 2);
             }
-            catch(ArgumentException argumentEx)
+            catch (ArgumentException argumentEx)
             {
-                PrintMessage(argumentEx.Message,2);
+                PrintMessage(argumentEx.Message, 2);
             }
 
-           
 
-            
+
+
 
             ///TODO: prompt for licence plate
             ///check if exists
@@ -193,11 +194,11 @@ namespace Ex03.ConsoleUI
             ///if no print messege
         }
 
-        
+
 
         private void ChargeVehicleBattery()
         {
-            
+
             ///TODO: prompt for licence plate
             ///check if exists
             ///if yes prompt energy and call garagefuntcion(needs to throw exception)
@@ -229,30 +230,31 @@ namespace Ex03.ConsoleUI
 
             if (!isVehicleExists)
             {
-                VehicleType vehicleType = GetVehicleTypeInput();
+                VehicleType vehicleType = GetEnumInput<VehicleType>(Messages.VehicleTypeMenu);
                 GarageCustomer garageCustomer = new GarageCustomer();
                 garageCustomer.VehicleType = vehicleType;
                 garageCustomer.OwnerInfo = new GarageCustomer.OwnerInformation();
                 garageCustomer.OwnerInfo.Name = GetStringInput(Messages.OwnerNameMessage);
                 garageCustomer.OwnerInfo.Phone = GetStringInput(Messages.OwnerPhoneMessage);
+                string vehicleEnergyMessage = Messages.GetVehicleEnergyMessage(vehicleType);
 
                 switch (garageCustomer.VehicleType)
                 {
                     case VehicleType.PetrolCar:
                     case VehicleType.ElectricCar:
                         {
-                            garageCustomer.Vehicle = GetCarInput(vehicleType, lisencePlate);
+                            garageCustomer.Vehicle = GetCarInput(lisencePlate, vehicleEnergyMessage);
                             break;
                         }
                     case VehicleType.PetrolBike:
                     case VehicleType.ElectricBike:
                         {
-                            garageCustomer.Vehicle = GetBikeInput(vehicleType, lisencePlate);
+                            garageCustomer.Vehicle = GetBikeInput(lisencePlate, vehicleEnergyMessage);
                             break;
                         }
                     case VehicleType.PetrolTruck:
                         {
-                            garageCustomer.Vehicle = GetTruckInput(vehicleType, lisencePlate);
+                            garageCustomer.Vehicle = GetTruckInput(lisencePlate, vehicleEnergyMessage);
                             break;
                         }
                 }
@@ -262,35 +264,35 @@ namespace Ex03.ConsoleUI
             PrintMessage(Messages.VehicleAddedSuccessfullyMessage, 2);
         }
 
-        private GarageCustomer.CarDto GetCarInput(VehicleType vehicleType, string licensePlate)
+        private GarageCustomer.CarDto GetCarInput(string licensePlate, string vehicleEnergyMessage)
         {
             return new GarageCustomer.CarDto
             {
                 LicensePlate = licensePlate,
-                Color = GetCarColorInput(),
-                NumOfDoors = GetCarNumOfDoorsInput(),
                 Model = GetStringInput(Messages.VehicleModelMessage),
                 ManufactareName = GetStringInput(Messages.WheelManufactareMessage),
                 TirePressure = GetFloatInput(Messages.TirePressureMessage),
-                EnergyAmount = GetVehicleEnergyInput(vehicleType)
+                EnergyAmount = GetFloatInput(vehicleEnergyMessage),
+                Color = GetEnumInput<CarColor>(Messages.CarColorMenu),
+                NumOfDoors = GetIntInput(Messages.NumOfDoorsMessage),
             };
         }
 
-        private GarageCustomer.BikeDto GetBikeInput(VehicleType vehicleType, string licensePlate)
+        private GarageCustomer.BikeDto GetBikeInput(string licensePlate, string vehicleEnergyMessage)
         {
             return new GarageCustomer.BikeDto
             {
                 LicensePlate = licensePlate,
-                BikeLicence = GetBikeLicenceInput(),
-                CubicCapacity = GetIntInput(Messages.BikeCubicCapacityMessage),
                 Model = GetStringInput(Messages.VehicleModelMessage),
                 ManufactareName = GetStringInput(Messages.WheelManufactareMessage),
                 TirePressure = GetFloatInput(Messages.TirePressureMessage),
-                EnergyAmount = GetVehicleEnergyInput(vehicleType)
+                EnergyAmount = GetFloatInput(vehicleEnergyMessage),
+                BikeLicence = GetEnumInput<BikeLicenceType>(Messages.BikeLicenseMenu),
+                CubicCapacity = GetIntInput(Messages.BikeCubicCapacityMessage),
             };
         }
 
-        private GarageCustomer.TruckDto GetTruckInput(VehicleType vehicleType, string licensePlate)
+        private GarageCustomer.TruckDto GetTruckInput(string licensePlate, string vehicleEnergyMessage)
         {
             return new GarageCustomer.TruckDto
             {
@@ -298,118 +300,40 @@ namespace Ex03.ConsoleUI
                 Model = GetStringInput(Messages.VehicleModelMessage),
                 ManufactareName = GetStringInput(Messages.WheelManufactareMessage),
                 TirePressure = GetFloatInput(Messages.TirePressureMessage),
-                EnergyAmount = GetVehicleEnergyInput(vehicleType),
+                EnergyAmount = GetFloatInput(vehicleEnergyMessage),
                 CargoVolume = GetFloatInput(Messages.CargoVolumeMessage),
-                IsDangerousGoods = IsDangerousGoodsInput()
+                IsDangerousGoods = GetBoolInput(Messages.IsDangerousGoods)
             };
         }
 
-        private CarColor GetCarColorInput()
+        private T GetEnumInput<T>(string message) where T : struct, IConvertible
         {
-            PrintMessage(Messages.CarColorTypeMenu());
-            string carColor = GetInput();
-
-            while (!Validations.IsInputEnumTypeValid<CarColor>(carColor))
-            {
-                PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(Messages.CarColorTypeMenu());
-                carColor = GetInput();
-            }
-
-            return (CarColor)Enum.Parse(typeof(CarColor), carColor);
-        }
-
-        private EnergyType GetFuelType()
-        {
-            PrintMessage(Messages.FuelTypeMenu());
-            string fuelType = GetInput();
-
-            while (!Validations.IsInputEnumTypeValid<EnergyType>(fuelType))
-            {
-                PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(Messages.CarColorTypeMenu());
-                fuelType = GetInput();
-            }
-
-            return (EnergyType)Enum.Parse(typeof(EnergyType), fuelType);
-        }
-
-        private int GetCarNumOfDoorsInput()
-        {
-            PrintMessage(Messages.NumOfDoorsMessage);
-            string numOfDoors = GetInput();
-
-            while (!Validations.IsCarNumOfDoorsValid(numOfDoors) && !Validations.IsPositiveNumberValid(int.Parse(numOfDoors)))
-            {
-                PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(Messages.NumOfDoorsMessage);
-                numOfDoors = GetInput();
-            }
-
-            return int.Parse(numOfDoors);
-        }
-
-        private float GetVehicleEnergyInput(VehicleType vehicleType)
-        {
-            bool isPetrol = vehicleType.ToString().IndexOf("petrol", StringComparison.OrdinalIgnoreCase) > -1;
-            string message = isPetrol ? Messages.FuelStatusMessage : Messages.BatteryStatusMessage;
-
             PrintMessage(message);
-            string energy = GetInput();
+            string enumType = GetInput();
 
-            while (!Validations.IsInputFloatValid(energy) || !Validations.IsPositiveNumberValid(int.Parse(energy)))
+            while (!Validations.IsInputEnumTypeValid<T>(enumType))
             {
                 PrintMessage(Messages.InvalidInputMessage);
                 PrintMessage(message);
-                energy = GetInput();
+                enumType = GetInput();
             }
 
-            return float.Parse(energy);
+            return (T)Enum.Parse(typeof(T), enumType);
         }
 
-        private bool IsDangerousGoodsInput()
+        private bool GetBoolInput(string message)
         {
-            PrintMessage(Messages.IsDangerousGoods);
+            PrintMessage(message);
             string input = GetInput();
 
             while (!Validations.IsDangerousGoodsValid(input))
             {
                 PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(Messages.IsDangerousGoods);
+                PrintMessage(message);
                 input = GetInput();
             }
 
             return bool.Parse(input);
-        }
-
-        private BikeLicenceType GetBikeLicenceInput()
-        {
-            PrintMessage(Messages.BikeLicenseTypeMenu());
-            string bikeLicense = GetInput();
-
-            while (!Validations.IsInputEnumTypeValid<BikeLicenceType>(bikeLicense))
-            {
-                PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(Messages.VehicleTypeMenu());
-                bikeLicense = GetInput();
-            }
-
-            return (BikeLicenceType)Enum.Parse(typeof(BikeLicenceType), bikeLicense);
-        }
-
-        private VehicleType GetVehicleTypeInput()
-        {
-            PrintMessage(Messages.VehicleTypeMenu());
-            string vehicleType = GetInput();
-
-            while (!Validations.IsInputEnumTypeValid<VehicleType>(vehicleType))
-            {
-                PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(Messages.VehicleTypeMenu());
-                vehicleType = GetInput();
-            }
-
-            return (VehicleType)Enum.Parse(typeof(VehicleType), vehicleType);
         }
 
         private int GetIntInput(string message)
