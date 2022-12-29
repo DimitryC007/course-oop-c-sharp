@@ -94,10 +94,7 @@ namespace Ex03.GarageLogic
             return isVehicleExists;
         }
 
-        public void ChargeVehicle(string licensePlate, float chargingHours)
-        {
-            throw new NotImplementedException();
-        }
+   
 
         public string GetVehicleDetails(string licensePlate)
         {
@@ -105,7 +102,7 @@ namespace Ex03.GarageLogic
 
             if (automobileRepair == null)
             {
-                return "We didn't found your vehicle sir";
+                return "We didn't find your vehicle sir";
             }
             string vehicleGeneralInfo = $"--- Customer details---{Environment.NewLine}owner name: {automobileRepair.OwnerName} ,owner phone: {automobileRepair.OwnerPhone} ,vehicle status: {automobileRepair.VehicleStatus}";
             return vehicleGeneralInfo + automobileRepair.Vehicle.ToString();
