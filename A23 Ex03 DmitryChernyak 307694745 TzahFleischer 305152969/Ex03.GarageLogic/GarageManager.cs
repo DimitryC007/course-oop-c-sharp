@@ -47,9 +47,17 @@ namespace Ex03.GarageLogic
             _garageStorage.AddVehicle(vehicle.LicensePlate, automobileRepair);
         }
 
-        public List<string> ShowVehiclesNumberPlatesByStatus(VehicleStatus vehicleStatus)
+        public string ShowVehiclesNumberPlatesByStatus(VehicleStatus vehicleStatus)
         {
-            return _garageStorage.FindAllLicencePlatesByStatus(vehicleStatus);
+            string licensePlates = "";
+            List<string> vehiclesLicencePlate = _garageStorage.FindAllLicencePlatesByStatus(vehicleStatus);
+            foreach (string carLicence in vehiclesLicencePlate)
+            {
+                licensePlates += (carLicence + Environment.NewLine);
+            }
+
+            return licensePlates;
+
         }
 
         public bool ChangeVehicleStatus(string licensePlate, VehicleStatus vehicleStatus)
@@ -95,6 +103,11 @@ namespace Ex03.GarageLogic
             }
             string vehicleGeneralInfo = $"owner name: {automobileRepair.OwnerName} ,owner phone: {automobileRepair.OwnerPhone} ,vehicle status: {automobileRepair.VehicleStatus}";
             return vehicleGeneralInfo + automobileRepair.Vehicle.ToString();
+        }
+
+        public bool IsGarageEmpty()
+        {
+            return _garageStorage.CheckIfGarageIsEmpty();
         }
     }
 }

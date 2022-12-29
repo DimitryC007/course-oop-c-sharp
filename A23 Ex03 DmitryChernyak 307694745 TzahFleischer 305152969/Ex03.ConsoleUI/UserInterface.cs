@@ -82,28 +82,30 @@ namespace Ex03.ConsoleUI
 
         private void ChangeVehicleStatus()
         {
-            PrintMessage(Messages.ChangeCarStatusMessage);
-            string licencePlate = GetInput();
-            PrintMessage(Messages.EnterCarStatusMessage);
-            PrintMessage(Messages.CarStatusMenu);
-            string vehicleStatus = GetInput();
-            while (!Validations.IsInputEnumTypeValid<VehicleType>(vehicleStatus))
+            Clear();
+            if (!_garageManager.IsGarageEmpty())
             {
-                PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(Messages.VehicleTypeMenu);
-                vehicleStatus = GetInput();
-            }
+                
+                string licencePlate = GetStringInput(Messages.ChangeCarStatusMessage);
+                PrintMessage(Messages.EnterCarStatusMessage);
+                
+                VehicleStatus vehicleStatus = GetEnumInput<VehicleStatus>(Messages.CarStatusMenu);
+                
 
+                //PrintMessage(_garageManager.ChangeVehicleStatus(licencePlate, vehicleStatus));
 
-            bool isVehicleExists = _garageManager.ChangeVehicleStatus(licencePlate, (VehicleStatus)Enum.Parse(typeof(VehicleStatus), vehicleStatus));
-
-            if (!isVehicleExists)
-            {
-                PrintMessage(Messages.VehicleDoesntExistMessage, 2);
-            }
-            else
-            {
-                PrintMessage(Messages.VehicleStatusChangedSuccefullyMessage, 2);
+            //    if (!isVehicleExists)
+            //    {
+            //        PrintMessage(Messages.VehicleDoesntExistMessage, 2);
+            //    }
+            //    else
+            //    {
+            //        PrintMessage(Messages.VehicleStatusChangedSuccefullyMessage, 2);
+            //    }
+            //}
+            //else
+            //{
+            //    PrintMessage(Messages.NoCarsInGarageMessage, 2);
             }
 
 
@@ -112,27 +114,30 @@ namespace Ex03.ConsoleUI
         private void ShowVehiclesLicensePlates()
         {
             Clear();
-            List<string> carLicencePlates = new List<string>();
-            PrintMessage(Messages.EnterCarStatustToFilterByMessage);
-            PrintMessage(Messages.CarStatusMenu);
-            string vehicleStatus = GetInput();
-
-
-            while (!Validations.IsInputEnumTypeValid<VehicleStatus>(vehicleStatus))
+            if (!_garageManager.IsGarageEmpty())
             {
-                PrintMessage(Messages.InvalidInputMessage);
+                List<string> carLicencePlates = new List<string>();
+                PrintMessage(Messages.EnterCarStatustToFilterByMessage);
                 PrintMessage(Messages.CarStatusMenu);
-                vehicleStatus = GetInput();
+                string vehicleStatus = GetInput();
+
+
+                while (!Validations.IsInputEnumTypeValid<VehicleStatus>(vehicleStatus))
+                {
+                    PrintMessage(Messages.InvalidInputMessage);
+                    PrintMessage(Messages.CarStatusMenu);
+                    vehicleStatus = GetInput();
+                }
+                Clear();
+                PrintMessage(_garageManager.ShowVehiclesNumberPlatesByStatus((VehicleStatus)Enum.Parse(typeof(VehicleStatus), vehicleStatus)));
+                PrintMessage("", 10);
+
             }
-
-            carLicencePlates = _garageManager.ShowVehiclesNumberPlatesByStatus((VehicleStatus)Enum.Parse(typeof(VehicleStatus), vehicleStatus));
-
-            foreach (string carLicence in carLicencePlates)
+            else
             {
-                Console.WriteLine(carLicence);
+                PrintMessage(Messages.NoCarsInGarageMessage, 2);
             }
-
-            PrintMessage("", 10);
+            
 
         }
 
@@ -147,51 +152,50 @@ namespace Ex03.ConsoleUI
         private void AddFuelToVehicle()
         {
             Clear();
-            PrintMessage(Messages.AddFuelMessage);
-            string licencePlate = GetInput();
-            PrintMessage(Messages.EnterAmountOfFuel);
-            string fuel = GetInput();
-
-
-            while (!Validations.IsInputFloatValid(fuel) || !Validations.IsPositiveNumberValid(int.Parse(fuel)))
+            if (!_garageManager.IsGarageEmpty())
             {
-                PrintMessage(Messages.InvalidInputMessage);
-                fuel = GetInput();
-            }
-            PrintMessage(Messages.EnterFuelType);
-            EnergyType fuelType = GetEnumInput<EnergyType>(Messages.FuelTypeMenu);
+                PrintMessage(Messages.AddFuelMessage);
+                string licencePlate = GetInput();
+                PrintMessage(Messages.EnterAmountOfFuel);
+                string fuel = GetInput();
 
 
-            float fuelAmount = float.Parse(fuel);
-            try
-            {
-                bool isVehicleExists = _garageManager.AddFuelToVehicle(licencePlate, fuelType, fuelAmount);
-                if (!isVehicleExists)
+                while (!Validations.IsInputFloatValid(fuel) || !Validations.IsPositiveNumberValid(int.Parse(fuel)))
                 {
-                    PrintMessage(Messages.VehicleDoesntExistMessage, 2);
+                    PrintMessage(Messages.InvalidInputMessage);
+                    fuel = GetInput();
                 }
-                else
+                PrintMessage(Messages.EnterFuelType);
+                EnergyType fuelType = GetEnumInput<EnergyType>(Messages.FuelTypeMenu);
+
+
+                float fuelAmount = float.Parse(fuel);
+                try
                 {
-                    PrintMessage(Messages.FuelAddedCorrectlyMessage, 2);
+                    bool isVehicleExists = _garageManager.AddFuelToVehicle(licencePlate, fuelType, fuelAmount);
+                    if (!isVehicleExists)
+                    {
+                        PrintMessage(Messages.VehicleDoesntExistMessage, 2);
+                    }
+                    else
+                    {
+                        PrintMessage(Messages.FuelAddedCorrectlyMessage, 2);
+                    }
+                }
+                catch (ValueOutOfRangeException outOfRangeEx)
+                {
+                    PrintMessage(outOfRangeEx.Message, 2);
+                }
+                catch (ArgumentException argumentEx)
+                {
+                    PrintMessage(argumentEx.Message, 2);
                 }
             }
-            catch (ValueOutOfRangeException outOfRangeEx)
+            else
             {
-                PrintMessage(outOfRangeEx.Message, 2);
-            }
-            catch (ArgumentException argumentEx)
-            {
-                PrintMessage(argumentEx.Message, 2);
+                PrintMessage(Messages.NoCarsInGarageMessage, 2);
             }
 
-
-
-
-
-            ///TODO: prompt for licence plate
-            ///check if exists
-            ///if yes prompt fuel and call garagefuntcion(needs to throw exception)
-            ///if no print messege
         }
 
 

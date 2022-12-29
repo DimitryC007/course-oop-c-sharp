@@ -68,5 +68,10 @@ namespace Ex03.GarageLogic
         {
             _vehicles[licensePlate].Vehicle.Engine.AddEnergy(quantity, energyType);
         }
+
+        internal bool CheckIfGarageIsEmpty()
+        {
+            return _vehicles.Count == 0;
+        }
     }
 }

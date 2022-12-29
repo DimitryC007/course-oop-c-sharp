@@ -31,6 +31,7 @@ namespace Ex03.ConsoleUI
         public const string EnterFuelType = "please enter the type of fuel";
         public const string FuelAddedCorrectlyMessage = "Fuel added succesfully";
         public const string ExitMessage = "Program exited";
+        public const string NoCarsInGarageMessage = "No Vehicles in the garage";
         public static string GarageMenu => GetGarageMenuMessage();
         public static string VehicleTypeMenu => GetVehicleTypeMenu();
         public static string CarColorMenu => GetCarColorMenu();
@@ -63,7 +64,7 @@ namespace Ex03.ConsoleUI
             statusMenu.Append(string.Format("- Press 2 for filter by fixed status{0}", Environment.NewLine));
             statusMenu.Append(string.Format("- Press 3 for filter by paid status{0}", Environment.NewLine));
             statusMenu.Append(string.Format("- Press 4 for view all cars{0}", Environment.NewLine));
-            
+
             return statusMenu.ToString();
         }
 
@@ -75,7 +76,7 @@ namespace Ex03.ConsoleUI
             statusMenu.Append(string.Format("- Press 2 for octan 95{0}", Environment.NewLine));
             statusMenu.Append(string.Format("- Press 2 for octan 96{0}", Environment.NewLine));
             statusMenu.Append(string.Format("- Press 2 for octan 98{0}", Environment.NewLine));
-            
+
             return statusMenu.ToString();
         }
 
