@@ -1,11 +1,10 @@
 ﻿using Ex03.GarageLogic;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace Ex03.ConsoleUI
 {
-    public enum UserInterfaceChoice
+    public enum eUserInterfaceChoice
     {
         AddNewVehicle = 1,
         ShowFilteredVehicle = 2,
@@ -29,415 +28,439 @@ namespace Ex03.ConsoleUI
         {
             while (true)
             {
-                Clear();
-                PrintMessage(Messages.GarageMenu);
-                int input = GetMenuInput();
+                clear();
+                printMessage(Messages.s_GarageMenu);
+                int input = getMenuInput();
+                clear();
 
                 switch (input)
                 {
-                    case (int)UserInterfaceChoice.AddNewVehicle:
+                    case (int)eUserInterfaceChoice.AddNewVehicle:
                         {
-                            TryAddVehicle();
+                            tryAddVehicle();
                             break;
                         }
-                    case (int)UserInterfaceChoice.ShowFilteredVehicle:
+                    case (int)eUserInterfaceChoice.ShowFilteredVehicle:
                         {
-                            ShowVehiclesLicensePlates();
+                            showVehiclesLicensePlates();
                             break;
                         }
-                    case (int)UserInterfaceChoice.ChangeVehicleStatus:
+                    case (int)eUserInterfaceChoice.ChangeVehicleStatus:
                         {
-                            ChangeVehicleStatus();
+                            changeVehicleStatus();
                             break;
                         }
-                    case (int)UserInterfaceChoice.AddAirToVehicleTires:
+                    case (int)eUserInterfaceChoice.AddAirToVehicleTires:
                         {
-                            AddAirToTires();
+                            addAirToTires();
                             break;
                         }
-                    case (int)UserInterfaceChoice.FillUpFuel:
+                    case (int)eUserInterfaceChoice.FillUpFuel:
                         {
-                            AddFuelToVehicle();
+                            addFuelToVehicle();
                             break;
                         }
-                    case (int)UserInterfaceChoice.ChargeBattery:
+                    case (int)eUserInterfaceChoice.ChargeBattery:
                         {
-                            ChargeVehicleBattery();
+                            chargeVehicleBattery();
                             break;
                         }
-                    case (int)UserInterfaceChoice.ShowVehicleDetails:
+                    case (int)eUserInterfaceChoice.ShowVehicleDetails:
                         {
-                            ShowVehicleDetails();
+                            showVehicleDetails();
                             break;
                         }
-                    case (int)UserInterfaceChoice.Exit:
+                    case (int)eUserInterfaceChoice.Exit:
                         {
-                            PrintMessage(Messages.ExitMessage, 2);
+                            printMessage(Messages.k_ExitMessage, 2);
                             return;
                         }
                     default:
                         {
-                            PrintMessage(Messages.InvalidInputMessage, 2);
+                            printMessage(Messages.k_InvalidInputMessage, 2);
                             break;
                         }
                 }
             }
         }
 
-        private void ChangeVehicleStatus()
+        private void changeVehicleStatus()
         {
-            Clear();
             if (!_garageManager.IsGarageEmpty())
             {
-                PrintVehicleLicense();
-                string licencePlate = GetStringInput(Messages.ChangeCarStatusMessage);
-                PrintMessage(Messages.EnterCarStatusMessage);
-                VehicleStatus vehicleStatus = GetEnumInput<VehicleStatus>(Messages.CarStatusMenu);
+                printVehicleLicense();
 
-
+                string licencePlate = getStringInput(Messages.k_ChangeVehicleStatusMessage);
+                eVehicleStatus vehicleStatus = getEnumInput<eVehicleStatus>(Messages.s_CarStatusMenu);
                 bool isVehicleExists = _garageManager.ChangeVehicleStatus(licencePlate, vehicleStatus);
 
                 if (!isVehicleExists)
                 {
-                    PrintMessage(Messages.VehicleDoesntExistMessage, 2);
+                    printMessage(Messages.k_VehicleDoesntExistMessage, 2);
                 }
                 else
                 {
-                    PrintMessage(Messages.VehicleStatusChangedSuccefullyMessage, 2);
+                    printMessage(Messages.k_VehicleStatusChangedSuccefullyMessage, 2);
                 }
-            }
-            else
-            {
-                PrintMessage(Messages.NoCarsInGarageMessage, 2);
-            }
-
-
-        }
-
-        private void ShowVehiclesLicensePlates()
-        {
-            Clear();
-            if (!_garageManager.IsGarageEmpty())
-            {
-                List<string> carLicencePlates = new List<string>();
-                PrintMessage(Messages.EnterCarStatustToFilterByMessage);
-                PrintMessage(Messages.CarStatusMenu);
-                VehicleStatus vehicleStatus = GetEnumInput<VehicleStatus>(Messages.CarStatusMenu);
-
-
-                Clear();
-                PrintMessage(_garageManager.ShowVehiclesNumberPlatesByStatus(vehicleStatus));
-                PrintMessage("", 10);
 
             }
             else
             {
-                PrintMessage(Messages.NoCarsInGarageMessage, 2);
+                printMessage(Messages.k_NoCarsInGarageMessage, 2);
             }
 
-
         }
 
-        private void AddAirToTires()
+        private void showVehiclesLicensePlates()
         {
-            string licensePlate = GetStringInput(Messages.AddAirToTiresMessage);
-            PrintMessage(_garageManager.AddAirToTires(licensePlate), 2);
-        }
-
-        private void AddFuelToVehicle()
-        {
-            Clear();
             if (!_garageManager.IsGarageEmpty())
             {
-                PrintVehicleLicense();
-                string licencePlate = GetStringInput(Messages.AddFuelMessage);
+                printMessage(Messages.k_EnterCarStatustToFilterByMessage);
+                eVehicleStatus vehicleStatus = getEnumInput<eVehicleStatus>(Messages.s_CarStatusMenu);
 
-                float fuelAmount = GetFloatInput(Messages.EnterAmountOfFuel);
+                clear();
 
-                PrintMessage(Messages.EnterFuelType);
-                EnergyType fuelType = GetEnumInput<EnergyType>(Messages.FuelTypeMenu);
+                printMessage(_garageManager.ShowVehiclesNumberPlatesByStatus(vehicleStatus));
+                printMessage("", 5);
+            }
+            else
+            {
+                printMessage(Messages.k_NoCarsInGarageMessage, 2);
+            }
 
+        }
+
+        private void addAirToTires()
+        {
+            if (_garageManager.IsGarageEmpty())
+            {
+                printMessage(Messages.k_NoCarsInGarageMessage, 2);
+                return;
+            }
+
+            string licensePlate = getStringInput(Messages.k_AddAirToTiresMessage);
+
+            printMessage(_garageManager.AddAirToTires(licensePlate), 2);
+        }
+
+        private void addFuelToVehicle()
+        {
+            if (!_garageManager.IsGarageEmpty())
+            {
+                printVehicleLicense();
+
+                string licencePlate = getStringInput(Messages.k_AddFuelMessage);
+                float fuelAmount = getFloatInput(Messages.k_EnterAmountOfFuel);
+
+                printMessage(Messages.k_EnterFuelType);
+                eEnergyType fuelType = getEnumInput<eEnergyType>(Messages.s_FuelTypeMenu);
 
                 try
                 {
                     bool isVehicleExists = _garageManager.AddEnergyToVehicle(licencePlate, fuelType, fuelAmount);
+                    
                     if (!isVehicleExists)
                     {
-                        PrintMessage(Messages.VehicleDoesntExistMessage, 2);
+                        printMessage(Messages.k_VehicleDoesntExistMessage, 2);
                     }
                     else
                     {
-                        PrintMessage(Messages.FuelAddedCorrectlyMessage, 2);
+                        printMessage(Messages.k_FuelAddedCorrectlyMessage, 2);
                     }
+
                 }
                 catch (ValueOutOfRangeException outOfRangeEx)
                 {
-                    PrintMessage(outOfRangeEx.Message, 2);
+                    printMessage(outOfRangeEx.Message, 4);
                 }
                 catch (ArgumentException argumentEx)
                 {
-                    PrintMessage(argumentEx.Message, 2);
+                    printMessage(argumentEx.Message, 4);
                 }
+
             }
             else
             {
-                PrintMessage(Messages.NoCarsInGarageMessage, 2);
+                printMessage(Messages.k_NoCarsInGarageMessage, 2);
             }
-
         }
 
-
-        private void ChargeVehicleBattery()
+        private void chargeVehicleBattery()
         {
-
-            Clear();
             if (!_garageManager.IsGarageEmpty())
             {
+                printVehicleLicense();
 
-                PrintVehicleLicense();
-
-                string licencePlate = GetStringInput(Messages.AddEnergyMessage);
-
-                float fuelAmount = GetFloatInput(Messages.EnterAmountOfBattery);
+                string licencePlate = getStringInput(Messages.k_AddEnergyMessage);
+                float fuelAmount = getFloatInput(Messages.k_EnterAmountOfBattery);
 
                 try
                 {
-                    bool isVehicleExists = _garageManager.AddEnergyToVehicle(licencePlate, EnergyType.Electric, fuelAmount);
+                    bool isVehicleExists = _garageManager.AddEnergyToVehicle(licencePlate, eEnergyType.Electric, fuelAmount);
+
                     if (!isVehicleExists)
                     {
-                        PrintMessage(Messages.VehicleDoesntExistMessage, 2);
+                        printMessage(Messages.k_VehicleDoesntExistMessage, 2);
                     }
                     else
                     {
-                        PrintMessage(Messages.BatteryrechargedCorrectlyMessage, 2);
+                        printMessage(Messages.k_BatteryrechargedCorrectlyMessage, 2);
                     }
+
                 }
                 catch (ValueOutOfRangeException outOfRangeEx)
                 {
-                    PrintMessage(outOfRangeEx.Message, 2);
+                    printMessage(outOfRangeEx.Message, 4);
                 }
                 catch (ArgumentException argumentEx)
                 {
-                    PrintMessage(argumentEx.Message, 2);
+                    printMessage(argumentEx.Message, 4);
                 }
             }
             else
             {
-                PrintMessage(Messages.NoCarsInGarageMessage, 2);
+                printMessage(Messages.k_NoCarsInGarageMessage, 2);
             }
         }
 
-        private void ShowVehicleDetails()
+        private void showVehicleDetails()
         {
-            string userInput = GetStringInput(Messages.VehicleLicenseNumberMessage);
-            PrintMessage(_garageManager.GetVehicleDetails(userInput), 5);
+            if (_garageManager.IsGarageEmpty())
+            {
+                printMessage(Messages.k_NoCarsInGarageMessage, 2);
+                return;
+            }
+            
+            string userInput = getStringInput(Messages.k_VehicleLicenseNumberMessage);
+
+            printMessage(_garageManager.GetVehicleDetails(userInput), 5);
         }
 
-        private int GetMenuInput()
+        private int getMenuInput()
         {
             string userInput = Console.ReadLine();
+
             return int.TryParse(userInput, out int input) ? input : 0;
         }
 
-        private string GetInput()
+        private string getInput()
         {
             return Console.ReadLine();
         }
 
-        private void TryAddVehicle()
+        private void tryAddVehicle()
         {
-            PrintMessage(Messages.AddCarMessage);
-            string lisencePlate = GetInput();
+            printMessage(Messages.k_AddCarMessage);
+
+            string lisencePlate = getInput();
             bool isVehicleExists = _garageManager.TryAddVehicleToGarage(lisencePlate);
 
             if (!isVehicleExists)
             {
-                VehicleType vehicleType = GetEnumInput<VehicleType>(Messages.VehicleTypeMenu);
+                eVehicleType vehicleType = getEnumInput<eVehicleType>(Messages.s_VehicleTypeMenu);
                 GarageCustomer garageCustomer = new GarageCustomer();
+
                 garageCustomer.VehicleType = vehicleType;
                 garageCustomer.OwnerInfo = new GarageCustomer.OwnerInformation();
-                garageCustomer.OwnerInfo.Name = GetStringInput(Messages.OwnerNameMessage);
-                garageCustomer.OwnerInfo.Phone = GetStringInput(Messages.OwnerPhoneMessage);
-                string vehicleEnergyMessage = Messages.GetVehicleEnergyMessage(vehicleType);
+                garageCustomer.OwnerInfo.Name = getStringInput(Messages.k_OwnerNameMessage);
+                garageCustomer.OwnerInfo.Phone = getStringInput(Messages.k_OwnerPhoneMessage);
+
+                string vehicleEnergyMessage = Messages.getVehicleEnergyMessage(vehicleType);
 
                 switch (garageCustomer.VehicleType)
                 {
-                    case VehicleType.PetrolCar:
-                    case VehicleType.ElectricCar:
+                    case eVehicleType.PetrolCar:
+                    case eVehicleType.ElectricCar:
                         {
-                            garageCustomer.Vehicle = GetCarInput(lisencePlate, vehicleEnergyMessage);
+                            garageCustomer.Vehicle = getCarInput(lisencePlate, vehicleEnergyMessage);
                             break;
                         }
-                    case VehicleType.PetrolBike:
-                    case VehicleType.ElectricBike:
+                    case eVehicleType.PetrolBike:
+                    case eVehicleType.ElectricBike:
                         {
-                            garageCustomer.Vehicle = GetBikeInput(lisencePlate, vehicleEnergyMessage);
+                            garageCustomer.Vehicle = getBikeInput(lisencePlate, vehicleEnergyMessage);
                             break;
                         }
-                    case VehicleType.PetrolTruck:
+                    case eVehicleType.PetrolTruck:
                         {
-                            garageCustomer.Vehicle = GetTruckInput(lisencePlate, vehicleEnergyMessage);
+                            garageCustomer.Vehicle = getTruckInput(lisencePlate, vehicleEnergyMessage);
                             break;
                         }
                     default:
                         {
-                            garageCustomer.Vehicle = GetVeihcleInput(lisencePlate, vehicleEnergyMessage);
+                            garageCustomer.Vehicle = getVeihcleInput(lisencePlate, vehicleEnergyMessage);
                             break;
                         }
                 }
-                _garageManager.AddVehicle(garageCustomer);
-            }
 
-            PrintMessage(Messages.VehicleAddedSuccessfullyMessage, 2);
+                try
+                {
+                    _garageManager.AddVehicle(garageCustomer);
+                    printMessage(Messages.k_VehicleAddedSuccessfullyMessage, 2);
+                }
+                catch (NotSupportedException ex)
+                {
+                    printMessage(ex.Message, 4);
+                }
+                catch (ValueOutOfRangeException ex)
+                {
+                    printMessage(ex.Message, 4);
+                }
+            }
         }
 
-        private GarageCustomer.CarDto GetCarInput(string licensePlate, string vehicleEnergyMessage)
+        private GarageCustomer.CarDto getCarInput(string i_LicensePlate, string i_VehicleEnergyMessage)
         {
             return new GarageCustomer.CarDto
             {
-                LicensePlate = licensePlate,
-                Model = GetStringInput(Messages.VehicleModelMessage),
-                ManufactareName = GetStringInput(Messages.WheelManufactareMessage),
-                TirePressure = GetFloatInput(Messages.TirePressureMessage),
-                EnergyAmount = GetFloatInput(vehicleEnergyMessage),
-                Color = GetEnumInput<CarColor>(Messages.CarColorMenu),
-                NumOfDoors = GetIntInput(Messages.NumOfDoorsMessage),
+                LicensePlate = i_LicensePlate,
+                Model = getStringInput(Messages.k_VehicleModelMessage),
+                ManufactareName = getStringInput(Messages.k_WheelManufactareMessage),
+                TirePressure = getFloatInput(Messages.k_TirePressureMessage),
+                EnergyAmount = getFloatInput(i_VehicleEnergyMessage),
+                Color = getEnumInput<eCarColor>(Messages.s_CarColorMenu),
+                NumOfDoors = getIntInput(Messages.k_NumOfDoorsMessage),
             };
         }
 
-        private GarageCustomer.BikeDto GetBikeInput(string licensePlate, string vehicleEnergyMessage)
+        private GarageCustomer.BikeDto getBikeInput(string i_LicensePlate, string i_VehicleEnergyMessage)
         {
             return new GarageCustomer.BikeDto
             {
-                LicensePlate = licensePlate,
-                Model = GetStringInput(Messages.VehicleModelMessage),
-                ManufactareName = GetStringInput(Messages.WheelManufactareMessage),
-                TirePressure = GetFloatInput(Messages.TirePressureMessage),
-                EnergyAmount = GetFloatInput(vehicleEnergyMessage),
-                BikeLicence = GetEnumInput<BikeLicenceType>(Messages.BikeLicenseMenu),
-                CubicCapacity = GetIntInput(Messages.BikeCubicCapacityMessage),
+                LicensePlate = i_LicensePlate,
+                Model = getStringInput(Messages.k_VehicleModelMessage),
+                ManufactareName = getStringInput(Messages.k_WheelManufactareMessage),
+                TirePressure = getFloatInput(Messages.k_TirePressureMessage),
+                EnergyAmount = getFloatInput(i_VehicleEnergyMessage),
+                BikeLicence = getEnumInput<eBikeLicenceType>(Messages.s_BikeLicenseMenu),
+                CubicCapacity = getIntInput(Messages.k_BikeCubicCapacityMessage),
             };
         }
 
-        private GarageCustomer.VehicleBase GetVeihcleInput(string licensePlate, string vehicleEnergyMessage)
+        private GarageCustomer.VehicleBase getVeihcleInput(string i_LicensePlate, string i_VehicleEnergyMessage)
         {
             return new GarageCustomer.VehicleBase
             {
-                LicensePlate = licensePlate,
-                Model = GetStringInput(Messages.VehicleModelMessage),
-                ManufactareName = GetStringInput(Messages.WheelManufactareMessage),
-                TirePressure = GetFloatInput(Messages.TirePressureMessage),
-                EnergyAmount = GetFloatInput(vehicleEnergyMessage),
+                LicensePlate = i_LicensePlate,
+                Model = getStringInput(Messages.k_VehicleModelMessage),
+                ManufactareName = getStringInput(Messages.k_WheelManufactareMessage),
+                TirePressure = getFloatInput(Messages.k_TirePressureMessage),
+                EnergyAmount = getFloatInput(i_VehicleEnergyMessage),
             };
         }
 
-        private GarageCustomer.TruckDto GetTruckInput(string licensePlate, string vehicleEnergyMessage)
+        private GarageCustomer.TruckDto getTruckInput(string i_LicensePlate, string i_VehicleEnergyMessage)
         {
             return new GarageCustomer.TruckDto
             {
-                LicensePlate = licensePlate,
-                Model = GetStringInput(Messages.VehicleModelMessage),
-                ManufactareName = GetStringInput(Messages.WheelManufactareMessage),
-                TirePressure = GetFloatInput(Messages.TirePressureMessage),
-                EnergyAmount = GetFloatInput(vehicleEnergyMessage),
-                CargoVolume = GetFloatInput(Messages.CargoVolumeMessage),
-                IsDangerousGoods = GetBoolInput(Messages.IsDangerousGoods)
+                LicensePlate = i_LicensePlate,
+                Model = getStringInput(Messages.k_VehicleModelMessage),
+                ManufactareName = getStringInput(Messages.k_WheelManufactareMessage),
+                TirePressure = getFloatInput(Messages.k_TirePressureMessage),
+                EnergyAmount = getFloatInput(i_VehicleEnergyMessage),
+                CargoVolume = getFloatInput(Messages.k_CargoVolumeMessage),
+                IsDangerousGoods = getBoolInput(Messages.k_IsDangerousGoods)
             };
         }
 
-        private T GetEnumInput<T>(string message) where T : struct, IConvertible
+        private T getEnumInput<T>(string i_Message) where T : struct, IConvertible
         {
-            PrintMessage(message);
-            string enumType = GetInput();
+            printMessage(i_Message);
+
+            string enumType = getInput();
 
             while (!Validations.IsInputEnumTypeValid<T>(enumType))
             {
-                PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(message);
-                enumType = GetInput();
+                printMessage(Messages.k_InvalidInputMessage);
+                printMessage(i_Message);
+                enumType = getInput();
             }
 
             return (T)Enum.Parse(typeof(T), enumType);
         }
 
-        private bool GetBoolInput(string message)
+        private bool getBoolInput(string i_Message)
         {
-            PrintMessage(message);
-            string input = GetInput();
+            printMessage(i_Message);
+
+            string input = getInput();
 
             while (!Validations.IsDangerousGoodsValid(input))
             {
-                PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(message);
-                input = GetInput();
+                printMessage(Messages.k_InvalidInputMessage);
+                printMessage(i_Message);
+                input = getInput();
             }
 
             return bool.Parse(input);
         }
 
-        private int GetIntInput(string message)
+        private int getIntInput(string i_Message)
         {
-            PrintMessage(message);
-            string input = GetInput();
+            printMessage(i_Message);
+
+            string input = getInput();
 
             while (!Validations.IsInputIntValid(input) || !Validations.IsPositiveNumberValid(int.Parse(input)))
             {
-                PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(message);
-                input = GetInput();
+                printMessage(Messages.k_InvalidInputMessage);
+                printMessage(i_Message);
+                input = getInput();
             }
 
             return int.Parse(input);
         }
 
-        private string GetStringInput(string message)
+        private string getStringInput(string i_Message)
         {
-            PrintMessage(message);
-            string input = GetInput();
+            printMessage(i_Message);
+
+            string input = getInput();
 
             while (!Validations.IsInputStringValid(input))
             {
-                PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(message);
-                input = GetInput();
+                printMessage(Messages.k_InvalidInputMessage);
+                printMessage(i_Message);
+                input = getInput();
             }
 
             return input;
         }
 
-        private float GetFloatInput(string message)
+        private float getFloatInput(string i_Message)
         {
-            PrintMessage(message);
-            string input = GetInput();
+            printMessage(i_Message);
 
-            while (!Validations.IsInputFloatValid(input) || !Validations.IsPositiveNumberValid(int.Parse(input)))
+            string input = getInput();
+
+            while (!Validations.IsInputFloatValid(input) || !Validations.IsPositiveNumberValid((int)float.Parse(input)))
             {
-                PrintMessage(Messages.InvalidInputMessage);
-                PrintMessage(message);
-                input = GetInput();
+                printMessage(Messages.k_InvalidInputMessage);
+                printMessage(i_Message);
+                input = getInput();
             }
 
             return float.Parse(input);
         }
 
-        private void PrintVehicleLicense()
+        private void printVehicleLicense()
         {
-            PrintMessage(Messages.VehicleListMessage);
-            PrintMessage(_garageManager.ShowVehiclesNumberPlatesByStatus(VehicleStatus.AllStatus));
+            printMessage(Messages.k_VehicleListMessage);
+            printMessage(_garageManager.ShowVehiclesNumberPlatesByStatus(eVehicleStatus.AllStatus));
         }
 
-        private void PrintMessage(string message, int delayInSecondes = 0)
+        private void printMessage(string i_Message, int i_DelayInSecondes = 0)
         {
-            Console.WriteLine(message);
-            Delay(delayInSecondes);
+            Console.WriteLine(i_Message);
+            delay(i_DelayInSecondes);
         }
 
-        private void Delay(int delayInSecondes)
+        private void delay(int i_DelayInSecondes)
         {
-            Thread.Sleep(delayInSecondes * 1000);
+            Thread.Sleep(i_DelayInSecondes * 1000);
         }
 
-        private void Clear()
+        private void clear()
         {
             Console.Clear();
         }

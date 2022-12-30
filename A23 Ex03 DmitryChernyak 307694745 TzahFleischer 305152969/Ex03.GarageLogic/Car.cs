@@ -4,18 +4,19 @@ namespace Ex03.GarageLogic
 {
     internal class Car : Vehicle
     {
-        public Car(IEngine engine)
+        public Car(IEngine i_Engine)
         {
-            Engine = engine;
+            Engine = i_Engine;
         }
-        private int _numOfDoors;
+
+        private int m_NumOfDoors;
         public override int NumOfWheels => 5;
         public override float MaxTirePressure => 32;
         public override IEngine Engine { get; set; }
-        public CarColor Color { get; set; }
+        public eCarColor Color { get; set; }
         public int NumOfDoors
         {
-            get => _numOfDoors;
+            get => m_NumOfDoors;
             set
             {
                 if (value < 2 || value > 5)
@@ -23,14 +24,16 @@ namespace Ex03.GarageLogic
                     throw new ArgumentException($"Num of door should be 2 - 5 and not {value}");
                 }
 
-                _numOfDoors = value;
+                m_NumOfDoors = value;
             }
         }
 
-        public override void SetVehicleInformation(GarageCustomer.VehicleBase vehicle)
+        public override void SetVehicleInformation(GarageCustomer.VehicleBase I_Vehicle)
         {
-            base.SetVehicleInformation(vehicle);
-            GarageCustomer.CarDto carDto = vehicle as GarageCustomer.CarDto;
+            base.SetVehicleInformation(I_Vehicle);
+
+            GarageCustomer.CarDto carDto = I_Vehicle as GarageCustomer.CarDto;
+
             Color = carDto.Color;
             NumOfDoors = carDto.NumOfDoors;
         }

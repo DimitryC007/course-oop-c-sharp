@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Ex03.GarageLogic
+﻿namespace Ex03.GarageLogic
 {
     interface IEngine
     {
         float CurrentEnergy { get; set; }
         float MaxEnergy { get; set; }
         float MinEnergy { get; }
-        EnergyType CurrentEnergyType { get; }
+        eEnergyType CurrentEnergyType { get; }
         float EnergyPercentage { get; }
 
-        void AddEnergy(float energyAmount, EnergyType energy);
+        void AddEnergy(float i_EnergyAmount, eEnergyType i_Energy);
 
         string ToString();
     }

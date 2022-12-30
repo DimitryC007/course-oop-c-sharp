@@ -1,43 +1,42 @@
-﻿using Ex03.GarageLogic;
-using System;
+﻿using System;
 
 namespace Ex03.ConsoleUI
 {
     public class Validations
     {
-        public static bool IsInputStringValid(string input)
+        public static bool IsInputStringValid(string i_Input)
         {
-            return !string.IsNullOrWhiteSpace(input);
+            return !string.IsNullOrWhiteSpace(i_Input);
         }
 
-        public static bool IsInputFloatValid(string input)
+        public static bool IsInputFloatValid(string i_Input)
         {
-            return float.TryParse(input, out float f);
+            return float.TryParse(i_Input, out float f);
         }
 
-        public static bool IsInputIntValid(string input)
+        public static bool IsInputIntValid(string i_Input)
         {
-            return int.TryParse(input, out int i);
+            return int.TryParse(i_Input, out int i);
         }
 
-        public static bool IsDangerousGoodsValid(string input)
+        public static bool IsDangerousGoodsValid(string i_Input)
         {
-            return bool.TryParse(input, out bool result);
+            return bool.TryParse(i_Input, out bool result);
         }
 
-        public static bool IsPositiveNumberValid(int number)
+        public static bool IsPositiveNumberValid(int i_Number)
         {
-            return number > 0;
+            return i_Number > 0;
         }
 
-        public static bool IsInputEnumTypeValid<T>(string input) where T : struct, IConvertible
+        public static bool IsInputEnumTypeValid<T>(string i_Input) where T : struct, IConvertible
         {
-            return Enum.TryParse(input, true, out T t) && Enum.IsDefined(typeof(T), t);
+            return Enum.TryParse(i_Input, true, out T t) && Enum.IsDefined(typeof(T), t);
         }
 
-        public static bool IsCarNumOfDoorsValid(string input)
+        public static bool IsCarNumOfDoorsValid(string i_Input)
         {
-            bool isParsed = int.TryParse(input, out int numOfDoors);
+            bool isParsed = int.TryParse(i_Input, out int numOfDoors);
             
             return isParsed && numOfDoors >= 2 && numOfDoors <= 5;
         }

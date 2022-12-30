@@ -5,47 +5,49 @@ namespace Ex03.GarageLogic
 {
     public class GarageManager
     {
-        private GarageStorage _garageStorage;
-        private VehicleFactory _vehicleFactory;
+        private GarageStorage m_GarageStorage;
+        private VehicleFactory m_VehicleFactory;
 
         public GarageManager()
         {
-            _garageStorage = new GarageStorage();
-            _vehicleFactory = new VehicleFactory();
+            m_GarageStorage = new GarageStorage();
+            m_VehicleFactory = new VehicleFactory();
         }
 
-        public bool TryAddVehicleToGarage(string licensePlate)
+        public bool TryAddVehicleToGarage(string i_LicensePlate)
         {
-            bool isVehicleExists = _garageStorage.CheckIfVehicleExists(licensePlate);
+            bool isVehicleExists = m_GarageStorage.CheckIfVehicleExists(i_LicensePlate);
 
             if (isVehicleExists)
             {
-                _garageStorage.ChangeVehicleStatus(licensePlate, VehicleStatus.UnderRepair);
+                m_GarageStorage.ChangeVehicleStatus(i_LicensePlate, eVehicleStatus.UnderRepair);
             }
 
             return isVehicleExists;
         }
 
-        public void AddVehicle(GarageCustomer garageCustomer)
+        public void AddVehicle(GarageCustomer i_GarageCustomer)
         {
-            Vehicle vehicle = _vehicleFactory.CreateVehicle(garageCustomer.VehicleType);
-            vehicle.SetVehicleInformation(garageCustomer.Vehicle);
+
+            Vehicle vehicle = m_VehicleFactory.CreateVehicle(i_GarageCustomer.VehicleType);
+
+            vehicle.SetVehicleInformation(i_GarageCustomer.Vehicle);
 
             AutomobileRepair automobileRepair = new AutomobileRepair
             {
                 Vehicle = vehicle,
-                OwnerName = garageCustomer.OwnerInfo.Name,
-                OwnerPhone = garageCustomer.OwnerInfo.Phone,
-                VehicleStatus = VehicleStatus.UnderRepair
+                OwnerName = i_GarageCustomer.OwnerInfo.Name,
+                OwnerPhone = i_GarageCustomer.OwnerInfo.Phone,
+                VehicleStatus = eVehicleStatus.UnderRepair
             };
 
-            _garageStorage.AddVehicle(vehicle.LicensePlate, automobileRepair);
+            m_GarageStorage.AddVehicle(vehicle.LicensePlate, automobileRepair);
         }
 
-        public string ShowVehiclesNumberPlatesByStatus(VehicleStatus vehicleStatus)
+        public string ShowVehiclesNumberPlatesByStatus(eVehicleStatus i_VehicleStatus)
         {
             string licensePlates = "";
-            List<string> vehiclesLicencePlate = _garageStorage.FindAllLicencePlatesByStatus(vehicleStatus);
+            List<string> vehiclesLicencePlate = m_GarageStorage.FindAllLicencePlatesByStatus(i_VehicleStatus);
             foreach (string carLicence in vehiclesLicencePlate)
             {
                 licensePlates += (carLicence + Environment.NewLine);
@@ -55,44 +57,44 @@ namespace Ex03.GarageLogic
 
         }
 
-        public bool ChangeVehicleStatus(string licensePlate, VehicleStatus vehicleStatus)
+        public bool ChangeVehicleStatus(string i_LicensePlate, eVehicleStatus i_VehicleStatus)
         {
-            
-            bool isExists = _garageStorage.CheckIfVehicleExists(licensePlate);
+
+            bool isExists = m_GarageStorage.CheckIfVehicleExists(i_LicensePlate);
 
             if (isExists)
             {
-                _garageStorage.ChangeVehicleStatus(licensePlate, vehicleStatus);
+                m_GarageStorage.ChangeVehicleStatus(i_LicensePlate, i_VehicleStatus);
             }
 
             return isExists;
         }
 
-        public string AddAirToTires(string licensePlate)
+        public string AddAirToTires(string i_LicensePlate)
         {
-            if (!_garageStorage.CheckIfVehicleExists(licensePlate))
+            if (!m_GarageStorage.CheckIfVehicleExists(i_LicensePlate))
             {
                 return "Vehicle not exists";
             }
 
-            _garageStorage.GetVehicle(licensePlate).Vehicle.AddAirToTire();
+            m_GarageStorage.GetVehicle(i_LicensePlate).Vehicle.AddAirToTire();
             return "Tires updated successfully";
         }
 
-        public bool AddEnergyToVehicle(string licensePlate, EnergyType energyType, float quantity)
+        public bool AddEnergyToVehicle(string i_LicensePlate, eEnergyType I_EnergyType, float i_Quantity)
         {
-            bool isVehicleExists = _garageStorage.CheckIfVehicleExists(licensePlate);
+            bool isVehicleExists = m_GarageStorage.CheckIfVehicleExists(i_LicensePlate);
             if (isVehicleExists)
             {
-                _garageStorage.AddFuel(licensePlate, energyType, quantity);
+                m_GarageStorage.AddFuel(i_LicensePlate, I_EnergyType, i_Quantity);
             }
 
             return isVehicleExists;
         }
 
-        public string GetVehicleDetails(string licensePlate)
+        public string GetVehicleDetails(string i_LicensePlate)
         {
-            AutomobileRepair automobileRepair = _garageStorage.GetVehicle(licensePlate);
+            AutomobileRepair automobileRepair = m_GarageStorage.GetVehicle(i_LicensePlate);
 
             if (automobileRepair == null)
             {
@@ -104,7 +106,7 @@ namespace Ex03.GarageLogic
 
         public bool IsGarageEmpty()
         {
-            return _garageStorage.CheckIfGarageIsEmpty();
+            return m_GarageStorage.CheckIfGarageIsEmpty();
         }
     }
 }

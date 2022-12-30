@@ -6,48 +6,49 @@ namespace Ex03.ConsoleUI
 {
     public static class Messages
     {
-        public const string InvalidInputMessage = "Invalid input, please try again";
-        public const string AddCarMessage = "For Adding new vehicle to garage, enter license plate";
-        public const string VehicleAddedSuccessfullyMessage = "Vehicle added successfully";
-        public const string OwnerNameMessage = "Owner name:";
-        public const string OwnerPhoneMessage = "Owner phone";
-        public const string TirePressureMessage = "Tire pressure";
-        public const string BatteryStatusMessage = "Battery status:";
-        public const string FuelStatusMessage = "Fuel status:";
-        public const string NumOfDoorsMessage = "Num of doors:";
-        public const string VehicleModelMessage = "Vehicle model:";
-        public const string WheelManufactareMessage = "Wheel manufactare:";
-        public const string BikeCubicCapacityMessage = "Bike cubic capacity:";
-        public const string CargoVolumeMessage = "Cargo volume:";
-        public const string IsDangerousGoods = "Is Dangerous Goods: type only true or false";
-        public const string ChangeCarStatusMessage = "To change car status please enter car licence:";
-        public const string EnterCarStatusMessage = "Pleas Choose the status you want to change to";
-        public const string EnterCarStatustToFilterByMessage = "Please Choose the status you want to filter by";
-        public const string VehicleDoesntExistMessage = "The Vehicle Doesnt Exist";
-        public const string VehicleStatusChangedSuccefullyMessage = "The Vehicle status changed succesfully";
-        public const string VehicleLicenseNumberMessage = "Vehicle license number:";
-        public const string AddFuelMessage = "Please enter the licence plate of the car you want to refuel";
-        public const string EnterAmountOfFuel = "Please enter the amount of fuel";
-        public const string EnterFuelType = "please enter the type of fuel";
-        public const string FuelAddedCorrectlyMessage = "Fuel added succesfully";
-        public const string ExitMessage = "Program exited";
-        public const string NoCarsInGarageMessage = "No Vehicles in the garage";
-        public const string AddAirToTiresMessage = "For updating tire pressure, enter license plate";
-        public const string AddEnergyMessage = "Please enter the licence plate of the car you want to recharge";
-        public const string EnterAmountOfBattery = "Please enter the amount of charge(in hours)";
-        public const string BatteryrechargedCorrectlyMessage = "Battery recharged succesfully";
-        public const string VehicleListMessage = "Please Choose from these Vehicles License plates:\n";
+        public const string k_InvalidInputMessage = "Invalid input, please try again";
+        public const string k_AddCarMessage = "For Adding new vehicle to garage, enter license plate";
+        public const string k_VehicleAddedSuccessfullyMessage = "Vehicle added successfully";
+        public const string k_OwnerNameMessage = "Owner name:";
+        public const string k_OwnerPhoneMessage = "Owner phone:";
+        public const string k_TirePressureMessage = "Tire pressure:";
+        public const string k_BatteryStatusMessage = "Battery status:";
+        public const string k_FuelStatusMessage = "Fuel status:";
+        public const string k_NumOfDoorsMessage = "Num of doors:";
+        public const string k_VehicleModelMessage = "Vehicle model:";
+        public const string k_WheelManufactareMessage = "Wheel manufactare:";
+        public const string k_BikeCubicCapacityMessage = "Bike cubic capacity:";
+        public const string k_CargoVolumeMessage = "Cargo volume:";
+        public const string k_IsDangerousGoods = "Is Dangerous Goods: type only true or false";
+        public const string k_ChangeVehicleStatusMessage = "To change car status please enter car licence:";
+        public const string k_EnterVehicleStatusMessage = "Pleas Choose the status you want to change to";
+        public const string k_EnterCarStatustToFilterByMessage = "Please Choose the status you want to filter by";
+        public const string k_VehicleDoesntExistMessage = "The Vehicle Doesnt Exist";
+        public const string k_VehicleStatusChangedSuccefullyMessage = "The Vehicle status changed succesfully";
+        public const string k_VehicleLicenseNumberMessage = "Vehicle license number:";
+        public const string k_AddFuelMessage = "Please enter the licence plate of the car you want to refuel";
+        public const string k_EnterAmountOfFuel = "Please enter the amount of fuel";
+        public const string k_EnterFuelType = "please enter the type of fuel";
+        public const string k_FuelAddedCorrectlyMessage = "Fuel added succesfully";
+        public const string k_ExitMessage = "Program exited";
+        public const string k_NoCarsInGarageMessage = "No Vehicles in the garage";
+        public const string k_AddAirToTiresMessage = "For updating tire pressure, enter license plate";
+        public const string k_AddEnergyMessage = "Please enter the licence plate of the car you want to recharge";
+        public const string k_EnterAmountOfBattery = "Please enter the amount of charge(in hours)";
+        public const string k_BatteryrechargedCorrectlyMessage = "Battery recharged succesfully";
+        public const string k_VehicleListMessage = "Please Choose from these Vehicles License plates:\n";
 
-        public static string GarageMenu => GetGarageMenuMessage();
-        public static string VehicleTypeMenu => GetVehicleTypeMenu();
-        public static string CarColorMenu => GetCarColorMenu();
-        public static string BikeLicenseMenu => GetBikeLicenseMenu();
-        public static string CarStatusMenu => GetCarStatusMenu();
-        public static string FuelTypeMenu => GetFuelTypeMenu();
+        public static string s_GarageMenu => getGarageMenuMessage();
+        public static string s_VehicleTypeMenu => getVehicleTypeMenu();
+        public static string s_CarColorMenu => getCarColorMenu();
+        public static string s_BikeLicenseMenu => getBikeLicenseMenu();
+        public static string s_CarStatusMenu => getCarStatusMenu();
+        public static string s_FuelTypeMenu => getFuelTypeMenu();
 
-        private static string GetGarageMenuMessage()
+        private static string getGarageMenuMessage()
         {
             StringBuilder garageMenu = new StringBuilder();
+            
             garageMenu.Append("=================================");
             garageMenu.Append(" Welcome to our Garage Repair ");
             garageMenu.Append(string.Format("================================={0}", Environment.NewLine));
@@ -59,10 +60,11 @@ namespace Ex03.ConsoleUI
             garageMenu.Append(string.Format("- Press 6 for charge vehicle{0}", Environment.NewLine));
             garageMenu.Append(string.Format("- Press 7 for display vehicle details{0}", Environment.NewLine));
             garageMenu.Append("* For exit press 8");
+            
             return garageMenu.ToString();
         }
 
-        private static string GetCarStatusMenu()
+        private static string getCarStatusMenu()
         {
             StringBuilder statusMenu = new StringBuilder();
 
@@ -74,23 +76,24 @@ namespace Ex03.ConsoleUI
             return statusMenu.ToString();
         }
 
-        private static string GetFuelTypeMenu()
+        private static string getFuelTypeMenu()
         {
             StringBuilder statusMenu = new StringBuilder();
 
             statusMenu.Append(string.Format("- Press 1 for under soler{0}", Environment.NewLine));
             statusMenu.Append(string.Format("- Press 2 for octan 95{0}", Environment.NewLine));
-            statusMenu.Append(string.Format("- Press 2 for octan 96{0}", Environment.NewLine));
-            statusMenu.Append(string.Format("- Press 2 for octan 98{0}", Environment.NewLine));
+            statusMenu.Append(string.Format("- Press 3 for octan 96{0}", Environment.NewLine));
+            statusMenu.Append(string.Format("- Press 4 for octan 98{0}", Environment.NewLine));
 
             return statusMenu.ToString();
         }
 
-        private static string GetVehicleTypeMenu()
+        private static string getVehicleTypeMenu()
         {
             StringBuilder vehicleTypesMenu = new StringBuilder();
-            Array vehicleTypeValues = Enum.GetValues(typeof(VehicleType));
-            foreach (VehicleType vehicleType in vehicleTypeValues)
+            Array vehicleTypeValues = Enum.GetValues(typeof(eVehicleType));
+            
+            foreach (eVehicleType vehicleType in vehicleTypeValues)
             {
                 string[] splited = null;
 
@@ -114,11 +117,12 @@ namespace Ex03.ConsoleUI
             return vehicleTypesMenu.ToString();
         }
 
-        private static string GetCarColorMenu()
+        private static string getCarColorMenu()
         {
             StringBuilder menuBuilder = new StringBuilder();
-            Array CarColors = Enum.GetValues(typeof(CarColor));
-            foreach (CarColor CarColor in CarColors)
+            Array CarColors = Enum.GetValues(typeof(eCarColor));
+            
+            foreach (eCarColor CarColor in CarColors)
             {
 
                 menuBuilder.Append(string.Format("- for Car color: {0}  press {1}{2}", CarColor.ToString(), (int)CarColor, Environment.NewLine));
@@ -127,11 +131,12 @@ namespace Ex03.ConsoleUI
             return menuBuilder.ToString();
         }
 
-        private static string GetBikeLicenseMenu()
+        private static string getBikeLicenseMenu()
         {
             StringBuilder menuBuilder = new StringBuilder();
-            Array bikeLisences = Enum.GetValues(typeof(BikeLicenceType));
-            foreach (BikeLicenceType bikeLisence in bikeLisences)
+            Array bikeLisences = Enum.GetValues(typeof(eBikeLicenceType));
+            
+            foreach (eBikeLicenceType bikeLisence in bikeLisences)
             {
 
                 menuBuilder.Append(string.Format("- for Bike license: {0}  press {2}{3}", bikeLisence.ToString(), (int)bikeLisence, Environment.NewLine));
@@ -140,10 +145,11 @@ namespace Ex03.ConsoleUI
             return menuBuilder.ToString();
         }
 
-        public static string GetVehicleEnergyMessage(VehicleType vehicleType)
+        public static string getVehicleEnergyMessage(eVehicleType i_VehicleType)
         {
-            bool isPetrol = vehicleType.ToString().IndexOf("petrol", StringComparison.OrdinalIgnoreCase) > -1;
-            return isPetrol ? FuelStatusMessage : BatteryStatusMessage;
+            bool isPetrol = i_VehicleType.ToString().IndexOf("petrol", StringComparison.OrdinalIgnoreCase) > -1;
+
+            return isPetrol ? k_FuelStatusMessage : k_BatteryStatusMessage;
         }
     }
 }

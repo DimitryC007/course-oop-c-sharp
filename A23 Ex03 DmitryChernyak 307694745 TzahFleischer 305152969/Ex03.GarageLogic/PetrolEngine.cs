@@ -6,31 +6,31 @@ namespace Ex03.GarageLogic
     internal class PetrolEngine : IEngine
     {
 
-        public PetrolEngine(float maxEnergy, EnergyType energyType)
+        public PetrolEngine(float i_MaxEnergy, eEnergyType i_EnergyType)
         {
-            MaxEnergy = maxEnergy;
-            CurrentEnergyType = energyType;
+            MaxEnergy = i_MaxEnergy;
+            CurrentEnergyType = i_EnergyType;
         }
 
         public float CurrentEnergy { get; set; }
         public float MaxEnergy { get; set; }
-        public EnergyType CurrentEnergyType { get; set; }
+        public eEnergyType CurrentEnergyType { get; set; }
         public float EnergyPercentage => CurrentEnergy / MaxEnergy * 100;
         public float MinEnergy => 10;
 
-        public void AddEnergy(float energyAmount, EnergyType energyToAdd)
+        public void AddEnergy(float i_EnergyAmount, eEnergyType i_EnergyToAdd)
         {
-            if (energyToAdd != CurrentEnergyType)
+            if (i_EnergyToAdd != CurrentEnergyType)
             {
-                throw new ArgumentException($"Fuel is not acceptable current fuel type: {CurrentEnergyType} requested fueld to fill up: {energyToAdd}");
+                throw new ArgumentException($"Fuel is not acceptable current fuel type: {CurrentEnergyType} requested fueld to fill up: {i_EnergyToAdd}");
             }
             
-            if (CurrentEnergy + energyAmount > MaxEnergy)
+            if (CurrentEnergy + i_EnergyAmount > MaxEnergy)
             {
                 throw new ValueOutOfRangeException(new Exception(nameof(ValueOutOfRangeException)), MinEnergy, MaxEnergy, "Petrol amount was exceeded maxmium capacity");
             }
 
-            CurrentEnergy += energyAmount;
+            CurrentEnergy += i_EnergyAmount;
         }
 
         public override string ToString()

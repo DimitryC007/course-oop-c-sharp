@@ -17,12 +17,12 @@ namespace Ex03.GarageLogic
         public abstract float MaxTirePressure { get; }
         public abstract IEngine Engine { get; set; }
 
-        public virtual void SetVehicleInformation(GarageCustomer.VehicleBase vehicle)
+        public virtual void SetVehicleInformation(GarageCustomer.VehicleBase i_Vehicle)
         {
-            Model = vehicle.Model;
-            LicensePlate = vehicle.LicensePlate;
-            Engine.AddEnergy(vehicle.EnergyAmount, Engine.CurrentEnergyType);
-            UpdateWheels(vehicle.ManufactareName, vehicle.TirePressure);
+            Model = i_Vehicle.Model;
+            LicensePlate = i_Vehicle.LicensePlate;
+            Engine.AddEnergy(i_Vehicle.EnergyAmount, Engine.CurrentEnergyType);
+            UpdateWheels(i_Vehicle.ManufactareName, i_Vehicle.TirePressure);
         }
 
         public void AddAirToTire()
@@ -45,17 +45,17 @@ namespace Ex03.GarageLogic
             }
         }
 
-        private void UpdateWheels(string manufacturerName, float tirePressure)
+        private void UpdateWheels(string i_ManufacturerName, float i_TirePressure)
         {
             foreach (var wheel in Wheels)
             {
-                if (tirePressure > wheel.MaxTirePressure)
+                if (i_TirePressure > wheel.MaxTirePressure)
                 {
                     throw new ValueOutOfRangeException(new Exception(nameof(UpdateWheels)), 0, wheel.MaxTirePressure, "tire pressure excceded the maximum");
                 }
 
-                wheel.TirePressure = tirePressure;
-                wheel.ManufacturerName = manufacturerName;
+                wheel.TirePressure = i_TirePressure;
+                wheel.ManufacturerName = i_ManufacturerName;
             }
         }
 

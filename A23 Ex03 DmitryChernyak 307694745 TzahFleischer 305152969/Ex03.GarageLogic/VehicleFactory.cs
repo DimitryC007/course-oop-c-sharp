@@ -4,39 +4,39 @@ namespace Ex03.GarageLogic
 {
     internal class VehicleFactory
     {
-        public Vehicle CreateVehicle(VehicleType vehicleType)
+        public Vehicle CreateVehicle(eVehicleType i_VehicleType)
         {
             Vehicle vehicle = null;
 
-            switch (vehicleType)
+            switch (i_VehicleType)
             {
-                case VehicleType.PetrolCar:
+                case eVehicleType.PetrolCar:
                     {
-                        vehicle = new Car(new PetrolEngine(50f, EnergyType.Octan95));
+                        vehicle = new Car(new PetrolEngine(50f, eEnergyType.Octan95));
                         break;
 
                     }
-                case VehicleType.ElectricCar:
+                case eVehicleType.ElectricCar:
                     {
                         vehicle = new Car(new ElectricEngine(4.7f));
                         break;
 
                     }
-                case VehicleType.PetrolBike:
+                case eVehicleType.PetrolBike:
                     {
-                        vehicle = new Bike(new PetrolEngine(6f, EnergyType.Octan98));
+                        vehicle = new Bike(new PetrolEngine(6f, eEnergyType.Octan98));
                         break;
 
                     }
-                case VehicleType.ElectricBike:
+                case eVehicleType.ElectricBike:
                     {
                         vehicle = new Bike(new ElectricEngine(1.6f));
                         break;
 
                     }
-                case VehicleType.PetrolTruck:
+                case eVehicleType.PetrolTruck:
                     {
-                        vehicle = new Truck(new PetrolEngine(120f, EnergyType.Soler));
+                        vehicle = new Truck(new PetrolEngine(120f, eEnergyType.Soler));
                         break;
                     }
                 default:

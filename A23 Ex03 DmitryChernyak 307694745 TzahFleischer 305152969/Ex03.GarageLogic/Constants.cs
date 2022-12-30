@@ -1,6 +1,6 @@
 ﻿namespace Ex03.GarageLogic
 {
-    public enum CarColor
+    public enum eCarColor
     {
         Red = 1,
         Blue = 2,
@@ -8,7 +8,7 @@
         Grey = 4
     }
 
-    public enum VehicleStatus
+    public enum eVehicleStatus
     {
         UnderRepair = 1,
         Fixed = 2,
@@ -16,13 +16,13 @@
         AllStatus = 4
     }
 
-    public enum VehicleEnergy
+    public enum eVehicleEnergy
     {
         Petrol,
         Electric
     }
 
-    public enum BikeLicenceType
+    public enum eBikeLicenceType
     {
         A,
         A1,
@@ -30,7 +30,7 @@
         B
     }
 
-    public enum VehicleType
+    public enum eVehicleType
     {
         PetrolCar = 1,
         ElectricCar = 2,
@@ -39,12 +39,12 @@
         PetrolTruck = 5
     }
 
-    public enum EnergyType
+    public enum eEnergyType
     {
-        Soler,
-        Octan95,
-        Octan96,
-        Octan98,
-        Electric
+        Soler = 1,
+        Octan95 = 2,
+        Octan96 = 3,
+        Octan98 = 4,
+        Electric = 5
     }
 }

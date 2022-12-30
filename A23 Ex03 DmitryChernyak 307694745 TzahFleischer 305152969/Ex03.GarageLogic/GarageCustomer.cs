@@ -4,7 +4,7 @@
     {
         public VehicleBase Vehicle { get; set; }
         public OwnerInformation OwnerInfo { get; set; }
-        public VehicleType VehicleType { get; set; }
+        public eVehicleType VehicleType { get; set; }
 
 
         public class OwnerInformation
@@ -24,13 +24,13 @@
 
         public class CarDto : VehicleBase
         {
-            public CarColor Color { get; set; }
+            public eCarColor Color { get; set; }
             public int NumOfDoors { get; set; }
         }
 
         public class BikeDto : VehicleBase
         {
-            public BikeLicenceType BikeLicence { get; set; }
+            public eBikeLicenceType BikeLicence { get; set; }
             public int CubicCapacity { get; set; }
         }
 

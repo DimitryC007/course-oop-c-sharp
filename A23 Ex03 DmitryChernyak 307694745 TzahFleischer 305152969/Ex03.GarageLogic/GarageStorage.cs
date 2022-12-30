@@ -1,55 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Ex03.GarageLogic
 {
     internal class GarageStorage
     {
-        private Dictionary<string, AutomobileRepair> _vehicles;
+        private Dictionary<string, AutomobileRepair> m_Vehicles;
 
         public GarageStorage()
         {
-            _vehicles = new Dictionary<string, AutomobileRepair>();
+            m_Vehicles = new Dictionary<string, AutomobileRepair>();
         }
 
-        public AutomobileRepair GetVehicle(string licensePlate)
+        public AutomobileRepair GetVehicle(string i_LicensePlate)
         {
-            bool isVehicleExists = CheckIfVehicleExists(licensePlate);
+            bool isVehicleExists = CheckIfVehicleExists(i_LicensePlate);
 
             if (!isVehicleExists)
             {
                 return null;
             }
 
-            return _vehicles[licensePlate];
+            return m_Vehicles[i_LicensePlate];
         }
 
-        public void AddVehicle(string licensePlate, AutomobileRepair automobileRepair)
+        public void AddVehicle(string i_LicensePlate, AutomobileRepair i_AutomobileRepair)
         {
-            if (!_vehicles.ContainsKey(licensePlate))
+            if (!m_Vehicles.ContainsKey(i_LicensePlate))
             {
-                _vehicles.Add(licensePlate, automobileRepair);
+                m_Vehicles.Add(i_LicensePlate, i_AutomobileRepair);
             }
         }
 
-        public bool CheckIfVehicleExists(string licencePlate)
+        public bool CheckIfVehicleExists(string i_LicensePlate)
         {
-            return _vehicles.ContainsKey(licencePlate);
+            return m_Vehicles.ContainsKey(i_LicensePlate);
         }
 
-        public List<string> FindAllLicencePlatesByStatus(VehicleStatus vehicleStatus)
+        public List<string> FindAllLicencePlatesByStatus(eVehicleStatus i_VehicleStatus)
         {
             List<string> vehiclesLicensePlatesByStatus = new List<string>();
 
-            if (vehicleStatus == VehicleStatus.AllStatus)
+            if (i_VehicleStatus == eVehicleStatus.AllStatus)
             {
-                vehiclesLicensePlatesByStatus = new List<string>(_vehicles.Keys);
+                vehiclesLicensePlatesByStatus = new List<string>(m_Vehicles.Keys);
             }
             else
             {
-                foreach (string licensePlate in _vehicles.Keys)
+                foreach (string licensePlate in m_Vehicles.Keys)
                 {
-                    if (_vehicles[licensePlate].VehicleStatus == vehicleStatus)
+                    if (m_Vehicles[licensePlate].VehicleStatus == i_VehicleStatus)
                     {
                         vehiclesLicensePlatesByStatus.Add(licensePlate);
                     }
@@ -59,19 +58,19 @@ namespace Ex03.GarageLogic
             return vehiclesLicensePlatesByStatus;
         }
 
-        public void ChangeVehicleStatus(string licensePlate, VehicleStatus vehicleStatus)
+        public void ChangeVehicleStatus(string i_LicensePlate, eVehicleStatus I_VehicleStatus)
         {
-            _vehicles[licensePlate].VehicleStatus = vehicleStatus;
+            m_Vehicles[i_LicensePlate].VehicleStatus = I_VehicleStatus;
         }
 
-        internal void AddFuel(string licensePlate, EnergyType energyType, float quantity)
+        internal void AddFuel(string I_LicensePlate, eEnergyType i_EnergyType, float i_Quantity)
         {
-            _vehicles[licensePlate].Vehicle.Engine.AddEnergy(quantity, energyType);
+            m_Vehicles[I_LicensePlate].Vehicle.Engine.AddEnergy(i_Quantity, i_EnergyType);
         }
 
         internal bool CheckIfGarageIsEmpty()
         {
-            return _vehicles.Count == 0;
+            return m_Vehicles.Count == 0;
         }
     }
 }
