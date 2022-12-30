@@ -26,11 +26,6 @@ namespace Ex03.GarageLogic
             return isVehicleExists;
         }
 
-        private bool IsVehicleExists(string licensePlate)
-        {
-            return _garageStorage.CheckIfVehicleExists(licensePlate);
-        }
-
         public void AddVehicle(GarageCustomer garageCustomer)
         {
             Vehicle vehicle = _vehicleFactory.CreateVehicle(garageCustomer.VehicleType);
@@ -62,7 +57,8 @@ namespace Ex03.GarageLogic
 
         public bool ChangeVehicleStatus(string licensePlate, VehicleStatus vehicleStatus)
         {
-            bool isExists = IsVehicleExists(licensePlate);
+            
+            bool isExists = _garageStorage.CheckIfVehicleExists(licensePlate);
 
             if (isExists)
             {
@@ -74,7 +70,7 @@ namespace Ex03.GarageLogic
 
         public string AddAirToTires(string licensePlate)
         {
-            if (!IsVehicleExists(licensePlate))
+            if (!_garageStorage.CheckIfVehicleExists(licensePlate))
             {
                 return "Vehicle not exists";
             }
@@ -83,7 +79,7 @@ namespace Ex03.GarageLogic
             return "Tires updated successfully";
         }
 
-        public bool AddFuelToVehicle(string licensePlate, EnergyType energyType, float quantity)
+        public bool AddEnergyToVehicle(string licensePlate, EnergyType energyType, float quantity)
         {
             bool isVehicleExists = _garageStorage.CheckIfVehicleExists(licensePlate);
             if (isVehicleExists)
@@ -93,8 +89,6 @@ namespace Ex03.GarageLogic
 
             return isVehicleExists;
         }
-
-   
 
         public string GetVehicleDetails(string licensePlate)
         {

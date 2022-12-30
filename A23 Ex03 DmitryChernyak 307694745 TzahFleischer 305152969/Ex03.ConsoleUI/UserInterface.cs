@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Ex03.ConsoleUI
 {
-    public enum UserInterfaceChoise
+    public enum UserInterfaceChoice
     {
         AddNewVehicle = 1,
         ShowFilteredVehicle = 2,
@@ -35,42 +35,42 @@ namespace Ex03.ConsoleUI
 
                 switch (input)
                 {
-                    case (int)UserInterfaceChoise.AddNewVehicle:
+                    case (int)UserInterfaceChoice.AddNewVehicle:
                         {
                             TryAddVehicle();
                             break;
                         }
-                    case (int)UserInterfaceChoise.ShowFilteredVehicle:
+                    case (int)UserInterfaceChoice.ShowFilteredVehicle:
                         {
                             ShowVehiclesLicensePlates();
                             break;
                         }
-                    case (int)UserInterfaceChoise.ChangeVehicleStatus:
+                    case (int)UserInterfaceChoice.ChangeVehicleStatus:
                         {
                             ChangeVehicleStatus();
                             break;
                         }
-                    case (int)UserInterfaceChoise.AddAirToVehicleTires:
+                    case (int)UserInterfaceChoice.AddAirToVehicleTires:
                         {
                             AddAirToTires();
                             break;
                         }
-                    case (int)UserInterfaceChoise.FillUpFuel:
+                    case (int)UserInterfaceChoice.FillUpFuel:
                         {
                             AddFuelToVehicle();
                             break;
                         }
-                    case (int)UserInterfaceChoise.ChargeBattery:
+                    case (int)UserInterfaceChoice.ChargeBattery:
                         {
                             ChargeVehicleBattery();
                             break;
                         }
-                    case (int)UserInterfaceChoise.ShowVehicleDetails:
+                    case (int)UserInterfaceChoice.ShowVehicleDetails:
                         {
                             ShowVehicleDetails();
                             break;
                         }
-                    case (int)UserInterfaceChoise.Exit:
+                    case (int)UserInterfaceChoice.Exit:
                         {
                             PrintMessage(Messages.ExitMessage, 2);
                             return;
@@ -160,7 +160,7 @@ namespace Ex03.ConsoleUI
 
                 try
                 {
-                    bool isVehicleExists = _garageManager.AddFuelToVehicle(licencePlate, fuelType, fuelAmount);
+                    bool isVehicleExists = _garageManager.AddEnergyToVehicle(licencePlate, fuelType, fuelAmount);
                     if (!isVehicleExists)
                     {
                         PrintMessage(Messages.VehicleDoesntExistMessage, 2);
@@ -202,7 +202,7 @@ namespace Ex03.ConsoleUI
 
                 try
                 {
-                    bool isVehicleExists = _garageManager.AddFuelToVehicle(licencePlate, EnergyType.Electric, fuelAmount);
+                    bool isVehicleExists = _garageManager.AddEnergyToVehicle(licencePlate, EnergyType.Electric, fuelAmount);
                     if (!isVehicleExists)
                     {
                         PrintMessage(Messages.VehicleDoesntExistMessage, 2);
