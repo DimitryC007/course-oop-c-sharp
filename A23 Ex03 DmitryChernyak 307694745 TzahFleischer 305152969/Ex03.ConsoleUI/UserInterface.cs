@@ -151,9 +151,9 @@ namespace Ex03.ConsoleUI
             {
                 PrintVehicleLicense();
                 string licencePlate = GetStringInput(Messages.AddFuelMessage);
-                
+
                 float fuelAmount = GetFloatInput(Messages.EnterAmountOfFuel);
-                
+
                 PrintMessage(Messages.EnterFuelType);
                 EnergyType fuelType = GetEnumInput<EnergyType>(Messages.FuelTypeMenu);
 
@@ -279,6 +279,11 @@ namespace Ex03.ConsoleUI
                             garageCustomer.Vehicle = GetTruckInput(lisencePlate, vehicleEnergyMessage);
                             break;
                         }
+                    default:
+                        {
+                            garageCustomer.Vehicle = GetVeihcleInput(lisencePlate, vehicleEnergyMessage);
+                            break;
+                        }
                 }
                 _garageManager.AddVehicle(garageCustomer);
             }
@@ -311,6 +316,18 @@ namespace Ex03.ConsoleUI
                 EnergyAmount = GetFloatInput(vehicleEnergyMessage),
                 BikeLicence = GetEnumInput<BikeLicenceType>(Messages.BikeLicenseMenu),
                 CubicCapacity = GetIntInput(Messages.BikeCubicCapacityMessage),
+            };
+        }
+
+        private GarageCustomer.VehicleBase GetVeihcleInput(string licensePlate, string vehicleEnergyMessage)
+        {
+            return new GarageCustomer.VehicleBase
+            {
+                LicensePlate = licensePlate,
+                Model = GetStringInput(Messages.VehicleModelMessage),
+                ManufactareName = GetStringInput(Messages.WheelManufactareMessage),
+                TirePressure = GetFloatInput(Messages.TirePressureMessage),
+                EnergyAmount = GetFloatInput(vehicleEnergyMessage),
             };
         }
 

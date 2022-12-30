@@ -2,7 +2,6 @@
 
 namespace Ex03.GarageLogic
 {
-    ///TODO: should be a singletone class (design pattern)
     internal class VehicleFactory
     {
         public Vehicle CreateVehicle(VehicleType vehicleType)
