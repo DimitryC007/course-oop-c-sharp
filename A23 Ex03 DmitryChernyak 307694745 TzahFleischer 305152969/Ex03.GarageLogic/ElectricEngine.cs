@@ -12,7 +12,7 @@ namespace Ex03.GarageLogic
         public float CurrentEnergy { get; set; }
         public float MaxEnergy { get; set; }
         public EnergyType CurrentEnergyType => EnergyType.Electric;
-        public int MinEnergy => 10;
+        public float MinEnergy => 10;
         public float EnergyPercentage => CurrentEnergy / MaxEnergy * 100;
 
 

@@ -9,7 +9,7 @@ namespace Ex03.GarageLogic
     {
         float CurrentEnergy { get; set; }
         float MaxEnergy { get; set; }
-        int MinEnergy { get; }
+        float MinEnergy { get; }
         EnergyType CurrentEnergyType { get; }
         float EnergyPercentage { get; }
 
