@@ -6,26 +6,28 @@ namespace Ex04.Menus.Delegates
 {
     public class MainMenu
     {
-        private MenuItem _mainMenu;
-        private Stack<MenuItem> _stack = new Stack<MenuItem>();
+        private MenuItem m_MainMenu;
+        private Stack<MenuItem> m_CurrentMenusStack = new Stack<MenuItem>();
 
-        public MainMenu(string menuName)
+        public MainMenu(string i_MenuName)
         {
-            _mainMenu = new MenuItem(menuName);
-            _stack.Push(_mainMenu);
+            m_MainMenu = new MenuItem(i_MenuName);
+            m_CurrentMenusStack.Push(m_MainMenu);
         }
 
-        public void AddMainMenuItem(MenuItem menuItem)
+        public void AddMainMenuItem(MenuItem i_MenuItem)
         {
-            _mainMenu.Items.Add(menuItem);
+            m_MainMenu.Items.Add(i_MenuItem);
         }
 
         public void Show()
         {
-            while (_stack.Count > 0)
+            while (m_CurrentMenusStack.Count > 0)
             {
-                MenuItem currentMenu = _stack.Peek();
-                showCurrentMenu(currentMenu, _stack.Count > 1);
+                MenuItem currentMenu = m_CurrentMenusStack.Peek();
+                
+                showCurrentMenu(currentMenu, m_CurrentMenusStack.Count > 1);
+                
                 int userInput = getUserInput();
 
                 if (userInput != 0)
@@ -34,12 +36,12 @@ namespace Ex04.Menus.Delegates
                     
                     if (!menuItem.isExecutable)
                     {
-                        _stack.Push(menuItem);
+                        m_CurrentMenusStack.Push(menuItem);
                     }
                 }
                 else
                 {
-                    _stack.Pop();
+                    m_CurrentMenusStack.Pop();
                 }
             }
         }
@@ -47,10 +49,12 @@ namespace Ex04.Menus.Delegates
         private int getUserInput()
         {
             string enterRequestMessage = "Enter your request:";
+            
             Console.WriteLine(enterRequestMessage);
+            
             string input = Console.ReadLine();
 
-            while (!int.TryParse(input, out int choise) || choise < 0 || choise > _mainMenu.Items.Count)
+            while (!int.TryParse(input, out int choice) || choice < 0 || choice > m_MainMenu.Items.Count)
             {
                 Console.WriteLine("Input not valid");
                 Console.WriteLine(enterRequestMessage);
@@ -60,19 +64,21 @@ namespace Ex04.Menus.Delegates
             return int.Parse(input);
         }
 
-        private void showCurrentMenu(MenuItem currentMenu, bool showBack)
+        private void showCurrentMenu(MenuItem i_CurrentMenu, bool i_ShowBack)
         {
             Console.Clear();
+            
             StringBuilder sb = new StringBuilder();
-            sb.Append(getMenuNameString(currentMenu.Name));
+            
+            sb.Append(getMenuNameString(i_CurrentMenu.Name));
             sb.Append(getSeperatorString());
 
-            for (int i = 0; i < currentMenu.Items.Count; i++)
+            for (int i = 0; i < i_CurrentMenu.Items.Count; i++)
             {
-                sb.Append(getMenuItemString(i + 1, currentMenu.Items[i].Name));
+                sb.Append(getMenuItemString(i + 1, i_CurrentMenu.Items[i].Name));
             }
 
-            sb.Append(getMenuItemString(0, showBack ? "Back" : "Exit"));
+            sb.Append(getMenuItemString(0, i_ShowBack ? "Back" : "Exit"));
             sb.Append(getSeperatorString());
             Console.WriteLine(sb.ToString());
         }
@@ -82,14 +88,14 @@ namespace Ex04.Menus.Delegates
             return $"{Environment.NewLine}---------------------";
         }
 
-        private string getMenuNameString(string menuName)
+        private string getMenuNameString(string i_MenuName)
         {
-            return $"**{menuName}**";
+            return $"**{i_MenuName}**";
         }
 
-        private string getMenuItemString(int i, string name)
+        private string getMenuItemString(int i_MenuItemIndex, string i_MenuName)
         {
-            return $"{Environment.NewLine}{i} -> {name}";
+            return $"{Environment.NewLine}{i_MenuItemIndex} -> {i_MenuName}";
         }
     }
 }

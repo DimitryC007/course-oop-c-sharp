@@ -5,37 +5,37 @@ namespace Ex04.Menus.Delegates
     public class MenuItem
     {
         public delegate void MenuItemClickEventHandler();
-        public event MenuItemClickEventHandler MenuItemAction;
-        private readonly List<MenuItem> _items = new List<MenuItem>();
-        private readonly string _name;
-        internal string Name => _name;
-        internal List<MenuItem> Items => _items;
-        internal bool isExecutable => _items.Count == 0;
+        public event MenuItemClickEventHandler MenuItemChoice;
+        private readonly List<MenuItem> r_Items = new List<MenuItem>();
+        private readonly string r_Name;
+        internal string Name => r_Name;
+        internal List<MenuItem> Items => r_Items;
+        internal bool isExecutable => r_Items.Count == 0;
 
-        public MenuItem(string name, MenuItemClickEventHandler menuItemAction = null)
+        public MenuItem(string i_Name, MenuItemClickEventHandler i_MenuItemChoice = null)
         {
-            _name = name;
-            MenuItemAction += menuItemAction;
+            r_Name = i_Name;
+            MenuItemChoice += i_MenuItemChoice;
         }
 
-        public void AddMenuItem(MenuItem menuItem)
+        public void AddMenuItem(MenuItem i_MenuItem)
         {
-            _items.Add(menuItem);
+            r_Items.Add(i_MenuItem);
         }
 
         internal MenuItem Execute()
         {
             if (isExecutable)
             {
-                OnMenuItemAction();
+                OnMenuItemChoice();
             }
 
             return this;
         }
 
-        internal void OnMenuItemAction()
+        internal void OnMenuItemChoice()
         {
-            MenuItemAction?.Invoke();
+            MenuItemChoice?.Invoke();
         }
     }
 }

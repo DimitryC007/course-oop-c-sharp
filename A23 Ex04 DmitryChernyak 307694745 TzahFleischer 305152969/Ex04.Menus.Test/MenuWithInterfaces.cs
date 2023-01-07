@@ -6,19 +6,18 @@ namespace Ex04.Menus.Test
     {
         public static void Run()
         {
-            var mainMenu = new MainMenu("Interfaces Main Menu");
-
-            var mainMenuItem1 = new MenuItem("Version and Uppercase");
+            MainMenu mainMenu = new MainMenu("Interfaces Main Menu");
+            MenuItem mainMenuItem1 = new MenuItem("Version and Uppercase");
+            
             mainMenuItem1.AddMenuItem(new MenuItem("Show Version", new ShowVersion()));
             mainMenuItem1.AddMenuItem(new MenuItem("Count Uppercase", new CountUppercase()));
 
-            var mainMenuItem2 = new MenuItem("Show Date/Time");
+            MenuItem mainMenuItem2 = new MenuItem("Show Date/Time");
+            
             mainMenuItem2.AddMenuItem(new MenuItem("Show Date", new ShowDate()));
             mainMenuItem2.AddMenuItem(new MenuItem("Show Time", new ShowTime()));
-
             mainMenu.AddMainMenuItem(mainMenuItem1);
             mainMenu.AddMainMenuItem(mainMenuItem2);
-
             mainMenu.Show();
         }
     }
