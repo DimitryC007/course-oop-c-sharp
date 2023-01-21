@@ -16,6 +16,7 @@ namespace Ex05_Othelo
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new GameSettingsWindow());
+            
         }
     }
 }
