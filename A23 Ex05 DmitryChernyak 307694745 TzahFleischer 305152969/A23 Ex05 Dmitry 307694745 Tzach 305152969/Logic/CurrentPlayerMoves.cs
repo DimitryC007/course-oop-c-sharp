@@ -26,13 +26,13 @@ namespace Logic
             return i_Row >= 0 && i_Row < m_Board.m_Size && i_Column >= 0 && i_Column < m_Board.m_Size;
         }
 
-        private List<Coordinate> MoveInDirection(Coordinate i_Location, int i_OpponentValue, int i_RowDirection, int i_ColumnDirection)
+        private List<Coordinate> MoveInDirection(Coordinate i_Location, eCellState i_OpponentValue, int i_RowDirection, int i_ColumnDirection)
         {
             List<Coordinate> movesInDirection = new List<Coordinate>();
             int row = i_Location.Row + i_RowDirection;
             int column = i_Location.Column + i_ColumnDirection;
 
-            while (isInsideBoard(row, column) && m_Board.GetCellValue(row, column) != null)
+            while (isInsideBoard(row, column) && m_Board.IsCellEmpty(row,column))
             {
                 if (m_Board.GetCellValue(row, column) == i_OpponentValue)
                 {
@@ -49,7 +49,7 @@ namespace Logic
             return new List<Coordinate>();
         }
 
-        private List<Coordinate> AllCoordinatesForFlipping(Coordinate i_Location, int i_OpponentValue)
+        private List<Coordinate> AllCoordinatesForFlipping(Coordinate i_Location, eCellState i_OpponentValue)
         {
             List<Coordinate> AllCoordinates = new List<Coordinate>();
 
@@ -69,7 +69,7 @@ namespace Logic
             return AllCoordinates;
         }
 
-        public Dictionary<string, List<Coordinate>> AllCurrentPlayerMoves(int i_OpponentValue)
+        public Dictionary<string, List<Coordinate>> AllCurrentPlayerMoves(eCellState i_OpponentValue)
         {
             m_AvailablePlayerMoves = new Dictionary<string, List<Coordinate>>();
 

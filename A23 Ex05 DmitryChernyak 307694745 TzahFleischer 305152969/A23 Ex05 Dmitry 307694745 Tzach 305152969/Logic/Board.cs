@@ -11,13 +11,14 @@ namespace Logic
         public int m_Size => m_Matrix.GetLength(0);
         public bool m_IsFull => GetIsFull();
 
+        public event BoardChangedEventHandler BoardChanged;
+
         public Board(int i_MatrixSize)
         {
             m_Matrix = new Cell[i_MatrixSize, i_MatrixSize];
-            InitializeBoard();
         }
 
-        private void InitializeBoard()
+        public void InitializeBoard()
         {
             int matrixSize = m_Matrix.GetLength(0);
             int middleLocation = matrixSize / 2 - 1;
@@ -26,15 +27,22 @@ namespace Logic
             {
                 for (int cols = 0; cols < matrixSize; cols++)
                 {
-                    m_Matrix[rows, cols] = new Cell();
+                    m_Matrix[rows, cols] = new Cell(new Coordinate(rows, cols));
+                    m_Matrix[rows, cols].StateChanged += Cell_StateChanged;
+                    m_Matrix[rows, cols].State = eCellState.Disabled;
                 }
             }
 
-            m_Matrix[middleLocation, middleLocation].Value = 0;
-            m_Matrix[middleLocation + 1, middleLocation].Value = 1;
-            m_Matrix[middleLocation, middleLocation + 1].Value = 1;
-            m_Matrix[middleLocation + 1, middleLocation + 1].Value = 0;
+            m_Matrix[middleLocation, middleLocation].State = eCellState.Black;
+            m_Matrix[middleLocation + 1, middleLocation].State = eCellState.White;
+            m_Matrix[middleLocation, middleLocation + 1].State = eCellState.White;
+            m_Matrix[middleLocation + 1, middleLocation + 1].State = eCellState.Black;
 
+        }
+
+        private void Cell_StateChanged(Coordinate coordinate, eCellState newState)
+        {
+            BoardChanged?.Invoke(coordinate.Row, coordinate.Column, newState);
         }
 
         private bool GetIsFull()
@@ -43,9 +51,7 @@ namespace Logic
             {
                 for (int j = 0; j < m_Size; j++)
                 {
-                    int? cellValue = GetCellValue(i, j);
-
-                    if (cellValue == null)
+                    if (IsCellEmpty(i,j))
                     {
                         return false;
                     }
@@ -55,19 +61,20 @@ namespace Logic
             return true;
         }
 
-        internal void SetCellValue(int i_Value, int i_Row, int i_Column)
+        internal void SetCellValue(eCellState newValue, int i_Row, int i_Column)
         {
-            m_Matrix[i_Row, i_Column].Value = i_Value;
+            m_Matrix[i_Row, i_Column].State = newValue;
         }
 
-        public int? GetCellValue(int i_Row, int i_Column)
+        public eCellState GetCellValue(int i_Row, int i_Column)
         {
-            return m_Matrix[i_Row, i_Column].Value;
+            return m_Matrix[i_Row, i_Column].State;
         }
 
         public bool IsCellEmpty(int i_Row, int i_Column)
         {
-            return !m_Matrix[i_Row, i_Column].IsTaken;
+            return m_Matrix[i_Row, i_Column].State == eCellState.Free
+                || m_Matrix[i_Row, i_Column].State == eCellState.Disabled;
         }
     }
 }

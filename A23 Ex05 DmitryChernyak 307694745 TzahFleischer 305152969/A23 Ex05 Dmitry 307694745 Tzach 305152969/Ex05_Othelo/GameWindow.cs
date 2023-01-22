@@ -1,20 +1,40 @@
-﻿using System;
+﻿using Logic;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
+
 
 namespace Ex05_Othelo
 {
     public partial class GameWindow : Form
     {
-        private readonly Button[,] _buttons;
+        private readonly BoardButton[,] _buttons;
         private Panel container = new Panel();
+        private GameLogic _gameLogic;
+        
 
-        public GameWindow(int boardSize)
+        public GameWindow(int boardSize, bool isComputer)
         {
+            GameSettings gameSettings = new GameSettings(2)
+            {
+                MatrixSize = boardSize,
+
+            };
+
             InitializeComponent();
-            _buttons = new Button[boardSize, boardSize];
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            _buttons = new BoardButton[boardSize, boardSize];
             InitializeButtons(boardSize);
+            gameSettings.Players[0] = new Player("Black", false);
+            gameSettings.Players[1] = new Player("White", isComputer);
+            _gameLogic = new GameLogic(gameSettings);
+            _gameLogic.BoardChanged += GameLogic_BoardChanged;
+            _gameLogic.InitGame();
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+        }
+
+        private void GameLogic_BoardChanged(int row, int col, eCellState newState)
+        {
+            _buttons[row, col].ButtonState = newState;
         }
 
         public void InitializeButtons(int boardSize)
@@ -26,7 +46,7 @@ namespace Ex05_Othelo
             {
                 for (int j = 0; j < boardSize; j++)
                 {
-                    _buttons[i, j] = new Button();
+                    _buttons[i, j] = new BoardButton(new Point(i,j));
                     _buttons[i, j].Size = new Size(50, 50);
                     _buttons[i, j].Location = new Point(j * 60, i * 60);
                     _buttons[i, j].Click += new EventHandler(button_Click);
@@ -41,8 +61,13 @@ namespace Ex05_Othelo
         private void button_Click(object sender, EventArgs e)
         {
             // Your code here
-            Button button = (Button)sender;
-            button.Text = "Clicked";
+            BoardButton button = (BoardButton)sender;
+            //button.Text = button.Coordinate.ToString();
+            button.ButtonState = eCellState.Black;
+
         }
+
     }
+
+   
 }

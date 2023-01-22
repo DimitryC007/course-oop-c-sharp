@@ -48,18 +48,20 @@ namespace Ex05_Othelo
 
         private void playComputerButton_Click(object sender, EventArgs e)
         {
-            StartNewGame();
+            bool isComputer = true;
+            StartNewGame(isComputer);
         }
 
         private void playHumanButton_Click(object sender, EventArgs e)
         {
-            StartNewGame();
+            bool isComputer = false;
+            StartNewGame(isComputer);
         }
 
-        private void StartNewGame()
+        private void StartNewGame(bool isComputer)
         {
             this.Hide();
-            _gameWindow = new GameWindow(_boardSize);
+            _gameWindow = new GameWindow(_boardSize,isComputer);
             _gameWindow.ShowDialog();
             this.Close();
             

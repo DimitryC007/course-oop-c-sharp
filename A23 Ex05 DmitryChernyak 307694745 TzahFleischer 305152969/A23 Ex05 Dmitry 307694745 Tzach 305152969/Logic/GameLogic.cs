@@ -6,6 +6,8 @@ using System.Threading;
 
 namespace Logic
 {
+    public delegate void BoardChangedEventHandler(int row, int col, eCellState newState);
+
     public enum eGameStatuses
     {
         GameOver,
@@ -23,23 +25,43 @@ namespace Logic
 
     public class GameLogic
     {
+        private GameSettings _gameSettings;
+
         public Board m_Board { get; }
         private Player[] m_Players;
         public Player m_CurrentPlayer => m_Players[m_PlayerIndex];
         private int m_PlayerIndex = 1;
-        private int m_PlayerValue => m_PlayerIndex;
-        private int m_OponentValue => m_PlayerIndex == 0 ? 1 : 0;
+        private eCellState m_PlayerValue => m_PlayerIndex == 0 ? eCellState.Black : eCellState.White;
+        private eCellState m_OponentValue => m_PlayerIndex == 0 ? eCellState.White : eCellState.Black;
         private Dictionary<char, int> m_CharacterDict = new Dictionary<char, int>();
         private CurrentPlayerMoves m_CurrentPlayerMoves;
         private int m_SkippedTurns = 0;
         private const int k_MaxSkippedTurnsAllowed = 2;
 
+        public event BoardChangedEventHandler BoardChanged;
+
         public GameLogic(GameSettings i_GameSettings)
         {
+            _gameSettings = i_GameSettings;
             m_Board = new Board(i_GameSettings.MatrixSize);
+            m_Board.BoardChanged += OnBoardChanged;
+            
+        }
+
+        public void InitGame()
+        {
+            m_Board.InitializeBoard();
             m_CurrentPlayerMoves = new CurrentPlayerMoves(m_Board);
-            m_Players = i_GameSettings.Players;
-            InitializeInputDictionary(i_GameSettings.MatrixSize);
+            m_Players = _gameSettings.Players;
+            InitializeInputDictionary(_gameSettings.MatrixSize);
+        }
+
+        private void OnBoardChanged(int row, int col, eCellState newState)
+        {
+            if(BoardChanged != null)
+            {
+                BoardChanged.Invoke(row, col, newState);
+            }
         }
 
         public GameReport CheckHasAnyMove()
@@ -123,12 +145,12 @@ namespace Logic
             {
                 for (int j = 0; j < m_Board.m_Size; j++)
                 {
-                    if (m_Board.GetCellValue(i, j) == 0)
+                    if (m_Board.GetCellValue(i, j) == eCellState.Black)
                     {
                         hasZeroValue = true;
                     }
 
-                    if (m_Board.GetCellValue(i, j) == 1)
+                    if (m_Board.GetCellValue(i, j) == eCellState.White)
                     {
                         hasOneValue = true;
                     }
@@ -151,12 +173,12 @@ namespace Logic
             {
                 for (int j = 0; j < m_Board.m_Size; j++)
                 {
-                    if (m_Board.GetCellValue(i, j) == 0)
+                    if (m_Board.GetCellValue(i, j) == eCellState.Black)
                     {
                         zero++;
                     }
 
-                    if (m_Board.GetCellValue(i, j) == 1)
+                    if (m_Board.GetCellValue(i, j) == eCellState.White)
                     {
                         one++;
                     }
