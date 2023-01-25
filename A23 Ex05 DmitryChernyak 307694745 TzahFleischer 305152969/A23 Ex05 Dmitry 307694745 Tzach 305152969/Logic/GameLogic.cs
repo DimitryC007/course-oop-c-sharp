@@ -30,7 +30,7 @@ namespace Logic
         public Board m_Board { get; }
         private Player[] m_Players;
         public Player m_CurrentPlayer => m_Players[m_PlayerIndex];
-        private int m_PlayerIndex = 1;
+        private int m_PlayerIndex = 0;
         private eCellState m_PlayerValue => m_PlayerIndex == 0 ? eCellState.Black : eCellState.White;
         private eCellState m_OponentValue => m_PlayerIndex == 0 ? eCellState.White : eCellState.Black;
         private Dictionary<char, int> m_CharacterDict = new Dictionary<char, int>();
@@ -95,30 +95,29 @@ namespace Logic
             return gameReport;
         }
 
-        public GameReport MakeMove(string i_Position)
+        public GameReport MakeMove(Coordinate i_Position)
         {
             List<Coordinate> effectedFlipCoins;
             GameReport gameReport = InitializeGameReport();
 
             if (!m_CurrentPlayer.IsComputer)
             {
-                int column = ConvertInputToColumn(i_Position[0]);
-                int row = ConvertInputToRow(i_Position[1]);
+                //int column = ConvertInputToColumn(i_Position[0]);
+                //int row = ConvertInputToRow(i_Position[1]);
 
-                if (row == -1 || column == -1)
-                {
-                    gameReport.MoveStatus = eMoveStatuses.MoveFailure;
-                    return gameReport;
-                }
+                //if (row == -1 || column == -1)
+                //{
+                //    gameReport.MoveStatus = eMoveStatuses.MoveFailure;
+                //    return gameReport;
+                //}
 
-                if (!m_Board.IsCellEmpty(row, column))
-                {
-                    gameReport.MoveStatus = eMoveStatuses.CellIsTaken;
-                    return gameReport;
-                }
+                //if (!m_Board.IsCellEmpty(row, column))
+                //{
+                //    gameReport.MoveStatus = eMoveStatuses.CellIsTaken;
+                //    return gameReport;
+                //}
 
-                Coordinate coordinate = new Coordinate(row, column);
-                effectedFlipCoins = m_CurrentPlayerMoves.GetFlippableList(coordinate);
+                effectedFlipCoins = m_CurrentPlayerMoves.GetFlippableList(i_Position);
             }
             else
             {
@@ -128,6 +127,7 @@ namespace Logic
             }
 
             gameReport.MoveStatus = SetPlayerMoves(effectedFlipCoins);
+            m_Board.EmptyCell();
 
             if (gameReport.MoveStatus == eMoveStatuses.MoveSuccess)
             {

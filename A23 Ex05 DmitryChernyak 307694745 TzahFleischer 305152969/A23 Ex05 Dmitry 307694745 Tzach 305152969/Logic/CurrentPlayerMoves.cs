@@ -32,7 +32,7 @@ namespace Logic
             int row = i_Location.Row + i_RowDirection;
             int column = i_Location.Column + i_ColumnDirection;
 
-            while (isInsideBoard(row, column) && m_Board.IsCellEmpty(row,column))
+            while (isInsideBoard(row, column) && !m_Board.IsCellEmpty(row,column))
             {
                 if (m_Board.GetCellValue(row, column) == i_OpponentValue)
                 {
@@ -85,6 +85,8 @@ namespace Logic
 
                         if (locationMoves.Count > 0)
                         {
+                            m_Board.SetCellValue(eCellState.Free, row, column);
+                            
                             string key = CreateKey(location.Row, location.Column);
                             locationMoves.Add(location);
                             m_AvailablePlayerMoves[key] = locationMoves;

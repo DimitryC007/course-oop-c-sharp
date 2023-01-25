@@ -36,10 +36,12 @@ namespace Ex05_Othelo
         private void PlayGame()
         {
             _gameLogic.CheckHasAnyMove();
+
         }
 
         private void GameLogic_BoardChanged(int row, int col, eCellState newState)
         {
+            //this.Text = string.Format("Othello {0}'s Turn",_gameLogic.m_CurrentPlayer.Name);
             _buttons[row, col].ButtonState = newState;
         }
 
@@ -52,7 +54,7 @@ namespace Ex05_Othelo
             {
                 for (int j = 0; j < boardSize; j++)
                 {
-                    _buttons[i, j] = new BoardButton(new Point(i,j));
+                    _buttons[i, j] = new BoardButton(new Coordinate(i,j));
                     _buttons[i, j].Size = new Size(50, 50);
                     _buttons[i, j].Location = new Point(j * 50, i * 50);
                     _buttons[i, j].Click += new EventHandler(button_Click);
@@ -68,10 +70,11 @@ namespace Ex05_Othelo
 
         private void button_Click(object sender, EventArgs e)
         {
-            // Your code here
+            
             BoardButton button = (BoardButton)sender;
-            //button.Text = button.Coordinate.ToString();
-            button.ButtonState = eCellState.Black;
+            _gameLogic.MakeMove(button.Coordinate);
+            //button.ButtonState = eCellState.Black;
+            _gameLogic.CheckHasAnyMove();
 
         }
 

@@ -33,10 +33,10 @@ namespace Logic
                 }
             }
 
-            m_Matrix[middleLocation, middleLocation].State = eCellState.Black;
-            m_Matrix[middleLocation + 1, middleLocation].State = eCellState.White;
-            m_Matrix[middleLocation, middleLocation + 1].State = eCellState.White;
-            m_Matrix[middleLocation + 1, middleLocation + 1].State = eCellState.Black;
+            m_Matrix[middleLocation, middleLocation].State = eCellState.White;
+            m_Matrix[middleLocation + 1, middleLocation].State = eCellState.Black;
+            m_Matrix[middleLocation, middleLocation + 1].State = eCellState.Black;
+            m_Matrix[middleLocation + 1, middleLocation + 1].State = eCellState.White;
 
         }
 
@@ -75,6 +75,20 @@ namespace Logic
         {
             return m_Matrix[i_Row, i_Column].State == eCellState.Free
                 || m_Matrix[i_Row, i_Column].State == eCellState.Disabled;
+        }
+
+        internal void EmptyCell()
+        {
+            for (int rows = 0; rows < m_Matrix.GetLength(0); rows++)
+            {
+                for (int cols = 0; cols < m_Matrix.GetLength(0); cols++)
+                {
+                    if(m_Matrix[rows,cols].State == eCellState.Free)
+                    {
+                        SetCellValue(eCellState.Disabled, rows, cols);
+                    }
+                }
+            }
         }
     }
 }

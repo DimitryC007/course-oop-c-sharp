@@ -11,14 +11,14 @@ namespace Ex05_Othelo
     public class BoardButton : Button
     {
         private eCellState _buttonState = eCellState.Free;
-        private Point _coordinate;
+        private Coordinate _coordinate;
         
-        public BoardButton(Point location)
+        public BoardButton(Coordinate location)
         {
             _coordinate = location;
             ButtonState = eCellState.Disabled;
         }
-        public Point Coordinate => _coordinate;
+        public Coordinate Coordinate => _coordinate;
         public eCellState ButtonState { get { return _buttonState; } set { SetState(value); } }
 
         protected override void OnClick(EventArgs e)

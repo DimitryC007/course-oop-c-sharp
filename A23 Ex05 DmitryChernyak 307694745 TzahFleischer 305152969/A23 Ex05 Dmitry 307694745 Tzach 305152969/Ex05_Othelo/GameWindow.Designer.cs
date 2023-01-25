@@ -37,7 +37,7 @@ namespace Ex05_Othelo
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(652, 443);
             this.Name = "GameWindow";
-            this.Text = "GameWindow";
+            this.Text = "Othello";
             this.ResumeLayout(false);
 
         }
