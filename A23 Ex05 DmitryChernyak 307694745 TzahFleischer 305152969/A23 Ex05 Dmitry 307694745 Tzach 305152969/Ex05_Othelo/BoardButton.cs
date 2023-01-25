@@ -40,7 +40,7 @@ namespace Ex05_Othelo
                     {
                         Enabled = false;
                         this.Image = null;
-                        this.BackColor = Color.Gray;
+                        this.BackColor = default(Color);
                     }
                     break;
                 case eCellState.Free:
@@ -53,14 +53,16 @@ namespace Ex05_Othelo
                 case eCellState.Black:
                     {
                         Enabled = true;
-                        this.Image = Image.FromFile(Environment.CurrentDirectory+"\\CoinRed.png");
+                        this.BackgroundImage = Image.FromFile(Environment.CurrentDirectory+"\\CoinRed.png");
+                        this.BackgroundImageLayout = ImageLayout.Stretch;
                         this.BackColor = Color.Gray;
                     }
                     break;
                 case eCellState.White:
                     {
                         Enabled = true;
-                        this.Image = Image.FromFile(Environment.CurrentDirectory + "\\CoinYellow.png");
+                        this.BackgroundImage = Image.FromFile(Environment.CurrentDirectory + "\\CoinYellow.png");
+                        this.BackgroundImageLayout = ImageLayout.Stretch;
                         this.BackColor = Color.Gray;
                     }
                     break;

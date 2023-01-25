@@ -30,6 +30,12 @@ namespace Ex05_Othelo
             _gameLogic.BoardChanged += GameLogic_BoardChanged;
             _gameLogic.InitGame();
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            PlayGame();
+        }
+
+        private void PlayGame()
+        {
+            _gameLogic.CheckHasAnyMove();
         }
 
         private void GameLogic_BoardChanged(int row, int col, eCellState newState)
@@ -40,7 +46,7 @@ namespace Ex05_Othelo
         public void InitializeButtons(int boardSize)
         {
             var size = boardSize * 60;
-            this.Size = new Size(size, size + 20);
+            this.Size = new Size(size, size);
 
             for (int i = 0; i < boardSize; i++)
             {
@@ -48,14 +54,16 @@ namespace Ex05_Othelo
                 {
                     _buttons[i, j] = new BoardButton(new Point(i,j));
                     _buttons[i, j].Size = new Size(50, 50);
-                    _buttons[i, j].Location = new Point(j * 60, i * 60);
+                    _buttons[i, j].Location = new Point(j * 50, i * 50);
                     _buttons[i, j].Click += new EventHandler(button_Click);
                     container.Controls.Add(_buttons[i, j]);
                 }
             }
+            //this.Size = new Size(_buttons[boardSize - 1, boardSize - 1].Location.X, _buttons[boardSize - 1, boardSize - 1].Location.Y);
            
             container.Dock = DockStyle.Fill;
             this.Controls.Add(container);
+            //this.Size = new Size(container.Size.Width,container.Size.Height);
         }
 
         private void button_Click(object sender, EventArgs e)

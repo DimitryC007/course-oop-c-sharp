@@ -67,6 +67,7 @@ namespace Logic
         public GameReport CheckHasAnyMove()
         {
             m_CurrentPlayerMoves.AllCurrentPlayerMoves(m_OponentValue);
+
             GameReport gameReport = InitializeGameReport();
 
             if (m_Board.m_IsFull || IsGameOver())
