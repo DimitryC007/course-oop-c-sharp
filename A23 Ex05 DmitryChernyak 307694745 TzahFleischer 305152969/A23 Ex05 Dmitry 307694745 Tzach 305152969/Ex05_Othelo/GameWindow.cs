@@ -83,6 +83,7 @@ namespace Ex05_Othelo
            
             container.Dock = DockStyle.Fill;
             //container.Location = this.Location;
+            //this.Size = new Size(boardSize * 50 + 70, boardSize * 50 + 50);
             this.Controls.Add(container);
 
             

@@ -68,6 +68,7 @@ namespace Ex05_Othelo
             // GameSettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.CenterToScreen();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(551, 189);
             this.Controls.Add(this.playHumanButton);
