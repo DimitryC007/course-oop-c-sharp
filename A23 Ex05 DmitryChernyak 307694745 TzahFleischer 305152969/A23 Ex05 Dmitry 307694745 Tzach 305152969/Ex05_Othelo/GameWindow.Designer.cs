@@ -39,6 +39,7 @@ namespace Ex05_Othelo
             this.Name = "GameWindow";
             this.Text = "Othello";
             this.ResumeLayout(false);
+            this.CenterToScreen();
 
         }
 

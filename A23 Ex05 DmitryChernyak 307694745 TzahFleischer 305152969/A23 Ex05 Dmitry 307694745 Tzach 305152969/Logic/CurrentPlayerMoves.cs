@@ -86,7 +86,6 @@ namespace Logic
                         if (locationMoves.Count > 0)
                         {
                             m_Board.SetCellValue(eCellState.Free, row, column);
-                            
                             string key = CreateKey(location.Row, location.Column);
                             locationMoves.Add(location);
                             m_AvailablePlayerMoves[key] = locationMoves;

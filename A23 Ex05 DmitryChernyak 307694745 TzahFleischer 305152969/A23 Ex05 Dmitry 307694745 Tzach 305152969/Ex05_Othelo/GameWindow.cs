@@ -24,8 +24,8 @@ namespace Ex05_Othelo
             InitializeComponent();
             _buttons = new BoardButton[boardSize, boardSize];
             InitializeButtons(boardSize);
-            gameSettings.Players[0] = new Player("Black", false);
-            gameSettings.Players[1] = new Player("White", isComputer);
+            gameSettings.Players[0] = new Player("Red", false);
+            gameSettings.Players[1] = new Player("Yellow", isComputer);
             _gameLogic = new GameLogic(gameSettings);
             _gameLogic.BoardChanged += GameLogic_BoardChanged;
             _gameLogic.InitGame();
@@ -35,7 +35,25 @@ namespace Ex05_Othelo
 
         private void PlayGame()
         {
-            _gameLogic.CheckHasAnyMove();
+            GameReport gameStatus = new GameReport();
+            this.Text = string.Format("Othello - {0}'s Turn",_gameLogic.m_CurrentPlayer.Name);
+            gameStatus = _gameLogic.CheckHasAnyMove();
+            if (_gameLogic.m_CurrentPlayer.IsComputer)
+            {
+                _gameLogic.MakeMove(new Coordinate(0,0));
+                PlayGame();
+            }
+            if(gameStatus.GameStatus == eGameStatuses.GameOver)
+            {
+                MessageBox.Show(string.Format("{0} Won!! ({2}/{3}){1}Would you like another round?",
+                    gameStatus.Winner.Name,Environment.NewLine,gameStatus.WinnerPoints,gameStatus.LoserPoints),"Othello", MessageBoxButtons.YesNo);
+            }
+            else if(gameStatus.MoveStatus == eMoveStatuses.MoveSkipped)
+            {
+                MessageBox.Show(string.Format("No moves for {0}, turn skipped", _gameLogic.m_CurrentPlayer.Name));
+                PlayGame();
+            }
+            
 
         }
 
@@ -64,7 +82,10 @@ namespace Ex05_Othelo
             //this.Size = new Size(_buttons[boardSize - 1, boardSize - 1].Location.X, _buttons[boardSize - 1, boardSize - 1].Location.Y);
            
             container.Dock = DockStyle.Fill;
+            //container.Location = this.Location;
             this.Controls.Add(container);
+
+            
             //this.Size = new Size(container.Size.Width,container.Size.Height);
         }
 
@@ -74,7 +95,7 @@ namespace Ex05_Othelo
             BoardButton button = (BoardButton)sender;
             _gameLogic.MakeMove(button.Coordinate);
             //button.ButtonState = eCellState.Black;
-            _gameLogic.CheckHasAnyMove();
+            PlayGame();
 
         }
 

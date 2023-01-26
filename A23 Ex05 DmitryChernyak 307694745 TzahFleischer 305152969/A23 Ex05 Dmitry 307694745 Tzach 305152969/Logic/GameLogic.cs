@@ -53,7 +53,7 @@ namespace Logic
             m_Board.InitializeBoard();
             m_CurrentPlayerMoves = new CurrentPlayerMoves(m_Board);
             m_Players = _gameSettings.Players;
-            InitializeInputDictionary(_gameSettings.MatrixSize);
+            //InitializeInputDictionary(_gameSettings.MatrixSize);
         }
 
         private void OnBoardChanged(int row, int col, eCellState newState)
@@ -123,7 +123,7 @@ namespace Logic
             {
                 Coordinate computerMove = GetComputerRandomMove();
                 effectedFlipCoins = m_CurrentPlayerMoves.GetFlippableList(computerMove);
-                Sleep(2);
+                Sleep(1);
             }
 
             gameReport.MoveStatus = SetPlayerMoves(effectedFlipCoins);
