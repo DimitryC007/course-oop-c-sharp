@@ -37,13 +37,13 @@ namespace Ex05_Othelo
             if (m_GameLogic.m_CurrentPlayer.m_IsComputer)
             {
                 Update();
-                Thread.Sleep(2000);
+                Thread.Sleep(1000);
                 m_GameLogic.MakeMove(new Coordinate(0, 0));
                 PlayGame();
             }
             if (gameStatus.m_GameStatus == eGameStatuses.GameOver)
             {
-                DialogResult dialogResult = MessageBox.Show(string.Format("{0} Won!! ({2}/{3})({4}/{5}){1}Would you like another round?",
+                DialogResult dialogResult = MessageBox.Show(string.Format("{0} Won!! ({2}/{3}) ({4}/{5}){1}Would you like another round?",
                     gameStatus.m_Winner.m_Name, Environment.NewLine, gameStatus.m_WinnerPoints, gameStatus.m_LoserPoints, GameReport.s_PlayerOneWinGames, GameReport.s_PlayerTwoWinGames), "Othello", MessageBoxButtons.YesNo);
 
                 if (dialogResult == DialogResult.No)
