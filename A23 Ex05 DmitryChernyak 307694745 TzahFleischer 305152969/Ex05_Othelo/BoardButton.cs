@@ -1,25 +1,22 @@
 ﻿using Logic;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Ex05_Othelo
 {
     public class BoardButton : Button
     {
-        private eCellState _buttonState = eCellState.Free;
-        private Coordinate _coordinate;
+        private eCellState m_ButtonState = eCellState.Free;
+        private Coordinate m_Coordinate;
         
-        public BoardButton(Coordinate location)
+        public BoardButton(Coordinate i_Location)
         {
-            _coordinate = location;
+            m_Coordinate = i_Location;
             ButtonState = eCellState.Disabled;
         }
-        public Coordinate Coordinate => _coordinate;
-        public eCellState ButtonState { get { return _buttonState; } set { SetState(value); } }
+        public Coordinate Coordinate => m_Coordinate;
+        public eCellState ButtonState { get { return m_ButtonState; } set { SetState(value); } }
 
         protected override void OnClick(EventArgs e)
         {
@@ -30,11 +27,11 @@ namespace Ex05_Othelo
             base.OnClick(e);
         }
 
-        private void SetState(eCellState state)
+        private void SetState(eCellState i_State)
         {
 
-            _buttonState = state;
-            switch(_buttonState)
+            m_ButtonState = i_State;
+            switch(m_ButtonState)
             {
                 case eCellState.Disabled:
                     {

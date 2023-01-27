@@ -23,15 +23,13 @@ namespace Logic
 
     public class GameLogic
     {
-        private GameSettings _gameSettings;
-
+        private GameSettings m_GameSettings;
         public Board m_Board { get; }
         private Player[] m_Players;
         public Player m_CurrentPlayer => m_Players[m_PlayerIndex];
         private int m_PlayerIndex = 0;
         private eCellState m_PlayerValue => m_PlayerIndex == 0 ? eCellState.Black : eCellState.White;
         private eCellState m_OponentValue => m_PlayerIndex == 0 ? eCellState.White : eCellState.Black;
-        private Dictionary<char, int> m_CharacterDict = new Dictionary<char, int>();
         private CurrentPlayerMoves m_CurrentPlayerMoves;
         private int m_SkippedTurns = 0;
         private const int k_MaxSkippedTurnsAllowed = 2;
@@ -40,8 +38,8 @@ namespace Logic
 
         public GameLogic(GameSettings i_GameSettings)
         {
-            _gameSettings = i_GameSettings;
-            m_Board = new Board(i_GameSettings.MatrixSize);
+            m_GameSettings = i_GameSettings;
+            m_Board = new Board(i_GameSettings.m_MatrixSize);
             m_Board.BoardChanged += OnBoardChanged;
         }
 
@@ -49,7 +47,7 @@ namespace Logic
         {
             m_Board.InitializeBoard();
             m_CurrentPlayerMoves = new CurrentPlayerMoves(m_Board);
-            m_Players = _gameSettings.Players;
+            m_Players = m_GameSettings.m_Players;
         }
 
         private void OnBoardChanged(int row, int col, eCellState newState)
@@ -70,13 +68,13 @@ namespace Logic
 
             if (!m_CurrentPlayerMoves.HasAnyMove)
             {
-                gameReport.MoveStatus = eMoveStatuses.MoveSkipped;
+                gameReport.m_MoveStatus = eMoveStatuses.MoveSkipped;
                 m_SkippedTurns++;
                 Sleep(2);
 
                 if (m_SkippedTurns == k_MaxSkippedTurnsAllowed)
                 {
-                    return CalcGameReport(gameReport.MoveStatus);
+                    return CalcGameReport(gameReport.m_MoveStatus);
                 }
 
                 SwitchPlayer();
@@ -93,7 +91,7 @@ namespace Logic
             List<Coordinate> effectedFlipCoins;
             GameReport gameReport = InitializeGameReport();
 
-            if (!m_CurrentPlayer.IsComputer)
+            if (!m_CurrentPlayer.m_IsComputer)
             {
                 effectedFlipCoins = m_CurrentPlayerMoves.GetFlippableList(i_Position);
             }
@@ -104,10 +102,10 @@ namespace Logic
                 Sleep(1);
             }
 
-            gameReport.MoveStatus = SetPlayerMoves(effectedFlipCoins);
+            gameReport.m_MoveStatus = SetPlayerMoves(effectedFlipCoins);
             m_Board.EmptyCell();
 
-            if (gameReport.MoveStatus == eMoveStatuses.MoveSuccess)
+            if (gameReport.m_MoveStatus == eMoveStatuses.MoveSuccess)
             {
                 SwitchPlayer();
             }
@@ -166,25 +164,25 @@ namespace Logic
 
             GameReport gameReport = new GameReport
             {
-                GameStatus = eGameStatuses.GameOver,
-                MoveStatus = i_MoveStatus,
+                m_GameStatus = eGameStatuses.GameOver,
+                m_MoveStatus = i_MoveStatus,
             };
 
             if (one > zero)
             {
-                gameReport.WinnerPoints = one;
-                gameReport.LoserPoints = zero;
-                gameReport.Winner = m_Players[1];
-                gameReport.Loser = m_Players[0];
-                GameReport.PlayerOneWinGames++;
+                gameReport.m_WinnerPoints = one;
+                gameReport.m_LoserPoints = zero;
+                gameReport.m_Winner = m_Players[1];
+                gameReport.m_Loser = m_Players[0];
+                GameReport.s_PlayerOneWinGames++;
             }
             else
             {
-                gameReport.WinnerPoints = zero;
-                gameReport.LoserPoints = one;
-                gameReport.Winner = m_Players[0];
-                gameReport.Loser = m_Players[1];
-                GameReport.PlayerTwoWinGames++;
+                gameReport.m_WinnerPoints = zero;
+                gameReport.m_LoserPoints = one;
+                gameReport.m_Winner = m_Players[0];
+                gameReport.m_Loser = m_Players[1];
+                GameReport.s_PlayerTwoWinGames++;
             }
 
             return gameReport;
@@ -194,9 +192,9 @@ namespace Logic
         {
             return new GameReport
             {
-                GameStatus = eGameStatuses.InProgress,
-                MoveStatus = eMoveStatuses.HasMoveToMake,
-                LastMovePlayerName = m_CurrentPlayer.Name
+                m_GameStatus = eGameStatuses.InProgress,
+                m_MoveStatus = eMoveStatuses.HasMoveToMake,
+                m_LastMovePlayerName = m_CurrentPlayer.m_Name
             };
         }
 

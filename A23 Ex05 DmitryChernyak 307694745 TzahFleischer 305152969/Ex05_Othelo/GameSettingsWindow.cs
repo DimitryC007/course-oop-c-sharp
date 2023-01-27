@@ -1,29 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Ex05_Othelo
 {
     public partial class GameSettingsWindow : Form
     {
-        private GameWindow _gameWindow;
-        private static int _boardSize = 6;
-        private static string _boardSizeStringFormat { get => "Board Size: {0}x{0} (Click to increase)"; }
-        private static string _boardSizeMsg { get; set; }
-        private static string _boardSizeText
+        private GameWindow m_GameWindow;
+        private static int s_BoardSize = 6;
+        private static string s_BoardSizeStringFormat { get => "Board Size: {0}x{0} (Click to increase)"; }
+        private static string s_BoardSizeMsg { get; set; }
+        private static string s_BoardSizeText
         {
             set
             {
-                _boardSizeMsg = string.Format(_boardSizeStringFormat, value);
+                s_BoardSizeMsg = string.Format(s_BoardSizeStringFormat, value);
             }
             get 
             {
-                return _boardSizeMsg;
+                return s_BoardSizeMsg;
             }
         }
 
@@ -32,18 +26,13 @@ namespace Ex05_Othelo
             InitializeComponent();
         }
 
-        private void GameSettingsWindow_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void boardSizeButton_Click(object sender, EventArgs e)
         {
             Button boardSizeBtn = sender as Button;
-            _boardSize += 2;
-            _boardSize = _boardSize > 12 ? 6 : _boardSize;
-            _boardSizeText = _boardSize.ToString();
-            boardSizeBtn.Text = _boardSizeText; 
+            s_BoardSize += 2;
+            s_BoardSize = s_BoardSize > 12 ? 6 : s_BoardSize;
+            s_BoardSizeText = s_BoardSize.ToString();
+            boardSizeBtn.Text = s_BoardSizeText; 
         }
 
         private void playComputerButton_Click(object sender, EventArgs e)
@@ -58,13 +47,12 @@ namespace Ex05_Othelo
             StartNewGame(isComputer);
         }
 
-        private void StartNewGame(bool isComputer)
+        private void StartNewGame(bool i_IsComputer)
         {
-            this.Hide();
-            _gameWindow = new GameWindow(_boardSize,isComputer);
-            _gameWindow.ShowDialog();
-            this.Close();
-            
+            Hide();
+            m_GameWindow = new GameWindow(s_BoardSize,i_IsComputer);
+            m_GameWindow.ShowDialog();
+            Close();
         }
     }
 }

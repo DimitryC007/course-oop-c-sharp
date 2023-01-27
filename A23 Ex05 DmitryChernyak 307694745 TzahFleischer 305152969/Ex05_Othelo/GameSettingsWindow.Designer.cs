@@ -40,8 +40,8 @@ namespace Ex05_Othelo
             this.boardSizeButton.Name = "BoardSizeButton";
             this.boardSizeButton.Size = new System.Drawing.Size(420, 40);
             this.boardSizeButton.TabIndex = 0;
-            _boardSizeText = _boardSize.ToString();
-            this.boardSizeButton.Text = _boardSizeText;
+            s_BoardSizeText = s_BoardSize.ToString();
+            this.boardSizeButton.Text = s_BoardSizeText;
             this.boardSizeButton.UseVisualStyleBackColor = true;
             this.boardSizeButton.Click += new System.EventHandler(this.boardSizeButton_Click);
             // 
@@ -76,9 +76,7 @@ namespace Ex05_Othelo
             this.Controls.Add(this.boardSizeButton);
             this.Name = "GameSettingsWindow";
             this.Text = "Othello - Game Settings";
-            this.Load += new System.EventHandler(this.GameSettingsWindow_Load);
             this.ResumeLayout(false);
-
         }
 
         #endregion

@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Logic
+﻿namespace Logic
 {
     public class Player
     {
         public Player(string i_Name, bool i_IsComputer)
         {
-            Name = i_Name;
-            IsComputer = i_IsComputer;
+            m_Name = i_Name;
+            m_IsComputer = i_IsComputer;
         }
 
-        public string Name { get; set; }
-        public bool IsComputer { get; set; }
+        public string m_Name { get; set; }
+        public bool m_IsComputer { get; set; }
     }
 }

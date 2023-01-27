@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Logic
+﻿namespace Logic
 {
     public class GameReport
     {
-        public static int PlayerOneWinGames { get; set; }
-        public static int PlayerTwoWinGames { get; set; }
-        public eGameStatuses GameStatus { get; internal set; }
-        public eMoveStatuses MoveStatus { get; internal set; }
-        public Player Winner { get; internal set; }
-        public Player Loser { get; internal set; }
-        public int WinnerPoints { get; internal set; }
-        public int LoserPoints { get; internal set; }
-        public string LastMovePlayerName { get; internal set; }
+        public static int s_PlayerOneWinGames { get; set; }
+        public static int s_PlayerTwoWinGames { get; set; }
+        public eGameStatuses m_GameStatus { get; internal set; }
+        public eMoveStatuses m_MoveStatus { get; internal set; }
+        public Player m_Winner { get; internal set; }
+        public Player m_Loser { get; internal set; }
+        public int m_WinnerPoints { get; internal set; }
+        public int m_LoserPoints { get; internal set; }
+        public string m_LastMovePlayerName { get; internal set; }
     }
 }

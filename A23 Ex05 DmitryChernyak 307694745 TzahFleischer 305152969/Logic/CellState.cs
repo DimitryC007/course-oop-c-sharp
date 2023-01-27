@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Logic
+﻿namespace Logic
 {
     public enum eCellState
     {
@@ -32,7 +27,5 @@ namespace Logic
             get => _state;
             set { _state = value; StateChanged?.Invoke(Coordinate, _state); }
         }
-
-
     }
 }

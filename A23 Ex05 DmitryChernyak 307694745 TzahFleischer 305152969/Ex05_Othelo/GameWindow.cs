@@ -2,54 +2,49 @@
 using System;
 using System.Drawing;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
 
 namespace Ex05_Othelo
 {
     public partial class GameWindow : Form
     {
-        private readonly BoardButton[,] _buttons;
-        private Panel container = new Panel();
-        private GameLogic _gameLogic;
-
-
+        private readonly BoardButton[,] r_Buttons;
+        private Panel m_Container = new Panel();
+        private GameLogic m_GameLogic;
         public GameWindow(int boardSize, bool isComputer)
         {
             GameSettings gameSettings = new GameSettings(2)
             {
-                MatrixSize = boardSize,
-
+                m_MatrixSize = boardSize,
             };
 
             InitializeComponent();
-            _buttons = new BoardButton[boardSize, boardSize];
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            r_Buttons = new BoardButton[boardSize, boardSize];
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             InitializeButtons(boardSize);
-            gameSettings.Players[0] = new Player("Red", false);
-            gameSettings.Players[1] = new Player("Yellow", isComputer);
-            _gameLogic = new GameLogic(gameSettings);
-            _gameLogic.BoardChanged += GameLogic_BoardChanged;
-            _gameLogic.InitGame();
+            gameSettings.m_Players[0] = new Player("Red", false);
+            gameSettings.m_Players[1] = new Player("Yellow", isComputer);
+            m_GameLogic = new GameLogic(gameSettings);
+            m_GameLogic.BoardChanged += GameLogic_BoardChanged;
+            m_GameLogic.InitGame();
             PlayGame();
         }
 
         private void PlayGame()
         {
-            this.Text = string.Format("Othello - {0}'s Turn", _gameLogic.m_CurrentPlayer.Name);
-            GameReport gameStatus = _gameLogic.CheckHasAnyMove();
-            if (_gameLogic.m_CurrentPlayer.IsComputer)
+            this.Text = string.Format("Othello - {0}'s Turn", m_GameLogic.m_CurrentPlayer.m_Name);
+            GameReport gameStatus = m_GameLogic.CheckHasAnyMove();
+            if (m_GameLogic.m_CurrentPlayer.m_IsComputer)
             {
                 Update();
                 Thread.Sleep(2000);
-                _gameLogic.MakeMove(new Coordinate(0, 0));
+                m_GameLogic.MakeMove(new Coordinate(0, 0));
                 PlayGame();
             }
-            if (gameStatus.GameStatus == eGameStatuses.GameOver)
+            if (gameStatus.m_GameStatus == eGameStatuses.GameOver)
             {
                 DialogResult dialogResult = MessageBox.Show(string.Format("{0} Won!! ({2}/{3})({4}/{5}){1}Would you like another round?",
-                    gameStatus.Winner.Name, Environment.NewLine, gameStatus.WinnerPoints, gameStatus.LoserPoints, GameReport.PlayerOneWinGames, GameReport.PlayerTwoWinGames), "Othello", MessageBoxButtons.YesNo);
+                    gameStatus.m_Winner.m_Name, Environment.NewLine, gameStatus.m_WinnerPoints, gameStatus.m_LoserPoints, GameReport.s_PlayerOneWinGames, GameReport.s_PlayerTwoWinGames), "Othello", MessageBoxButtons.YesNo);
 
                 if (dialogResult == DialogResult.No)
                 {
@@ -57,55 +52,47 @@ namespace Ex05_Othelo
                     return;
                 }
 
-                _gameLogic.InitGame();
+                m_GameLogic.InitGame();
                 PlayGame();
-
             }
-            else if (gameStatus.MoveStatus == eMoveStatuses.MoveSkipped)
+            else if (gameStatus.m_MoveStatus == eMoveStatuses.MoveSkipped)
             {
-                MessageBox.Show(string.Format("No moves for {0}, turn skipped", _gameLogic.m_CurrentPlayer.Name));
+                MessageBox.Show(string.Format("No moves for {0}, turn skipped", m_GameLogic.m_CurrentPlayer.m_Name));
                 PlayGame();
             }
         }
 
-        private void GameLogic_BoardChanged(int row, int col, eCellState newState)
+        private void GameLogic_BoardChanged(int i_Row, int i_Col, eCellState newState)
         {
-            _buttons[row, col].ButtonState = newState;
+            r_Buttons[i_Row, i_Col].ButtonState = newState;
         }
 
-        public void InitializeButtons(int boardSize)
+        public void InitializeButtons(int i_BoardSize)
         {
-            var size = boardSize * 60;
-            this.Size = new Size(size, size + 20);
+            var size = i_BoardSize * 60;
+            Size = new Size(size, size + 20);
 
-            for (int i = 0; i < boardSize; i++)
+            for (int i = 0; i < i_BoardSize; i++)
             {
-                for (int j = 0; j < boardSize; j++)
+                for (int j = 0; j < i_BoardSize; j++)
                 {
-                    _buttons[i, j] = new BoardButton(new Coordinate(i, j));
-                    _buttons[i, j].Size = new Size(50, 50);
-                    _buttons[i, j].Location = new Point(j * 60, i * 60);
-                    _buttons[i, j].Click += new EventHandler(button_Click);
-                    container.Controls.Add(_buttons[i, j]);
+                    r_Buttons[i, j] = new BoardButton(new Coordinate(i, j));
+                    r_Buttons[i, j].Size = new Size(50, 50);
+                    r_Buttons[i, j].Location = new Point(j * 60, i * 60);
+                    r_Buttons[i, j].Click += new EventHandler(button_Click);
+                    m_Container.Controls.Add(r_Buttons[i, j]);
                 }
             }
 
-            container.Dock = DockStyle.Fill;
-            this.Controls.Add(container);
+            m_Container.Dock = DockStyle.Fill;
+            Controls.Add(m_Container);
         }
 
         private void button_Click(object sender, EventArgs e)
         {
-
             BoardButton button = (BoardButton)sender;
-            _gameLogic.MakeMove(button.Coordinate);
+            m_GameLogic.MakeMove(button.Coordinate);
             PlayGame();
-            //button.ButtonState = eCellState.Black;
-            //PlayGame();
-            //Task.Factory.StartNew(() => PlayGame());
         }
-
     }
-
-
 }
