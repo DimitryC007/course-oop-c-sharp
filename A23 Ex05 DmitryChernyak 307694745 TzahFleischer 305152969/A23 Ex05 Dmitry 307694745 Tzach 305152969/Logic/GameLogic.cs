@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace Logic
@@ -45,7 +43,6 @@ namespace Logic
             _gameSettings = i_GameSettings;
             m_Board = new Board(i_GameSettings.MatrixSize);
             m_Board.BoardChanged += OnBoardChanged;
-            
         }
 
         public void InitGame()
@@ -53,15 +50,11 @@ namespace Logic
             m_Board.InitializeBoard();
             m_CurrentPlayerMoves = new CurrentPlayerMoves(m_Board);
             m_Players = _gameSettings.Players;
-            //InitializeInputDictionary(_gameSettings.MatrixSize);
         }
 
         private void OnBoardChanged(int row, int col, eCellState newState)
         {
-            if(BoardChanged != null)
-            {
-                BoardChanged.Invoke(row, col, newState);
-            }
+            BoardChanged?.Invoke(row, col, newState);
         }
 
         public GameReport CheckHasAnyMove()
@@ -102,8 +95,6 @@ namespace Logic
 
             if (!m_CurrentPlayer.IsComputer)
             {
-                
-
                 effectedFlipCoins = m_CurrentPlayerMoves.GetFlippableList(i_Position);
             }
             else
@@ -232,41 +223,6 @@ namespace Logic
             return availableMoves[index];
         }
 
-        private int ConvertInputToColumn(char i_ColumnChar)
-        {
-            int column = -1;
-            char upperCaseColumn = char.ToUpper(i_ColumnChar);
-
-            if (m_CharacterDict.ContainsKey(upperCaseColumn))
-            {
-                column = m_CharacterDict[upperCaseColumn];
-            }
-
-            return column;
-        }
-
-        private int ConvertInputToRow(char i_RowChar)
-        {
-            int row = -1;
-
-            if (i_RowChar >= '1' && i_RowChar <= '8')
-            {
-                if (m_Board.m_Size == 6)
-                {
-                    if (i_RowChar >= '1' && i_RowChar <= '6')
-                    {
-                        row = (int)char.GetNumericValue(i_RowChar) - 1;
-                    }
-                }
-                else
-                {
-                    row = (int)char.GetNumericValue(i_RowChar) - 1;
-                }
-            }
-
-            return row;
-        }
-
         private void SwitchPlayer()
         {
             m_PlayerIndex = m_PlayerIndex == 0 ? 1 : 0;
@@ -275,18 +231,6 @@ namespace Logic
         private void ResetSkippedTurns()
         {
             m_SkippedTurns = 0;
-        }
-
-        private void InitializeInputDictionary(int i_MatrixSize)
-        {
-            int maxUnicode = i_MatrixSize == 8 ? 72 : 70;
-            int unicode = 65;
-
-            for (int i = unicode; i <= maxUnicode; i++)
-            {
-                char character = (char)i;
-                m_CharacterDict.Add(character, i - unicode);
-            }
         }
 
         private void Sleep(int i_Seconds)

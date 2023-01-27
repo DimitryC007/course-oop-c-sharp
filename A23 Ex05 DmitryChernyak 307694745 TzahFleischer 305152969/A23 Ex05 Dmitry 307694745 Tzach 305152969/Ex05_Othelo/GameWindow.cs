@@ -41,8 +41,8 @@ namespace Ex05_Othelo
             GameReport gameStatus = _gameLogic.CheckHasAnyMove();
             if (_gameLogic.m_CurrentPlayer.IsComputer)
             {
+                Update();
                 Thread.Sleep(2000);
-                MessageBox.Show(string.Format("{0} is playing ...", _gameLogic.m_CurrentPlayer.Name));
                 _gameLogic.MakeMove(new Coordinate(0, 0));
                 PlayGame();
             }
@@ -66,12 +66,10 @@ namespace Ex05_Othelo
                 MessageBox.Show(string.Format("No moves for {0}, turn skipped", _gameLogic.m_CurrentPlayer.Name));
                 PlayGame();
             }
-
         }
 
         private void GameLogic_BoardChanged(int row, int col, eCellState newState)
         {
-            //this.Text = string.Format("Othello {0}'s Turn",_gameLogic.m_CurrentPlayer.Name);
             _buttons[row, col].ButtonState = newState;
         }
 
@@ -107,8 +105,9 @@ namespace Ex05_Othelo
 
             BoardButton button = (BoardButton)sender;
             _gameLogic.MakeMove(button.Coordinate);
-            //button.ButtonState = eCellState.Black;
             PlayGame();
+            //button.ButtonState = eCellState.Black;
+            //PlayGame();
             //Task.Factory.StartNew(() => PlayGame());
         }
 
