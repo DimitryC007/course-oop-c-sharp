@@ -7,7 +7,7 @@ namespace Logic
 {
     public class Board
     {
-        private Cell[,] m_Matrix;
+        private CellState[,] m_Matrix;
         public int m_Size => m_Matrix.GetLength(0);
         public bool m_IsFull => GetIsFull();
 
@@ -15,7 +15,7 @@ namespace Logic
 
         public Board(int i_MatrixSize)
         {
-            m_Matrix = new Cell[i_MatrixSize, i_MatrixSize];
+            m_Matrix = new CellState[i_MatrixSize, i_MatrixSize];
         }
 
         public void InitializeBoard()
@@ -27,7 +27,7 @@ namespace Logic
             {
                 for (int cols = 0; cols < matrixSize; cols++)
                 {
-                    m_Matrix[rows, cols] = new Cell(new Coordinate(rows, cols));
+                    m_Matrix[rows, cols] = new CellState(new Coordinate(rows, cols));
                     m_Matrix[rows, cols].StateChanged += Cell_StateChanged;
                     m_Matrix[rows, cols].State = eCellState.Disabled;
                 }

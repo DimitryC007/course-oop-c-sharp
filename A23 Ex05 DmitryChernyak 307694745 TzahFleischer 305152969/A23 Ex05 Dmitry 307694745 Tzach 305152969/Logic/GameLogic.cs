@@ -102,20 +102,7 @@ namespace Logic
 
             if (!m_CurrentPlayer.IsComputer)
             {
-                //int column = ConvertInputToColumn(i_Position[0]);
-                //int row = ConvertInputToRow(i_Position[1]);
-
-                //if (row == -1 || column == -1)
-                //{
-                //    gameReport.MoveStatus = eMoveStatuses.MoveFailure;
-                //    return gameReport;
-                //}
-
-                //if (!m_Board.IsCellEmpty(row, column))
-                //{
-                //    gameReport.MoveStatus = eMoveStatuses.CellIsTaken;
-                //    return gameReport;
-                //}
+                
 
                 effectedFlipCoins = m_CurrentPlayerMoves.GetFlippableList(i_Position);
             }
@@ -198,6 +185,7 @@ namespace Logic
                 gameReport.LoserPoints = zero;
                 gameReport.Winner = m_Players[1];
                 gameReport.Loser = m_Players[0];
+                GameReport.PlayerOneWinGames++;
             }
             else
             {
@@ -205,6 +193,7 @@ namespace Logic
                 gameReport.LoserPoints = one;
                 gameReport.Winner = m_Players[0];
                 gameReport.Loser = m_Players[1];
+                GameReport.PlayerTwoWinGames++;
             }
 
             return gameReport;

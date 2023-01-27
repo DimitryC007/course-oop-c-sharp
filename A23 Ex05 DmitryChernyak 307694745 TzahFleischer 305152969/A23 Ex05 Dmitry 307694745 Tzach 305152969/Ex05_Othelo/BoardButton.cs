@@ -39,14 +39,14 @@ namespace Ex05_Othelo
                 case eCellState.Disabled:
                     {
                         Enabled = false;
-                        this.Image = null;
+                        this.BackgroundImage = null;
                         this.BackColor = default(Color);
                     }
                     break;
                 case eCellState.Free:
                     {
                         Enabled = true;
-                        this.Image = null;
+                        this.BackgroundImage = null;
                         this.BackColor = Color.Green;
                     }
                     break;

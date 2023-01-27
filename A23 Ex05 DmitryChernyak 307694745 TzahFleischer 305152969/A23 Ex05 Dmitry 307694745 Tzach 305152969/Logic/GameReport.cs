@@ -7,6 +7,8 @@ namespace Logic
 {
     public class GameReport
     {
+        public static int PlayerOneWinGames { get; set; }
+        public static int PlayerTwoWinGames { get; set; }
         public eGameStatuses GameStatus { get; internal set; }
         public eMoveStatuses MoveStatus { get; internal set; }
         public Player Winner { get; internal set; }
