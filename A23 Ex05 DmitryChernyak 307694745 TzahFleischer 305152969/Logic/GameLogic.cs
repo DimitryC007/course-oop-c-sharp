@@ -24,7 +24,7 @@ namespace Logic
     public class GameLogic
     {
         private GameSettings m_GameSettings;
-        public Board m_Board { get; }
+        public Board m_Board { get; private set; }
         private Player[] m_Players;
         public Player m_CurrentPlayer => m_Players[m_PlayerIndex];
         private int m_PlayerIndex = 0;
@@ -39,15 +39,17 @@ namespace Logic
         public GameLogic(GameSettings i_GameSettings)
         {
             m_GameSettings = i_GameSettings;
-            m_Board = new Board(i_GameSettings.m_MatrixSize);
-            m_Board.BoardChanged += OnBoardChanged;
+            
         }
 
         public void InitGame()
         {
+            m_Board = new Board(m_GameSettings.m_MatrixSize);
+            m_Board.BoardChanged += OnBoardChanged;
             m_Board.InitializeBoard();
             m_CurrentPlayerMoves = new CurrentPlayerMoves(m_Board);
             m_Players = m_GameSettings.m_Players;
+            m_PlayerIndex = 0;
         }
 
         private void OnBoardChanged(int row, int col, eCellState newState)
@@ -70,7 +72,6 @@ namespace Logic
             {
                 gameReport.m_MoveStatus = eMoveStatuses.MoveSkipped;
                 m_SkippedTurns++;
-                Sleep(2);
 
                 if (m_SkippedTurns == k_MaxSkippedTurnsAllowed)
                 {

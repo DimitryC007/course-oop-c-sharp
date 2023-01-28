@@ -50,13 +50,13 @@ namespace Ex05_Othelo
             }
             else if (gameStatus.m_MoveStatus == eMoveStatuses.MoveSkipped)
             {
-                MessageBox.Show(string.Format("No moves for {0}, turn skipped", m_GameLogic.m_CurrentPlayer.m_Name));
+                MessageBox.Show(string.Format("No moves, turn skipped"));
+                Update();
                 PlayGame();
             }
             else if (m_GameLogic.m_CurrentPlayer.m_IsComputer)
             {
                 Update();
-                Thread.Sleep(1000);
                 m_GameLogic.MakeMove(new Coordinate(0, 0));
                 PlayGame();
             }

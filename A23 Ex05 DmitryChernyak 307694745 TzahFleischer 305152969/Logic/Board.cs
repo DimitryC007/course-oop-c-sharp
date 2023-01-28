@@ -24,6 +24,7 @@
                 {
                     m_Matrix[rows, cols] = new CellState(new Coordinate(rows, cols));
                     m_Matrix[rows, cols].StateChanged += Cell_StateChanged;
+                    m_Matrix[rows, cols].StateChanged += Cell_StateChanged;
                     m_Matrix[rows, cols].State = eCellState.Disabled;
                 }
             }
