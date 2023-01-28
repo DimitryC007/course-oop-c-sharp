@@ -34,13 +34,6 @@ namespace Ex05_Othelo
         {
             this.Text = string.Format("Othello - {0}'s Turn", m_GameLogic.m_CurrentPlayer.m_Name);
             GameReport gameStatus = m_GameLogic.CheckHasAnyMove();
-            if (m_GameLogic.m_CurrentPlayer.m_IsComputer)
-            {
-                Update();
-                Thread.Sleep(1000);
-                m_GameLogic.MakeMove(new Coordinate(0, 0));
-                PlayGame();
-            }
             if (gameStatus.m_GameStatus == eGameStatuses.GameOver)
             {
                 DialogResult dialogResult = MessageBox.Show(string.Format("{0} Won!! ({2}/{3}) ({4}/{5}){1}Would you like another round?",
@@ -60,6 +53,14 @@ namespace Ex05_Othelo
                 MessageBox.Show(string.Format("No moves for {0}, turn skipped", m_GameLogic.m_CurrentPlayer.m_Name));
                 PlayGame();
             }
+            else if (m_GameLogic.m_CurrentPlayer.m_IsComputer)
+            {
+                Update();
+                Thread.Sleep(1000);
+                m_GameLogic.MakeMove(new Coordinate(0, 0));
+                PlayGame();
+            }
+           
         }
 
         private void GameLogic_BoardChanged(int i_Row, int i_Col, eCellState newState)
